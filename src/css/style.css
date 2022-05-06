@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --green-normal: #52C099;
+    --green-light: #78E2A9;
+    --yellow-normal: #F4A021;
+    --yellow-light: #ECCF68;
+}
+
+html, body {
+    @apply h-full m-0 text-white text-16 font-body;
+    background: radial-gradient(var(--green-light), var(--green-normal));
+}
