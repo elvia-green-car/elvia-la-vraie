@@ -1,8 +1,23 @@
-import {Scene, WebGLRenderer, PerspectiveCamera} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+
+export const MODELS = {
+  Car: 0,
+  Plant_Aglaomene: 1,
+  Plant_Bambou: 2,
+  Plant_Clorophytum: 3,
+  Plant_Clorophytum02: 4,
+  Plant_Eucalyptus: 5,
+  Plant_FicusRoberta: 6,
+  Plant_Gerbera: 7,
+  Plant_Monstera: 8,
+  Plant_Monstera02: 9,
+  Plant_Paquerette: 10,
+  Plant_Planteserpent: 11
+}
 
 export class AppWebGL {
   constructor(canvas) {
@@ -37,8 +52,21 @@ export class AppWebGL {
 
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
-    this.camera = new PerspectiveCamera(90, aspect, 0.01, 1000)
+    this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+    this.dirLight1 = new DirectionalLight (0xffffff, 1)
+    this.dirLight1.position.set(-600, 300, 200)
+    this.dirLight2 = new DirectionalLight (0xffffff, 1)
+    this.dirLight2.position.set(-600, 300, -200)
+    this.dirLight3 = new DirectionalLight (0xffffff, 1)
+    this.dirLight3.position.set(600, 300, 200)
+    this.dirLight4 = new DirectionalLight (0xffffff, 1)
+    this.dirLight4.position.set(600, 300, -200)
+    this.scene.add(this.dirLight1)
+    this.scene.add(this.dirLight2)
+    this.scene.add(this.dirLight3)
+    this.scene.add(this.dirLight4)
 
     this.camera.position.set(-300, 200, 100)
     this.camera.lookAt(0, 0, 0)
@@ -48,21 +76,20 @@ export class AppWebGL {
 
     this.modelManager.loadHdr('src/assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
 
-    //this.modelsPathType['src/assets/models/Car/fbx/Configurateur_VoitureExterieur_v05.fbx'] = [MODEL_TYPE.FBX, 0]
-    this.modelsPathType[0] = ['src/assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[1] = ['src/assets/models/Plants/gltf/Configurator_Bambou_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[2] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[3] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[4] = ['src/assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[5] = ['src/assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[6] = ['src/assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[7] = ['src/assets/models/Plants/gltf/Configurator_Monstera_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[8] = ['src/assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[9] = ['src/assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[10] = ['src/assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Car] = ['src/assets/models/Car/fbx/Configurateur_VoitureExterieur_v05.fbx', MODEL_TYPE.FBX]
+    this.modelsPathType[MODELS.Plant_Aglaomene] = ['src/assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Bambou] = ['src/assets/models/Plants/gltf/Configurator_Bambou_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Clorophytum] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Clorophytum02] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Eucalyptus] = ['src/assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_FicusRoberta] = ['src/assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Gerbera] = ['src/assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera] = ['src/assets/models/Plants/gltf/Configurator_Monstera_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera02] = ['src/assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Paquerette] = ['src/assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Planteserpent] = ['src/assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)
-
 
   }
 
@@ -85,10 +112,13 @@ export class AppWebGL {
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
     if((this.modelManager.models.length == this.modelsPathType.length) && (this.load == false)) {
-      for (let i = 0; i < this.modelManager.models.length; i++) {
+      for (let i = MODELS.Plant_Aglaomene; i < MODELS.Plant_Planteserpent; i++) {
         this.modelManager.models[i].model.position.set(50*i, 0, 0)
         this.scene.add(this.modelManager.models[i].model)
       }
+      this.modelManager.models[MODELS.Car].model.position.set(-250, 0, 0)
+      this.modelManager.models[MODELS.Car].model.rotation.set(0, (Math.PI * 2)/7, 0)
+      this.scene.add(this.modelManager.models[MODELS.Car].model)
       this.load = true
     }
 

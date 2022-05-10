@@ -22,6 +22,13 @@ export class ModelsManager {
         this.models = new Array()
     }
     
+    /**
+     * Load all model contains on dictionaryPathType and save in this.models
+     * dictionaryPathType key : the index where the model is load
+     * dictionaryPathType [0] : model path
+     * dictionaryPathType [1] : type of model (MODEL_TYPE.GLTF or MODEL_TYPE.FBX)
+     * @param {[int][string, MODEL_TYPE]} dictionaryPathType 
+     */
     load(dictionaryPathType) {
       for(var key in dictionaryPathType) {
         if(dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
@@ -37,6 +44,12 @@ export class ModelsManager {
       }
     }
 
+    /**
+     * load a fbx model
+     * @param {string} fbxPath : file path and name
+     * @param {void(Group, index?)} callback : run when model is loaded
+     * @param {int} index : return in the callback
+     */
     loadFbx(fbxPath, callback, index = -1) {
         this.loaderFbx.load( 
           fbxPath, 
@@ -45,14 +58,27 @@ export class ModelsManager {
           });
     }
 
+    /**
+     * load a gltf model
+     * @param {string} gltfPath : file path and name
+     * @param {void} callback : run when model is loaded
+     * @param {int} index 
+     */
     loadGltf(gltfPath, callback, index = -1) {
       this.loaderGltf.load( 
         gltfPath, 
         ( gltf ) => {    
           callback(gltf.scene, index)     
         });
-  }
+    }
 
+    /**
+     * load a hdri and add it to the scene
+     * @param {string} path : file path 
+     * @param {string} textureName : file name
+     * @param {Scene} scene 
+     * @param {WebGLRenderer} render 
+     */
     loadHdr(path, textureName, scene, render) {
       new RGBELoader()
 					.setPath( path )
