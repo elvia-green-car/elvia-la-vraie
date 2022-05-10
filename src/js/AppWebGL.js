@@ -1,7 +1,8 @@
 import {Scene, WebGLRenderer, PerspectiveCamera} from "three";
 import {HUD} from "./HUD";
+import {Car} from "./Car";
 
-export class App {
+export class AppWebGL {
   constructor(canvas) {
     this.canvas = canvas
     this.scene = null
@@ -17,7 +18,6 @@ export class App {
   init() {
     console.log("App init")
     this.scene = new Scene()
-    //this.hud = new HUD(this)
 
     this.renderer = new WebGLRenderer({
       canvas: this.canvas,

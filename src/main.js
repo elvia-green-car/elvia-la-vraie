@@ -4,9 +4,9 @@ import './css/style.css'
 
 createApp(App).mount('#app')
 
-//import {App} from "./js/App";
+import {AppWebGL} from "./js/AppWebGL";
 
-//const canvas = document.getElementById('app-canvas')
-//const app = new App(canvas)
-//app.init()
-//app.run()
+const canvas = document.getElementById('app-canvas')
+const app = new AppWebGL(canvas)
+app.init()
+app.run()

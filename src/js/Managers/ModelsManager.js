@@ -3,10 +3,15 @@ import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 
+const MODEL_TYPE = {
+  FBX: 0,
+  GLTF: 1
+}
 export class ModelsManager {
     constructor () {
         this.loaderFbx = null
         this.loaderGltf = null
+        this.instance = null
     }
 
     init() {
@@ -15,7 +20,14 @@ export class ModelsManager {
         this.models = new Array()
     }
     
-
+    getInstance() {
+      if (this.instance == null) {
+        this.instance = new constructor()
+        this.instance.constructor = null
+      }
+      
+      return this.instance;
+    }
     
     load(callback) {
       //this.loadFbx('assets/models/fbx/Voiture_Exterieur_AnimationRoue_V00.fbx', callback)
@@ -54,6 +66,8 @@ export class ModelsManager {
 
     dispose() {
       this.loaderFbx = null
+      this.loaderGltf = null
+      this.instance = null
       this.models = {}
     }
 }
