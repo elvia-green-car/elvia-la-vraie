@@ -2,8 +2,9 @@ import {EquirectangularReflectionMapping} from "three";
 import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { Model } from "../Model";
 
-const MODEL_TYPE = {
+export const MODEL_TYPE = {
   FBX: 0,
   GLTF: 1
 }
@@ -12,6 +13,7 @@ export class ModelsManager {
         this.loaderFbx = null
         this.loaderGltf = null
         this.instance = null
+        this.models = null
     }
 
     init() {
@@ -20,33 +22,34 @@ export class ModelsManager {
         this.models = new Array()
     }
     
-    getInstance() {
-      if (this.instance == null) {
-        this.instance = new constructor()
-        this.instance.constructor = null
+    load(dictionaryPathType) {
+      for(var key in dictionaryPathType) {
+        if(dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
+          this.loadGltf(dictionaryPathType[key][0], (gltf, index) => { 
+            this.models[index] = new Model(gltf, MODEL_TYPE.GLTF);
+          }, key)
+        }
+        else if (dictionaryPathType[key][1] == MODEL_TYPE.FBX) {
+          this.loadFbx(dictionaryPathType[key][0], (fbx, index) => { 
+            this.models[index] = new Model(fbx, MODEL_TYPE.FBX);
+          }, key)
+        }
       }
-      
-      return this.instance;
-    }
-    
-    load(callback) {
-      //this.loadFbx('assets/models/fbx/Voiture_Exterieur_AnimationRoue_V00.fbx', callback)
-      //this.loadGltf('assets/models/gltf/Configurateur_VoitureExterieur_04.gltf', callback)
     }
 
-    loadFbx(fbxPath, callback) {
+    loadFbx(fbxPath, callback, index = -1) {
         this.loaderFbx.load( 
           fbxPath, 
           ( fbx ) => {    
-            callback(fbx)     
+            callback(fbx, index)     
           });
     }
 
-    loadGltf(gltfPath, callback) {
+    loadGltf(gltfPath, callback, index = -1) {
       this.loaderGltf.load( 
         gltfPath, 
         ( gltf ) => {    
-          callback(gltf.scene)     
+          callback(gltf.scene, index)     
         });
   }
 
@@ -68,6 +71,6 @@ export class ModelsManager {
       this.loaderFbx = null
       this.loaderGltf = null
       this.instance = null
-      this.models = {}
+      this.models = null
     }
 }
