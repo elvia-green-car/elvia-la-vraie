@@ -10,7 +10,9 @@ module.exports = {
       },
       fontSize: {
         '16': '16px',
-        '12': '12px'
+        '14': '14px',
+        '12': '12px',
+        '11': '11px'
       },
       colors: {
         'green': {

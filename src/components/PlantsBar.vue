@@ -10,9 +10,9 @@
       <div class="swiper-button-prev">
         <!--SliderArrow/-->
       </div>
-      <swiper-slide class="flex justify-center items-center" v-for="plant in plantsToShow"
-                    @click="plantClicked($event)">
-        <img :src="'src/assets/images/png/'+plant"/>
+      <swiper-slide class="flex justify-center items-center" v-for="(plant, i) in plantsToShow"
+                    @click="plantClicked($event, i)">
+        <img :src="'/images/png/'+plant"/>
       </swiper-slide>
       <div class="swiper-button-next"></div>
     </swiper>
@@ -23,19 +23,19 @@
 // Import Swiper Vue.js components
 import {Navigation} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/vue';
-import SliderArrow from "../assets/images/svg/slider-arrow.svg";
+import SliderArrow from "../../public/images/svg/slider-arrow.svg";
 
 // Import Swiper styles
 import 'swiper/css';
 //import 'swiper/css/navigation';
 
-import plantsData from "../assets/json/plants.json";
+import plantsData from "../../public/json/plants.json";
 
 
 export default {
   name: "PlantsBar",
   props: {
-    view: String,
+    activeStep: String,
     // plants: Array
   },
   components: {
@@ -62,7 +62,7 @@ export default {
     plantsToShow() {
       //let array = []
       Object.entries(plantsData).forEach(([key, value]) => {
-        if(value.zone.find(zone => zone === this.view)) {
+        if(value.zone.find(zone => zone === this.activeStep)) {
           //array.push(key+ '.png')
         }
       });
@@ -71,9 +71,9 @@ export default {
     }
   },
   methods: {
-    plantClicked($event) {
-      console.log("plant clicked", $event)
-      this.$emit('plantSelected')
+    plantClicked($event, i) {
+      console.log("plant clicked", $event.target, i)
+      this.$emit('plantSelected', i)
     }
   }
 }
