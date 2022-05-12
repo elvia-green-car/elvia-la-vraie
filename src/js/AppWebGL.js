@@ -111,6 +111,7 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    //todo pour test
     if((this.modelManager.models.length == this.modelsPathType.length) && (this.load == false)) {
       for (let i = MODELS.Plant_Aglaomene; i < MODELS.Plant_Planteserpent; i++) {
         this.modelManager.models[i].model.position.set(50*i, 0, 0)
