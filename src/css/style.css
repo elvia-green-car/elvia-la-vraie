@@ -10,6 +10,6 @@
 }
 
 html, body {
-    @apply h-full m-0 text-white text-16 font-body;
+    @apply h-full m-0 text-white text-14 lg:text-16 font-body;
     background: radial-gradient(var(--green-light), var(--green-normal));
 }
