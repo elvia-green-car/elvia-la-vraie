@@ -1,5 +1,5 @@
-{
-  "": {
+[
+  {
     "name": "",
     "file": "",
     "description": "",
@@ -8,7 +8,7 @@
     "o2": 0,
     "zone": []
   },
-  "monstera": {
+  {
     "name": "monstera",
     "file": "Configurateur_Monstera_v01.gltf",
     "description": "",
@@ -22,7 +22,7 @@
       "coffre"
     ]
   },
-  "sansevieria": {
+  {
     "name": "sansevieria trifasciata",
     "file": "",
     "description": "",
@@ -34,7 +34,7 @@
       "toit"
     ]
   },
-  "gerbera": {
+  {
     "name": "gerbera",
     "file": "",
     "description": "",
@@ -47,7 +47,7 @@
       "coffre"
     ]
   },
-  "bambou": {
+  {
     "name": "bambou",
     "file": "",
     "description": "",
@@ -58,7 +58,7 @@
       "toit"
     ]
   },
-  "chlorophytum": {
+  {
     "name": "chlorophytum",
     "file": "",
     "description": "",
@@ -70,7 +70,7 @@
       "coffre"
     ]
   },
-  "ficus": {
+  {
     "name": "ficus roberta",
     "file": "",
     "description": "",
@@ -79,7 +79,7 @@
     "o2": 3,
     "zone": []
   },
-  "paquerette": {
+  {
     "name": "paquerette",
     "file": "",
     "description": "",
@@ -90,4 +90,4 @@
       "capot"
     ]
   }
-}
+]
