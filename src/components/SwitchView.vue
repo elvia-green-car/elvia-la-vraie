@@ -1,14 +1,24 @@
 <template>
   <button>
-    <div class="w-24 h-24 bg-white bg-opacity-10 border border-white rounded-full"/>
+    <div class="w-24 h-24 bg-white bg-opacity-10 border border-white rounded-full" @click="switchView($e)"/>
   </button>
 </template>
 
 <script>
 export default {
   name: "SwitchView",
-  data: {},
-  mounted() {
+  props: {
+    viewMode: String,
+  },
+  data() {
+    return {
+      view: [
+        "Vue intérieur",
+        "Vue extérieur"
+      ]
+    }
+  },
+  /*mounted() {
     let target = document.querySelector('.target')
     const message = target.textContent;
     const quaterWidth = target.clientWidth / 4;
@@ -53,6 +63,12 @@ export default {
         font-size: 1em;
       `);
       target.appendChild(charWrapper);
+    }
+  }*/
+  methods: {
+    switchView($e) {
+      console.log('switch view', $e)
+      this.$emit('switchView')
     }
   }
 }

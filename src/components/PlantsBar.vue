@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full bg-opacity-10 bg-white rounded-full border border-white overflow-hidden">
+  <div class="h-full bg-opacity-10 bg-white rounded-full overflow-hidden border border-white"><!-- overflow-hidden-->
     <swiper
         :slides-per-view="5.5"
         :space-between="10"
@@ -10,8 +10,12 @@
       <div class="swiper-button-prev">
         <!--SliderArrow/-->
       </div>
-      <swiper-slide class="flex justify-center items-center" v-for="(plant, i) in plantsToShow"
+      <swiper-slide class="relative flex justify-center items-center" v-for="(plant, i) in plantsToShow"
                     @click="plantClicked($event, i)">
+        <div class="absolute flex flex-col items-center gap-2"><!--  -top-1/2 -->
+          <span class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal">+</span>
+          <span class="h-8 w-[2px] bg-white"/>
+        </div>
         <img :src="'/images/png/'+plant"/>
       </swiper-slide>
       <div class="swiper-button-next"></div>
@@ -62,7 +66,7 @@ export default {
     plantsToShow() {
       //let array = []
       Object.entries(plantsData).forEach(([key, value]) => {
-        if(value.zone.find(zone => zone === this.activeStep)) {
+        if (value.zone.find(zone => zone === this.activeStep)) {
           //array.push(key+ '.png')
         }
       });
