@@ -1,4 +1,4 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
@@ -29,6 +29,9 @@ export class AppWebGL {
     this.modelManager = null
     this.modelsPathType = new Array()
     this.load = false
+
+    this.raycaster = null
+    this.pointer = null
 
     this.hud = null
 
@@ -91,6 +94,24 @@ export class AppWebGL {
 
     this.modelManager.load(this.modelsPathType)
 
+    this.raycaster = new Raycaster()
+    this.pointer = new Vector2()
+  }
+
+  onPointerClick( event ) {
+
+    // calculate pointer position in normalized device coordinates
+    // (-1 to +1) for both components
+    
+    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    this.raycaster.setFromCamera( this.pointer, this.camera )
+    const intersects = this.raycaster.intersectObjects( this.scene.children )
+    
+    for ( let i = 0; i < intersects.length; i ++ ) {
+      console.log(intersects[ i ])
+    }
   }
 
   resizeRendererToDisplaySize() {
@@ -104,6 +125,8 @@ export class AppWebGL {
   }
 
   render() {
+
+
     this.renderer.render(this.scene, this.camera)
     //this.renderer.render(this.hud.scene, this.camera)
     //this.renderer.render(this.hud.scene, this.hud.camera)
@@ -111,6 +134,7 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    
     //todo pour test
     if((this.modelManager.models.length == this.modelsPathType.length) && (this.load == false)) {
       for (let i = MODELS.Plant_Aglaomene; i < MODELS.Plant_Planteserpent; i++) {
@@ -140,6 +164,22 @@ export class AppWebGL {
   run() {
     console.log("App run")
     this.animate()
+    this.canvas.addEventListener('click', (event) => {
+      this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+      this.raycaster.setFromCamera( this.pointer, this.camera )
+      const intersects = this.raycaster.intersectObjects( this.scene.children )
+    
+      for ( let i = 0; i < intersects.length; i ++ ) {
+        console.log(intersects[ i ].object.name)
+        if(intersects[ i ].object.name.startsWith("Slot_")) {
+          
+          intersects[ i ].object.add(this.modelManager.models[MODELS.Plant_Aglaomene].model)
+          console.log(intersects[ i ].object)
+        }
+      }
+    });
   }
 
   // Memory management
@@ -150,5 +190,7 @@ export class AppWebGL {
     this.canvas = null
     this.hud = null
     this.load = false
+    this.pointer = null
+    this.raycaster = null
   }
 }
