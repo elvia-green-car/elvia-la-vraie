@@ -1,5 +1,6 @@
 <template>
-  <div class="h-full bg-opacity-10 bg-white rounded-full overflow-hidden border border-white"><!-- overflow-hidden-->
+  <!-- TODO: Custom slider -->
+  <div class="bg-opacity-10 bg-white rounded-full overflow-hidden border border-white"><!-- overflow-hidden-->
     <swiper
         :slides-per-view="5.5"
         :space-between="10"
@@ -27,13 +28,13 @@
 // Import Swiper Vue.js components
 import {Navigation} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/vue';
-import SliderArrow from "../../public/images/svg/slider-arrow.svg";
+import SliderArrow from "../../../public/svg/slider-arrow.svg";
 
 // Import Swiper styles
 import 'swiper/css';
 //import 'swiper/css/navigation';
 
-import plantsData from "../../public/json/plants.json";
+import plantsData from "../../../public/json/plants.json";
 
 
 export default {

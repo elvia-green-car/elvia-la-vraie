@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO : Add text around button -->
   <button>
     <div class="w-24 h-24 bg-white bg-opacity-10 border border-white rounded-full" @click="switchView($e)"/>
   </button>

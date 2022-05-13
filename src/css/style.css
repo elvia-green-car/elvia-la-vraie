@@ -1,6 +1,13 @@
+@import url('./panchang.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto'), url(/fonts/Roboto-Regular.ttf) format('ttf');
+}*/
 
 :root {
     --green-normal: #52C099;
