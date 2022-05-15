@@ -29,8 +29,8 @@ export class AppWebGL {
     this.modelManager = null
     this.modelsPathType = new Array()
     this.load = false
+    this.car = null
 
-    this.hud = null
 
     console.log("New App created")
   }
@@ -105,23 +105,10 @@ export class AppWebGL {
 
   render() {
     this.renderer.render(this.scene, this.camera)
-    //this.renderer.render(this.hud.scene, this.camera)
-    //this.renderer.render(this.hud.scene, this.hud.camera)
   }
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
-    //todo pour test
-    if((this.modelManager.models.length == this.modelsPathType.length) && (this.load == false)) {
-      for (let i = MODELS.Plant_Aglaomene; i < MODELS.Plant_Planteserpent; i++) {
-        this.modelManager.models[i].model.position.set(50*i, 0, 0)
-        this.scene.add(this.modelManager.models[i].model)
-      }
-      this.modelManager.models[MODELS.Car].model.position.set(-250, 0, 0)
-      this.modelManager.models[MODELS.Car].model.rotation.set(0, (Math.PI * 2)/7, 0)
-      this.scene.add(this.modelManager.models[MODELS.Car].model)
-      this.load = true
-    }
 
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -136,10 +123,24 @@ export class AppWebGL {
     this.render()
   }
 
+  // this function execute while all model isn't load
+  updateModelsLoad() {
+    if((this.car == null) && (this.modelManager.models[MODELS.Car] != null)) {
+      console.log("Car load")
+      this.car = this.modelManager.models[MODELS.Car].model.clone()
+      this.scene.add(this.car)
+      this.load = true
+    }
+    else {
+      setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
+    }
+  }
+
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
     this.animate()
+    this.updateModelsLoad()
   }
 
   // Memory management
@@ -148,7 +149,7 @@ export class AppWebGL {
     this.camera = null
     this.renderer = null
     this.canvas = null
-    this.hud = null
     this.load = false
+    this.car.dispose()
   }
 }
