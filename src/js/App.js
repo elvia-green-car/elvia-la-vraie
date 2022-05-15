@@ -1,5 +1,4 @@
 import {Scene, WebGLRenderer, PerspectiveCamera} from "three";
-import {HUD} from "./HUD";
 
 export class App {
   constructor(canvas) {

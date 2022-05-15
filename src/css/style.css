@@ -16,6 +16,21 @@
     --yellow-light: #ECCF68;
 }
 
+@layer components {
+    .btn-border {
+        @apply rounded-full border border-white;
+    }
+    .btn-bg {
+        @apply bg-white bg-opacity-20;
+    }
+    .btn-round {
+        @apply  p-2 lg:p-4;
+    }
+    .btn-oval {
+        @apply p-4 py-2 lg:px-8 lg:py-4
+    }
+}
+
 html, body {
     @apply h-full m-0 text-white text-14 lg:text-16 font-body;
     background: radial-gradient(var(--green-light), var(--green-normal));

@@ -1,8 +1,8 @@
 <template>
   <!-- TODO: Custom slider -->
-  <div class="bg-opacity-10 bg-white rounded-full overflow-hidden border border-white"><!-- overflow-hidden-->
+  <div class="btn-bg overflow-hidden btn-border btn-oval p-0"><!-- overflow-hidden-->
     <swiper
-        :slides-per-view="5.5"
+        :slides-per-view="slidesPerView"
         :space-between="10"
         navigation
         @swiper="onSwiper"
@@ -41,6 +41,7 @@ export default {
   name: "PlantsBar",
   props: {
     activeStep: String,
+    slidesPerView: Number,
     // plants: Array
   },
   components: {
@@ -50,10 +51,10 @@ export default {
   },
   setup() {
     const onSwiper = (swiper) => {
-      console.log(swiper);
+      //console.log(swiper);
     };
     const onSlideChange = () => {
-      console.log('slide change');
+      //console.log('slide change');
     };
     return {
       onSwiper,
@@ -77,7 +78,6 @@ export default {
   },
   methods: {
     plantClicked($event, i) {
-      console.log("plant clicked", $event.target, i)
       this.$emit('plantSelected', i)
     }
   }
