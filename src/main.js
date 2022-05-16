@@ -18,9 +18,9 @@ const router = createRouter({
 
 createApp(App).use(router).mount('#app')
 
-import {AppWebGL} from "./js/AppWebGL";
-
-const canvas = document.getElementById('app-canvas')
-const app = new AppWebGL(canvas)
-app.init()
-app.run()
+//import {AppWebGL} from "./js/AppWebGL";
+//
+//const canvas = document.getElementById('app-canvas')
+//const app = new AppWebGL(canvas)
+//app.init()
+//app.run()
