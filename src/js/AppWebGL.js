@@ -1,4 +1,4 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, MeshStandardMaterial} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
@@ -31,7 +31,8 @@ export class AppWebGL {
     this.modelsPathType = new Array()
     this.load = false
     this.car = null
-    this.plants = new Array()
+    this.raycaster = null
+    this.pointer = null
 
 
     console.log("New App created")
@@ -73,6 +74,9 @@ export class AppWebGL {
     this.camera.position.set(-300, 200, 100)
     this.camera.lookAt(0, 0, 0)
 
+    this.raycaster = new Raycaster()
+    this.pointer = new Vector2()
+
     this.modelManager = new ModelsManager()
     this.modelManager.init()
 
@@ -86,14 +90,54 @@ export class AppWebGL {
     this.modelsPathType[MODELS.Plant_Eucalyptus] = ['src/assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_FicusRoberta] = ['src/assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Gerbera] = ['src/assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera] = ['src/assets/models/Plants/gltf/Configurator_Monstera_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera] = ['src/assets/models/Plants/gltf/Configurator_Monstera_V03.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Monstera02] = ['src/assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Paquerette] = ['src/assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Planteserpent] = ['src/assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)
 
+
   }
+
+  onPointerClick( event ) {
+    let slotName = ""
+    console.log("x : " + event.clientX)
+    console.log("y : " + event.clientY)
+    console.log("width : " + this.canvas.width)
+    console.log("height : " + this.canvas.height)
+    this.pointer.x = ( event.clientX / this.canvas.width ) * 2 - 1;
+    this.pointer.y = - ( event.clientY / this.canvas.height ) * 2 + 1;
+    console.log("x : " + this.pointer.x)
+    console.log("y : " + this.pointer.y)
+    this.pointer.x = event.clientX
+    this.pointer.y = event.clientY
+
+    this.raycaster.setFromCamera( this.pointer, this.camera )
+    const intersects = this.raycaster.intersectObjects( this.scene.children )
+
+    for ( let i = 0; i < intersects.length; i ++ ) {
+      console.log(intersects[ i ].object.name)
+      slotName = intersects[ i ].object.name
+      if(slotName.startsWith("Slot_")) {
+        if(this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
+          this.car.addPlant(new Plants(this.modelManager.models[MODELS.Plant_Monstera].model.clone()), slotName)       
+          intersects[ i ].object.attach(this.car.plants[slotName].model)
+          this.car.plants[slotName].model.position.set(0,0,0)
+          this.car.plants[slotName].model
+          console.log(intersects[ i ].object)
+          console.log(this.car.plants[slotName].model)
+        }
+        else {
+          intersects[ i ].object.remove(this.car.plants[slotName].model)
+          this.car.plants[slotName].dispose()
+        }
+
+      }
+    }
+  }
+
+
 
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;
@@ -127,36 +171,20 @@ export class AppWebGL {
 
   // this function execute while all model isn't load
   updateModelsLoad() {
-    let temp = false
     for(let i = 0; i < this.modelsPathType.length; i++) {
       if(this.modelManager.models[i] != null) {
         if((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(this.modelManager.models[MODELS.Car].model.clone())
-          this.scene.add(this.car)
-        }
-        else if(this.plants[i] == null) {
-          this.plants[i] = new Plants(this.modelManager.models[i].model.clone())
-          this.plants[i].model.traverse((node) => {
-            if(node.isMesh) {
-              /*let clonedMaterial = node.material.clone();
-              node.material = clonedMaterial;
-              node.material.color.set(
-                this.state.modelData.statusList[statusIndex].statusColor
-              );*/
-            }
-          })
-          this.plants[i].model.position.set(-100 * i, 0, 0)
-          this.scene.add(this.plants[i].model)
+          this.scene.add(this.car.model)
         }
 
-        if((this.plants.length == (MODELS.Plant_Planteserpent - MODELS.Plant_Aglaomene)) && (this.car != null)) {
-          temp = true
+        if(this.modelsPathType.length == this.modelManager.models.length) {
+          this.load = true
         }
-
       }
     }
     //if the load is not finished, we recheck 10ms later
-    if(temp == false) {
+    if(this.load == false) {
       setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
     }
   }
@@ -166,6 +194,8 @@ export class AppWebGL {
     console.log("App run")
     this.animate()
     this.updateModelsLoad()
+
+    this.canvas.addEventListener('click', (event) => {this.onPointerClick(event);});
   }
 
   // Memory management
@@ -175,9 +205,8 @@ export class AppWebGL {
     this.renderer = null
     this.canvas = null
     this.load = false
+    this.pointer = null
+    this.raycaster = null
     this.car.dispose()
-    this.plants.forEach((plant) => {
-      plant.dispose()
-    })
   }
 }
