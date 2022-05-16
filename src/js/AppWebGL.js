@@ -1,4 +1,4 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, MeshStandardMaterial} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
@@ -80,7 +80,7 @@ export class AppWebGL {
 
     this.modelsPathType[MODELS.Car] = ['src/assets/models/Car/fbx/Configurateur_VoitureExterieur_v05.fbx', MODEL_TYPE.FBX]
     this.modelsPathType[MODELS.Plant_Aglaomene] = ['src/assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Bambou] = ['src/assets/models/Plants/gltf/Configurator_Bambou_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Bambou] = ['src/assets/models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Clorophytum] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Clorophytum02] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Eucalyptus] = ['src/assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
@@ -136,6 +136,15 @@ export class AppWebGL {
         }
         else if(this.plants[i] == null) {
           this.plants[i] = new Plants(this.modelManager.models[i].model.clone())
+          this.plants[i].model.traverse((node) => {
+            if(node.isMesh) {
+              /*let clonedMaterial = node.material.clone();
+              node.material = clonedMaterial;
+              node.material.color.set(
+                this.state.modelData.statusList[statusIndex].statusColor
+              );*/
+            }
+          })
           this.plants[i].model.position.set(-100 * i, 0, 0)
           this.scene.add(this.plants[i].model)
         }
@@ -146,15 +155,6 @@ export class AppWebGL {
 
       }
     }
-    /*if((this.car == null) && (this.modelManager.models[MODELS.Car] != null)) {
-      console.log("Car load")
-      this.car = this.modelManager.models[MODELS.Car].model.clone()
-      this.scene.add(this.car)
-      this.load = true
-    }
-    else {
-      setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
-    }*/
     //if the load is not finished, we recheck 10ms later
     if(temp == false) {
       setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
