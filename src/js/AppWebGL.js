@@ -3,6 +3,7 @@ import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { Plants } from "./Plants";
 
 export const MODELS = {
   Car: 0,
@@ -30,6 +31,7 @@ export class AppWebGL {
     this.modelsPathType = new Array()
     this.load = false
     this.car = null
+    this.plants = new Array()
 
 
     console.log("New App created")
@@ -125,13 +127,36 @@ export class AppWebGL {
 
   // this function execute while all model isn't load
   updateModelsLoad() {
-    if((this.car == null) && (this.modelManager.models[MODELS.Car] != null)) {
+    let temp = false
+    for(let i = 0; i < this.modelsPathType.length; i++) {
+      if(this.modelManager.models[i] != null) {
+        if((i == MODELS.Car) && (this.car == null)) {
+          this.car = new Car(this.modelManager.models[MODELS.Car].model.clone())
+          this.scene.add(this.car)
+        }
+        else if(this.plants[i] == null) {
+          this.plants[i] = new Plants(this.modelManager.models[i].model.clone())
+          this.plants[i].model.position.set(-100 * i, 0, 0)
+          this.scene.add(this.plants[i].model)
+        }
+
+        if((this.plants.length == (MODELS.Plant_Planteserpent - MODELS.Plant_Aglaomene)) && (this.car != null)) {
+          temp = true
+        }
+
+      }
+    }
+    /*if((this.car == null) && (this.modelManager.models[MODELS.Car] != null)) {
       console.log("Car load")
       this.car = this.modelManager.models[MODELS.Car].model.clone()
       this.scene.add(this.car)
       this.load = true
     }
     else {
+      setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
+    }*/
+    //if the load is not finished, we recheck 10ms later
+    if(temp == false) {
       setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
     }
   }
@@ -151,5 +176,8 @@ export class AppWebGL {
     this.canvas = null
     this.load = false
     this.car.dispose()
+    this.plants.forEach((plant) => {
+      plant.dispose()
+    })
   }
 }
