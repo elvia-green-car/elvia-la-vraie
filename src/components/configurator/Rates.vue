@@ -5,7 +5,7 @@
          :class="{'lg:flex-row-reverse': reverse, 'lg:flex-row': !reverse}">
       <span>{{ d.name }}</span>
       <span class="relative block w-40 h-[1px] bg-white">
-        <span class="absolute right-0 top-1/2 -translate-y-1/2 h-[3px] bg-white rounded-full"
+        <span class="absolute right-0 top-1/2 -translate-y-1/2 h-[3px] bg-white rounded-full transition-all ease-in-out"
               :style="{'width': d.rate + '%'}"/>
       </span>
     </div>

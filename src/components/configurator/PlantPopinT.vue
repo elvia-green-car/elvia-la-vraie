@@ -4,9 +4,12 @@
     <Button class="ml-auto" icon="close" :background="false" round @click.native="$emit('closePopin')"/>
     <div class="flex justify-center items-center my-auto">
       <swiper
+          ref="swiper"
+          :modules="[Controller]"
+          @swiper="setSecondSwiper"
+          :controller="{ control: firstSwiper }"
           :slides-per-view="1"
           navigation
-          @swiper="onSwiper"
           @slideChange="onSlideChange"
       >
         <swiper-slide class="relative flex justify-center items-center">
@@ -59,11 +62,10 @@
 </template>
 
 <script>
+import {ref} from 'vue';
 // Import Swiper Vue.js components
-import {Navigation} from 'swiper';
+import {Navigation, Controller, Thumbs} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/vue';
-
-import Arrow from "../../../public/svg/slider-arrow.svg";
 
 // Import Swiper styles
 import 'swiper/css';
@@ -72,13 +74,33 @@ import 'swiper/css';
 import Button from "../Button.vue";
 import Rates from "./Rates.vue";
 
+import Arrow from "../../../public/svg/slider-arrow.svg";
+
 export default {
   name: "Plant",
   components: {Rates, Button, Swiper, SwiperSlide, Arrow},
   props: {
     data: Object,
     isOpen: Boolean,
-  }, setup() {
+    firstSwiper: Object
+  },
+  mounted() {
+    console.log(this.$refs, this.$refs.swiper)
+    console.log('firstSwiper', this.firstSwiper)
+    this.$emit('secondSwiper', this.$refs.swiper)
+  },
+  setup() {
+    const secondSwiper = ref(null);
+    const setSecondSwiper = (swiper) => {
+      secondSwiper.value = swiper;
+      //setSwiper(swiper)
+    };
+
+    //const thumbsSwiper = ref(null);
+    //const setThumbsSwiper = (swiper) => {
+    //  thumbsSwiper.value = swiper;
+    //};
+
     const onSwiper = (swiper) => {
       //console.log(swiper);
     };
@@ -86,6 +108,12 @@ export default {
       //console.log('slide change');
     };
     return {
+      //Thumbs,
+      //thumbsSwiper,
+      //setThumbsSwiper,
+      Controller,
+      secondSwiper,
+      setSecondSwiper,
       onSwiper,
       onSlideChange,
       modules: [Navigation],
@@ -96,6 +124,9 @@ export default {
     selectedPlant() {
       this.$emit('selectedPlant')
       this.$emit('closePopin')
+    },
+    setSwiper(swiper) {
+      this.$emit('secondSwiper', swiper)
     }
   }
 }

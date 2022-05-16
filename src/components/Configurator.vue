@@ -1,54 +1,55 @@
 <template>
   <div class="relative flex justify-between w-full h-full">
     <canvas class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
-    <!--
-    <PlantPopin v-if="activeStep !== 'devis'" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
-    <DevisPopin v-if="activeStep === 'devis'"/>
-    -->
-    <keep-alive>
-      <component ref="popin" :is="popinIs" :data="''" :is-open="isPopinOpen"
-                 @close-popin="isPopinOpen = false"/>
-    </keep-alive>
+    <a href="/" class="absolute top-16 left-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
+    <!-- v-if="activeStep !== 'devis'" -->
+    <PlantPopin :is-open="isPopinOpen" @close-popin="isPopinOpen = false" @second-swiper="setSecondSwiper" :first-swiper="firstSwiper"/>
+    <!-- v-if="activeStep === 'devis'" -->
+    <DevisPopin :is-open="activeStep === 'devis'"/>
+    <!--keep-alive>
+      <component :is="popinIs" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
+    </keep-alive-->
     <div class="flex flex-col flex-1">
       <aside ref="sidebar"
-             class="flex flex-col h-full self-end justify-between items-end text-right p-10 z-10">
+             class="flex flex-col h-full self-end justify-between items-end text-right p-10 lg:p-14 z-10 lg:mb-10">
         <a href="/">
           <Button text="Quitter"/>
         </a>
-        <p>Loreum ipsum</p>
+        <p :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
         <Rates :data="[
           {name: 'Absorption CO2', rate: 86},
           {name: 'Besoin en eau', rate: 54},
           {name: 'Pollinisation', rate: 67}
       ]"/>
-        <Breadcrumb :active-step="activeStep" :steps="steps" @step-selected="updateSteps"/>
-        <SwitchView/>
+        <Breadcrumb :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''"
+                    :active-step="activeStep" :steps="steps" @step-selected="updateSteps"/>
+        <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''" class="opacity-0"/>
       </aside>
-      <p v-if="activeStep !== 'devis'" class="ml-6 lg:ml-12 mb-3">Loreum ipsum</p>
-      <section v-if="activeStep !== 'global' && activeStep !== 'devis'" :class="'w-['+plantsBarWidth+']'"
-               class="flex shrink grow-0 mt-auto justify-between items-center px-10 pb-10 z-10">
+      <section v-show="activeStep !== 'global' && activeStep !== 'devis'" :style="{'width':`${plantsBarWidth}px`}"
+               class="flex gap-10 shrink grow-0 mt-auto justify-between items-center p-10 lg:p-14 z-10">
         <div class="flex-1 w-1/3">
-          <!--PlantsBar active-step="capot" @plant-selected="" :slides-per-view="isPopinOpen ? 1 : 5.5"/-->
+          <PlantsBar active-step="capot" @plant-selected="" @first-swiper="setFirstSwiper" :second-swiper="secondSwiper"/> <!-- :slides-per-view="isPopinOpen ? 1 : 5.5" -->
         </div>
         <div class="flex gap-6">
           <div class="flex flex-col justify-center items-center font-title text-14">
-            <span>0{{ stepIndex + 1 }}</span>
+            <span>0{{ activeStepIndex + 1 }}</span>
             <span class="h-[1px] bg-white w-14 my-2"></span>
             <span>0{{ steps.length }}</span>
           </div>
-          <Button icon="arrow" @click.native="updateSteps(stepIndex + 1)"/>
+          <Button icon="arrow" @click.native="updateSteps(activeStepIndex + 1)"/>
         </div>
       </section>
-      <section v-if="activeStep === 'global'" class="flex mt-auto justify-between items-center gap-10 px-10 pb-10 z-10">
+      <section v-if="activeStep === 'global'"
+               class="flex mt-auto justify-between items-center gap-10 p-10 lg:p-14 z-10">
         <!--Scroll class="absolute z-20 left-10 top-1/2 -translate-y-1/2"/-->
         <Button icon="arrow" text="Configurateur" background @click=""/>
         <div class="flex gap-6">
           <Button icon="download" round/>
-          <Button text="Finaliser" @click.native="updateSteps(stepIndex + 1)"/>
+          <Button text="Finaliser" @click.native="updateSteps(activeStepIndex + 1)"/>
         </div>
         <Socials/>
       </section>
-      <section v-if="activeStep === 'devis'" class="flex mt-auto justify-end items-center gap-10 px-10 pb-10 z-10">
+      <section v-if="activeStep === 'devis'" class="flex mt-auto justify-end items-center gap-10 p-10 lg:p-14 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
@@ -77,42 +78,63 @@ export default {
   components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin},
   data() {
     return {
-      steps: ['launch', 'capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
-      stepIndex: 0,
-      activeStep: 'launch',
-      isPopinOpen: true
+      steps: ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
+      activeStepIndex: 0,
+      activeStep: 'capot',
+      isPopinOpen: true,
+      popinWidth: 0,
+      firstSwiper: null,
+      secondSwiper: null,
     }
   },
   computed: {
-    popinIs() {
+    /*popinIs() {
       switch (this.activeStep) {
         case 'devis':
           this.isPopinOpen = true
+          this.popinWidth = window.innerWidth * 45 / 100
           return 'devis-popin'
           break;
         case 'global':
           return
           break;
         default:
+          this.popinWidth = window.innerWidth * 55 / 100
           return 'plant-popin'
           break
       }
-    },
+    },*/
     plantsBarWidth() {
-      let width = 0
-      if (this.$refs.popin && this.$refs.sidebar) {
+      switch (this.activeStep) {
+        case 'devis':
+          this.popinWidth = window.innerWidth * 45 / 100
+          break;
+        case 'global':
+          return
+          break;
+        default:
+          this.popinWidth = window.innerWidth * 55 / 100
+          break
       }
-      return '100px'
-    }
-  },
-  mounted() {
-    console.log(this.$refs.popin, this.$refs.sidebar)
-    console.log('width', this.$refs.popin.offsetWidth, this.$refs.sidebar.offsetWidth)
+      if (this.isPopinOpen) {
+        return window.innerWidth - this.popinWidth
+      } else {
+        return window.innerWidth
+      }
+    },
   },
   methods: {
+    setFirstSwiper(swiper) {
+      console.log('setFirstSwiper', swiper)
+      this.firstSwiper = swiper
+    },
+    setSecondSwiper(swiper) {
+      console.log('setSecondSwiper', swiper)
+      this.secondSwiper = swiper
+    },
     updateSteps(index) {
       console.log('updateSteps', index)
-      this.stepIndex = index
+      this.activeStepIndex = index
       this.activeStep = this.steps[index]
       this.isPopinOpen = false
     },
