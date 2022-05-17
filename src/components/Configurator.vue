@@ -1,7 +1,7 @@
 <template>
   <div class="relative flex justify-between w-full h-full">
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
-    <a href="/" class="absolute top-16 left-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
+    <a href="/" class="absolute p-12 lg:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
     <!-- v-if="activeStep !== 'devis'" -->
     <PlantPopin :is-open="isPopinOpen" @close-popin="isPopinOpen = false" @second-swiper="setSecondSwiper"
                 :first-swiper="firstSwiper"/>
@@ -27,11 +27,10 @@
         <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''" class="opacity-0"/>
       </aside>
       <section v-show="activeStep !== 'global' && activeStep !== 'devis'" :style="{'width':`${plantsBarWidth}px`}"
-               class="flex gap-10 shrink grow-0 mt-auto justify-between items-center p-10 lg:p-14 z-10">
-        <div class="flex-1 w-1/3">
-          <PlantsBar active-step="capot" @plant-selected="" @first-swiper="setFirstSwiper"
-                     :second-swiper="secondSwiper"/> <!-- :slides-per-view="isPopinOpen ? 1 : 5.5" -->
-        </div>
+               class="flex gap-6 shrink grow-0 mt-auto justify-between items-center p-10 lg:p-14 z-10">
+        <!-- isPopinOpen ? 1 : 5.5 -->
+        <PlantsBar active-step="capot" @plant-selected="" @open-plant-popin="" :slides-per-view="'auto'"
+                   @first-swiper="setFirstSwiper" :second-swiper="secondSwiper"/>
         <div class="flex gap-6">
           <div class="flex flex-col justify-center items-center font-title text-14">
             <span>0{{ activeStepIndex + 1 }}</span>
@@ -145,8 +144,8 @@ export default {
   },
   mounted() {
     const app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
-    app.init()
-    app.run()
+    //app.init()
+    //app.run()
   }
 }
 </script>

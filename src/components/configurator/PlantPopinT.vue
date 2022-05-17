@@ -39,7 +39,7 @@
             <img :src="'/images/png/chlorophytum.png'"/>
             <div class="flex">
               <div class="flex items-center justify-center w-8 h-8 btn-border btn-round">
-                <span class="w-8 h-8 hover:scale-50 transition-all ease-in-out btn-border btn-round bg-green-normal"/>
+                <span class="w-8 h-8 hover:scale-50 transition-all ease-in-out btn-border bg-green-normal"/>
               </div>
             </div>
           </div>

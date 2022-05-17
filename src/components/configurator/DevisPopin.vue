@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO : -->
   <section :class="isOpen ? 'w-[45%]': 'w-0'"
            class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out btn-bg border-r border-white lg:pt-[140px]">
     <div class="flex flex-col px-16 overflow-y">
@@ -21,7 +22,7 @@
         <span>{{ option.price }}€</span>
       </div>
     </div>
-    <div class="flex justify-between mt-auto font-title font-bold text-16 lg:text-20 border-t border-white px-16 py-10">
+    <div class="flex justify-between items-center mt-auto font-title font-bold text-16 lg:text-20 border-t border-white px-16 py-10">
       <span>Prix total de votre configuration</span>
       <span>{{ totalPrice }}€</span>
     </div>

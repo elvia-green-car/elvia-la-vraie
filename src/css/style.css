@@ -36,10 +36,6 @@ html, body {
     background: radial-gradient(var(--green-light), var(--green-normal));
 }
 
-.Plant__help {
-    @apply hidden;
-}
-
-.Plant:hover .Plant__help {
-    @apply flex;
+.Btn:hover .Btn__bg {
+    @apply w-24 h-24;
 }
