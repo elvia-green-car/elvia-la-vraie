@@ -34,8 +34,8 @@ export class AppWebGL {
     this.raycaster = null
     this.pointer = null
     this.intersects = null
-    this.INTERSECTED = null
-    this.MATERIAL = null
+    this.intersect_Z1 = null              //Last intersect object
+    this.materialIntersect_Z1 = null      //to save the material of the last intersect
 
 
     console.log("New App created")
@@ -99,10 +99,9 @@ export class AppWebGL {
     this.modelsPathType[MODELS.Plant_Planteserpent] = ['src/assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)
-
-
   }
 
+  //Left click to add a plant
   onPointerClickLeft( event ) {
     let slotName = ""
 
@@ -125,6 +124,7 @@ export class AppWebGL {
     }
   }
 
+  //right click to delete a plant
   onPointerClickRight( event ) {
     let slotName = ""
 
@@ -145,11 +145,13 @@ export class AppWebGL {
     }
   }
 
+  //Get mouse position on movement
   onPointerMove( event ) {
     this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
   }
 
+  //Call in render, use to highlight slots
   raycasterUpdate() {
     let indexTemp = -1
     this.raycaster.setFromCamera( this.pointer, this.camera );
@@ -189,30 +191,6 @@ export class AppWebGL {
         this.INTERSECTED = null
       }
     }
-    /*
-    if ( intersects.length > 0 ) {
-      if ( this.INTERSECTED != intersects[ 0 ].object ) {
-        if ( this.INTERSECTED ) {
-          //this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex )
-          if(this.INTERSECTED.name.startsWith("Slot_")) {
-            //this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
-            //this.INTERSECTED.position.set(this.INTERSECTED.position.x,  this.INTERSECTED.position.y + 10,  this.INTERSECTED.position.z)
-            this.INTERSECTED.material = new MeshStandardMaterial({color: 0xff0000});
-          }
-        }
-        this.INTERSECTED = intersects[ 0 ].object;        
-      }
-      else {
-        if(this.INTERSECTED.name.startsWith("Slot_")) {
-          this.INTERSECTED.material = new MeshStandardMaterial({color: 0x00ff00});
-        }
-        if ( this.INTERSECTED ) {
-          //this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex ) 
-        }
-        this.INTERSECTED = null;
-        
-      }
-    }*/
     
   }
 
