@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-between gap-3" :class="{'items-start': reverse,'items-end': !reverse}">
-    <div v-for="d in data"
+    <div v-for="(d,index) in data" :key="index"
          class="flex flex-col items-center gap-2 lg:gap-8 font-bold"
          :class="{'lg:flex-row-reverse': reverse, 'lg:flex-row': !reverse}">
       <span>{{ d.name }}</span>

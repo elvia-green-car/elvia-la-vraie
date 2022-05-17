@@ -16,7 +16,7 @@
       </div>
       <swiper ref="slider" :slides-per-view="slidesPerView" :space-between="10" :modules="modules"
               @slideChange="onSlideChange" :navigation="navigation">
-        <swiper-slide v-for="(plant, i) in plantsToShow"
+        <swiper-slide v-for="(plant, index) in plantsToShow" :key="index"
                       @mouseover.native="onMouseOver($event, i)">
           <div class="Plant flex justify-center items-center">
             <img class="w-32 h-32" :src="'/images/png/'+plant" @click="plantClicked($event, i)"/>
