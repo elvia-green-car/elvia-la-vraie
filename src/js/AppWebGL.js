@@ -35,6 +35,7 @@ export class AppWebGL {
     this.pointer = null
     this.intersects = null
     this.INTERSECTED = null
+    this.MATERIAL = null
 
 
     console.log("New App created")
@@ -150,29 +151,68 @@ export class AppWebGL {
   }
 
   raycasterUpdate() {
+    let indexTemp = -1
     this.raycaster.setFromCamera( this.pointer, this.camera );
 
-    const intersects = this.raycaster.intersectObjects( this.scene.children, false );
+    const intersects = this.raycaster.intersectObjects( this.scene.children );
 
-    if ( intersects.length > 0 ) {
-
-      if ( this.INTERSECTED != intersects[ 0 ].object ) {
-
-        if ( this.INTERSECTED ) {
-          this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex )
-          this.INTERSECTED = intersects[ 0 ].object;
-          this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
-          this.INTERSECTED.material.emissive.setHex( 0xff0000 );
+    if(intersects.length > 0) {
+      intersects.forEach(intersect => {
+        if(intersect.object.name != null) {
+          if(intersect.object.name.startsWith("Slot_")) {
+            return
+          }
         }
-        
+        indexTemp++
+      });
+      if(indexTemp != -1){
+        if(this.INTERSECTED != intersects[ indexTemp ].object) {
+          if(this.INTERSECTED != null) {
+            if(this.INTERSECTED.name.startsWith("Slot_")) {
+              this.INTERSECTED.material = this.MATERIAL;
+            }
+          }
+          if(intersects[ indexTemp ].object.name.startsWith("Slot_")) {
+            this.MATERIAL = intersects[ indexTemp ].object.material
+            intersects[ indexTemp ].object.material = new MeshStandardMaterial({color: 0x00ff00});
+          }
+        }
+        this.INTERSECTED = intersects[ indexTemp ].object
       }
-      else {
-        if ( this.INTERSECTED ) {
-          this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex ) 
-          this.INTERSECTED = null;
+      
+    }
+    else {
+      if(this.INTERSECTED != null) {
+        if(this.INTERSECTED.name.startsWith("Slot_")) {
+          this.INTERSECTED.material = this.MATERIAL;
         }
+        this.INTERSECTED = null
       }
     }
+    /*
+    if ( intersects.length > 0 ) {
+      if ( this.INTERSECTED != intersects[ 0 ].object ) {
+        if ( this.INTERSECTED ) {
+          //this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex )
+          if(this.INTERSECTED.name.startsWith("Slot_")) {
+            //this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
+            //this.INTERSECTED.position.set(this.INTERSECTED.position.x,  this.INTERSECTED.position.y + 10,  this.INTERSECTED.position.z)
+            this.INTERSECTED.material = new MeshStandardMaterial({color: 0xff0000});
+          }
+        }
+        this.INTERSECTED = intersects[ 0 ].object;        
+      }
+      else {
+        if(this.INTERSECTED.name.startsWith("Slot_")) {
+          this.INTERSECTED.material = new MeshStandardMaterial({color: 0x00ff00});
+        }
+        if ( this.INTERSECTED ) {
+          //this.INTERSECTED.material.emissive.setHex( this.INTERSECTED.currentHex ) 
+        }
+        this.INTERSECTED = null;
+        
+      }
+    }*/
     
   }
 
