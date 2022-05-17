@@ -83,20 +83,20 @@ export class AppWebGL {
     this.modelManager = new ModelsManager()
     this.modelManager.init()
 
-    this.modelManager.loadHdr('src/assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
+    this.modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
 
-    this.modelsPathType[MODELS.Car] = ['src/assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
-    this.modelsPathType[MODELS.Plant_Aglaomene] = ['src/assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Bambou] = ['src/assets/models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Clorophytum] = ['src/assets/models/Plants/gltf/Configurator_Chlorophytum_V03.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Clorophytum02] = ['src/assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Eucalyptus] = ['src/assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_FicusRoberta] = ['src/assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Gerbera] = ['src/assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera] = ['src/assets/models/Plants/gltf/Configurator_Monstera_V04.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera02] = ['src/assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Paquerette] = ['src/assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Planteserpent] = ['src/assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
+    this.modelsPathType[MODELS.Plant_Aglaomene] = ['assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Bambou] = ['assets/models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Clorophytum] = ['assets/models/Plants/gltf/Configurator_Chlorophytum_V03.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Clorophytum02] = ['assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Eucalyptus] = ['assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_FicusRoberta] = ['assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Gerbera] = ['assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera] = ['assets/models/Plants/gltf/Configurator_Monstera_V04.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera02] = ['assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Paquerette] = ['assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Planteserpent] = ['assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)
   }
@@ -168,27 +168,27 @@ export class AppWebGL {
         indexTemp++
       });
       if(indexTemp != -1){
-        if(this.INTERSECTED != intersects[ indexTemp ].object) {
-          if(this.INTERSECTED != null) {
-            if(this.INTERSECTED.name.startsWith("Slot_")) {
-              this.INTERSECTED.material = this.MATERIAL;
+        if(this.intersect_Z1 != intersects[ indexTemp ].object) {
+          if(this.intersect_Z1 != null) {
+            if(this.intersect_Z1.name.startsWith("Slot_")) {
+              this.intersect_Z1.material = this.materialIntersect_Z1;
             }
           }
           if(intersects[ indexTemp ].object.name.startsWith("Slot_")) {
-            this.MATERIAL = intersects[ indexTemp ].object.material
+            this.materialIntersect_Z1 = intersects[ indexTemp ].object.material
             intersects[ indexTemp ].object.material = new MeshStandardMaterial({color: 0x00ff00});
           }
         }
-        this.INTERSECTED = intersects[ indexTemp ].object
+        this.intersect_Z1 = intersects[ indexTemp ].object
       }
       
     }
     else {
-      if(this.INTERSECTED != null) {
-        if(this.INTERSECTED.name.startsWith("Slot_")) {
-          this.INTERSECTED.material = this.MATERIAL;
+      if(this.intersect_Z1 != null) {
+        if(this.intersect_Z1.name.startsWith("Slot_")) {
+          this.intersect_Z1.material = this.materialIntersect_Z1;
         }
-        this.INTERSECTED = null
+        this.intersect_Z1 = null
       }
     }
     
@@ -268,5 +268,7 @@ export class AppWebGL {
     this.raycaster = null
     this.car.dispose()
     this.intersects = null
+    this.intersect_Z1 = null  
+    this.materialIntersect_Z1 = null  
   }
 }
