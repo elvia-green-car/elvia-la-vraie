@@ -1,5 +1,6 @@
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router'
+import {createPinia} from 'pinia'
 
 import App from './App.vue'
 import Home from './components/Home.vue'
@@ -16,7 +17,10 @@ const router = createRouter({
   ]
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App)
+  .use(router)
+  .use(createPinia())
+  .mount('#app')
 
 //import {AppWebGL} from "./js/AppWebGL";
 //
