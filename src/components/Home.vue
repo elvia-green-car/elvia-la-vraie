@@ -1,27 +1,27 @@
 <template>
-  <section class="w-full h-full">
-  </section>
-  <section class="section w-full h-full flex bg-yellow-normal p-10">
-    <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
-      <span class="text">Text section 1</span>
-      <span class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
-    </div>
-    <div class="w-full h-full opacity-30 bg-blue-500"></div>
-  </section>
-  <section class="section w-full h-full flex flex-row-reverse bg-yellow-light p-10">
-    <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
-      <span class="text">Text section 2</span>
-      <span class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
-    </div>
-    <div class="w-full h-full opacity-30 bg-blue-500"></div>
-  </section>
-  <section class="section w-full h-full flex p-10">
-    <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
-      <span class="text">Text section 3</span>
-      <span class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
-    </div>
-    <div class="w-full h-full opacity-30 bg-blue-500"></div>
-  </section>
+    <canvas ref="canvas" class="fixed w-full h-full z-0"/>
+    <section class="w-full h-screen z-10"/>
+    <section class="section w-full h-screen flex bg-yellow-normal p-10 z-10">
+      <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
+        <span class="text">Text section 1</span>
+        <span class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
+      </div>
+      <div class="w-full h-full opacity-30 bg-blue-500"></div>
+    </section>
+    <section class="section w-full h-screen flex flex-row-reverse bg-yellow-light p-10 z-10">
+      <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
+        <span class="text">Text section 2</span>
+        <span class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
+      </div>
+      <div class="w-full h-full opacity-30 bg-blue-500"></div>
+    </section>
+    <section class="section w-full h-screen flex p-10 z-10">
+      <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
+        <span class="text">Text section 3</span>
+        <span class="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
+      </div>
+      <div class="w-full h-full opacity-30 bg-blue-500"></div>
+    </section>
 </template>
 
 <script>
@@ -34,6 +34,7 @@ export default {
   name: "Home",
   data() {
     this.tl = null
+    this.canvas = this.$refs.canvas
   },
   mounted() {
     let sections = document.querySelectorAll('.section')
