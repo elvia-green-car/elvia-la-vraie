@@ -1,7 +1,6 @@
 import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
-import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
 import {ModelsSingelton, MODELS} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
@@ -13,8 +12,6 @@ export class AppWebGL {
     this.camera = null
     this.renderer = null
 
-    this.modelManager = null
-    this.modelsPathType = new Array()
     this.load = false
     this.car = null
     this.raycaster = null
@@ -65,6 +62,7 @@ export class AppWebGL {
 
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
+<<<<<<< HEAD
 
     console.log("ModelsSingelton : ")
     console.log(ModelsSingelton.getInstance().getModelManager())
@@ -89,6 +87,8 @@ export class AppWebGL {
     this.modelsPathType[MODELS.Plant_Planteserpent] = ['models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)*/
+=======
+>>>>>>> dev
   }
 
   //Left click to add a plant
@@ -227,7 +227,7 @@ export class AppWebGL {
           this.scene.add(this.car.model)
         }
 
-        if(this.modelsPathType.length == ModelsSingelton.getInstance().getModelManager().models.length) {
+        if(ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) {
           this.load = true
         }
       }
