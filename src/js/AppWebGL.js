@@ -212,6 +212,7 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    
 
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -228,10 +229,14 @@ export class AppWebGL {
 
   // this function execute while all model isn't load
   updateModelsLoad() {
-    for(let i = 0; i < this.modelsPathType.length; i++) {
+    console.log("lenght : " + this.modelManager.models.length)
+    for(let i = 0; i < this.modelManager.models.length; i++) {
       if(this.modelManager.models[i] != null) {
         if((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(this.modelManager.models[MODELS.Car].model.clone())
+          this.car.model.animations = this.modelManager.models[MODELS.Car].model.animations
+          console.log("Car : ")
+          console.log(this.car.model.animations)
           this.scene.add(this.car.model)
         }
 
@@ -242,13 +247,14 @@ export class AppWebGL {
     }
     //if the load is not finished, we recheck 10ms later
     if(this.load == false) {
-      setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
+      setTimeout(function() {this.updateModelsLoad()}.bind(this),100);
     }
   }
 
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
+
     this.animate()
     this.updateModelsLoad()
 
@@ -267,6 +273,7 @@ export class AppWebGL {
     this.pointer = null
     this.raycaster = null
     this.car.dispose()
+    this.car = null
     this.intersects = null
     this.intersect_Z1 = null  
     this.materialIntersect_Z1 = null  
