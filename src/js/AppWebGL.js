@@ -83,20 +83,20 @@ export class AppWebGL {
     this.modelManager = new ModelsManager()
     this.modelManager.init()
 
-    this.modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
+    this.modelManager.loadHdr('textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
 
-    this.modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
-    this.modelsPathType[MODELS.Plant_Aglaomene] = ['assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Bambou] = ['assets/models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Clorophytum] = ['assets/models/Plants/gltf/Configurator_Chlorophytum_V03.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Clorophytum02] = ['assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Eucalyptus] = ['assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_FicusRoberta] = ['assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Gerbera] = ['assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera] = ['assets/models/Plants/gltf/Configurator_Monstera_V04.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera02] = ['assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Paquerette] = ['assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Planteserpent] = ['assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Car] = ['models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
+    this.modelsPathType[MODELS.Plant_Aglaomene] = ['models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Bambou] = ['models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Clorophytum] = ['models/Plants/gltf/Configurator_Chlorophytum_V03.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Clorophytum02] = ['models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Eucalyptus] = ['models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_FicusRoberta] = ['models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Gerbera] = ['models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera] = ['models/Plants/gltf/Configurator_Monstera_V04.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Monstera02] = ['models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Paquerette] = ['models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
+    this.modelsPathType[MODELS.Plant_Planteserpent] = ['models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)
   }
