@@ -77,16 +77,22 @@ export class ModelsManager {
      * @param {string} path : file path 
      * @param {string} textureName : file name
      * @param {Scene} scene 
-     * @param {WebGLRenderer} render 
+     * @param {WebGLRenderer} render
+     * @param {boolean} hideHDRi : true hide HDRi, false display
      */
-    loadHdr(path, textureName, scene, render) {
+    loadHdr(path, textureName, scene, render, hideHDRi = false) {
       new RGBELoader()
 					.setPath( path )
 					.load( textureName, function ( texture ) {
 
 						texture.mapping = EquirectangularReflectionMapping;
 
-						scene.background = texture;
+            if(hideHDRi){
+              scene.background = texture.renderTarget;
+            }
+						else {
+              scene.background = texture;
+            }
 						scene.environment = texture;
 
 						render();

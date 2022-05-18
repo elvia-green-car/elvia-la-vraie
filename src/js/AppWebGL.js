@@ -1,4 +1,4 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, Mesh, DoubleSide, MeshBasicMaterial, PlaneGeometry} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
@@ -61,7 +61,7 @@ export class AppWebGL {
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    this.dirLight1 = new DirectionalLight (0xffffff, 1)
+    /*this.dirLight1 = new DirectionalLight (0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
     this.dirLight2 = new DirectionalLight (0xffffff, 1)
     this.dirLight2.position.set(-600, 300, -200)
@@ -72,7 +72,24 @@ export class AppWebGL {
     this.scene.add(this.dirLight1)
     this.scene.add(this.dirLight2)
     this.scene.add(this.dirLight3)
-    this.scene.add(this.dirLight4)
+    this.scene.add(this.dirLight4)*/
+
+    this.shadowLight = new DirectionalLight(0xd0d0d0, 1)
+    this.shadowLight.position.set(-600, 300, 200)
+    this.scene.add(this.shadowLight)
+
+    this.shadowLight.castShadow = true
+    this.shadowLight.shadow.mapSize.width = 2048
+    this.shadowLight.shadow.mapSize.height = 2048
+
+    const d = 50
+    this.shadowLight.shadow.camera.left = -d
+    this.shadowLight.shadow.camera.right = d
+    this.shadowLight.shadow.camera.top = d
+    this.shadowLight.shadow.camera.bottom = -d
+    this.shadowLight.shadow.camera.near = 1
+    this.shadowLight.shadow.camera.far = 4000
+    this.shadowLight.shadow.bias = 0.001
 
     this.camera.position.set(-300, 200, 100)
     this.camera.lookAt(0, 0, 0)
@@ -83,7 +100,7 @@ export class AppWebGL {
     this.modelManager = new ModelsManager()
     this.modelManager.init()
 
-    this.modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
+    this.modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render, true)
 
     this.modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
     this.modelsPathType[MODELS.Plant_Aglaomene] = ['assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
@@ -99,6 +116,16 @@ export class AppWebGL {
     this.modelsPathType[MODELS.Plant_Planteserpent] = ['assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
     this.modelManager.load(this.modelsPathType)
+
+    const geometry = new PlaneGeometry( 1, 1 );
+    const material = new MeshBasicMaterial( {color: 0xffff00, side: DoubleSide} );
+    const plane = new Mesh( geometry, material );
+    plane.receiveShadow = true
+    plane.scale.set(500, 300)
+    plane.rotation.x = Math.PI / 2
+    plane.position.x = 150
+    this.scene.add( plane );
+
   }
 
   //Left click to add a plant
@@ -234,6 +261,18 @@ export class AppWebGL {
         if((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(this.modelManager.models[MODELS.Car].model.clone())
           this.car.model.animations = this.modelManager.models[MODELS.Car].model.animations
+
+          //todo pour test 
+          this.car.model.traverse((child) => {
+            if ( child.isMesh ) {
+              console.log("Messshhhhhhhh")
+              child.castShadow = true;
+              child.receiveShadow = true;
+
+            }
+          })
+
+
           this.scene.add(this.car.model)
         }
 
