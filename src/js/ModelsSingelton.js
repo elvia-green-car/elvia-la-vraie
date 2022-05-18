@@ -34,7 +34,7 @@ export var ModelsSingelton = (function() {
       hdriPath[HDRI.Studio] = ['assets/textures/Background/hdri/', 'studio_small_08_1k.hdr']
       //modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', HDRI.Studio)
   
-      modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
+      modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v09.fbx', MODEL_TYPE.FBX]
       modelsPathType[MODELS.Plant_Aglaomene] = ['assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
       modelsPathType[MODELS.Plant_Bambou] = ['assets/models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
       modelsPathType[MODELS.Plant_Clorophytum] = ['assets/models/Plants/gltf/Configurator_Chlorophytum_V03.gltf', MODEL_TYPE.GLTF]

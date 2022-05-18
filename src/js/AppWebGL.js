@@ -1,4 +1,4 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping, Clock, AnimationMixer} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI} from "./ModelsSingelton";
@@ -9,6 +9,7 @@ export class AppWebGL {
   constructor(canvas) {
     this.canvas = canvas
     this.scene = null
+    this.clock = null
     this.camera = null
     this.renderer = null
 
@@ -29,7 +30,7 @@ export class AppWebGL {
   init() {
     console.log("App init")
     this.scene = new Scene()
-
+    this.clock = new Clock();
     this.renderer = new WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
@@ -58,7 +59,7 @@ export class AppWebGL {
     this.scene.add(this.dirLight3)
     this.scene.add(this.dirLight4)
 
-    this.camera.position.set(-300, 200, 100)
+    this.camera.position.set(-500, 200, 100)
     this.camera.lookAt(0, 0, 0)
 
     this.raycaster = new Raycaster()
@@ -185,7 +186,18 @@ export class AppWebGL {
       this.camera.updateProjectionMatrix()
     }
 
-    if ( this.mixer ) this.mixer.update( delta );
+    const delta = this.clock.getDelta();
+    if ( this.mixer ) {
+      this.mixer.update( delta );
+      /*const pos = this.mixer.getRoot().children[1].position
+      const rotation = this.mixer.getRoot().children[1].rotation
+      const quaterion = this.mixer.getRoot().children[1].quaterion
+      this.camera.rotation.set(-rotation.x, -rotation.y, -rotation.z, 'XYZ') //.setRotationFromEuler(rotation) //.set(rotation.x, rotation.y, rotation.z, 'XYZ')*/
+      //this.camera.position.set(pos.x, pos.y, pos.z)
+      //this.camera.setRotationFromQuaternion(quaterion)
+
+      this.camera = this.mixer.getRoot().children[1]
+    } 
 
     // Render ...
     this.render()
@@ -198,6 +210,9 @@ export class AppWebGL {
         if((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
+          this.mixer = new AnimationMixer( this.car.model );
+          const action = this.mixer.clipAction( this.car.model.animations[ 0 ] );
+          action.play();
           this.scene.add(this.car.model)
         }
 
@@ -211,7 +226,7 @@ export class AppWebGL {
     if(this.hdri == null && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)) {
       this.hdri = ModelsSingelton.getInstance().getModelManager().hdri[HDRI.Studio].clone()
       this.hdri.mapping = EquirectangularReflectionMapping;
-      this.scene.background = this.hdri.renderTarget;           //.renderTarget use to hide hdri in background
+      this.scene.background = this.hdri//.renderTarget;           //.renderTarget use to hide hdri in background
       this.scene.environment = this.hdri;
       //render();
     }
@@ -237,6 +252,8 @@ export class AppWebGL {
   // Memory management
   destroy() {
     this.scene = null
+    this.clock.dispose()
+    this.clock = null
     this.camera = null
     this.renderer = null
     this.canvas = null
