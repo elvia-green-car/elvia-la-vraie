@@ -2,23 +2,9 @@ import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Ve
 import {HUD} from "./HUD";
 import {Car} from "./Car";
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
+import {ModelsSingelton, MODELS} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
-
-export const MODELS = {
-  Car: 0,
-  Plant_Aglaomene: 1,
-  Plant_Bambou: 2,
-  Plant_Clorophytum: 3,
-  Plant_Clorophytum02: 4,
-  Plant_Eucalyptus: 5,
-  Plant_FicusRoberta: 6,
-  Plant_Gerbera: 7,
-  Plant_Monstera: 8,
-  Plant_Monstera02: 9,
-  Plant_Paquerette: 10,
-  Plant_Planteserpent: 11
-}
 
 export class AppWebGL {
   constructor(canvas) {
@@ -80,6 +66,10 @@ export class AppWebGL {
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
 
+    console.log("ModelsSingelton : ")
+    console.log(ModelsSingelton.getInstance().getModelManager())
+
+    /*
     this.modelManager = new ModelsManager()
     this.modelManager.init()
 
@@ -98,7 +88,7 @@ export class AppWebGL {
     this.modelsPathType[MODELS.Plant_Paquerette] = ['assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
     this.modelsPathType[MODELS.Plant_Planteserpent] = ['assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
 
-    this.modelManager.load(this.modelsPathType)
+    this.modelManager.load(this.modelsPathType)*/
   }
 
   //Left click to add a plant
@@ -115,7 +105,7 @@ export class AppWebGL {
       slotName =  this.intersects[ i ].object.name
       if(slotName.startsWith("Slot_")) {
         if(this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
-          this.car.addPlant(new Plants(this.modelManager.models[MODELS.Plant_Monstera].model.clone()), slotName)       
+          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS.Plant_Monstera].model.clone()), slotName)       
           this.intersects[ i ].object.attach(this.car.plants[slotName].model)
           this.car.plants[slotName].model.position.set(0,0,0)
           this.car.plants[slotName].model
@@ -229,15 +219,15 @@ export class AppWebGL {
 
   // this function execute while all model isn't load
   updateModelsLoad() {
-    for(let i = 0; i < this.modelManager.models.length; i++) {
-      if(this.modelManager.models[i] != null) {
+    for(let i = 0; i < ModelsSingelton.getInstance().getModelManager().models.length; i++) {
+      if(ModelsSingelton.getInstance().getModelManager().models[i] != null) {
         if((i == MODELS.Car) && (this.car == null)) {
-          this.car = new Car(this.modelManager.models[MODELS.Car].model.clone())
-          this.car.model.animations = this.modelManager.models[MODELS.Car].model.animations
+          this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
+          this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.scene.add(this.car.model)
         }
 
-        if(this.modelsPathType.length == this.modelManager.models.length) {
+        if(this.modelsPathType.length == ModelsSingelton.getInstance().getModelManager().models.length) {
           this.load = true
         }
       }
