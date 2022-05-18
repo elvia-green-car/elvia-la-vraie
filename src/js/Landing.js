@@ -5,7 +5,7 @@ import {ModelsSingelton, MODELS} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
 
-export class AppWebGL {
+export class Landing {
   constructor(canvas) {
     this.canvas = canvas
     this.scene = null
@@ -19,6 +19,8 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
     this.materialIntersect_Z1 = null      //to save the material of the last intersect
+
+    this.scrollTrigger = new Array()
 
 
     console.log("New App created")
@@ -42,7 +44,6 @@ export class AppWebGL {
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     this.dirLight1 = new DirectionalLight (0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
@@ -57,106 +58,16 @@ export class AppWebGL {
     this.scene.add(this.dirLight3)
     this.scene.add(this.dirLight4)
 
-    this.camera.position.set(-300, 200, 100)
+    this.camera.position.set(10, 3, 0)
     this.camera.lookAt(0, 0, 0)
 
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
   }
 
-  //Left click to add a plant
-  onPointerClickLeft( event ) {
-    let slotName = ""
-
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-    this.raycaster.setFromCamera( this.pointer, this.camera )
-    this.intersects = this.raycaster.intersectObjects( this.scene.children )
-
-    for ( let i = 0; i <  this.intersects.length; i ++ ) {
-      slotName =  this.intersects[ i ].object.name
-      if(slotName.startsWith("Slot_")) {
-        if(this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
-          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS.Plant_Monstera].model.clone()), slotName)       
-          this.intersects[ i ].object.attach(this.car.plants[slotName].model)
-          this.car.plants[slotName].model.position.set(0,0,0)
-          this.car.plants[slotName].model
-        }
-      }
-    }
+  addScrollTrigger(scrollTrigger) {
+    this.scrollTrigger.push(scrollTrigger)
   }
-
-  //right click to delete a plant
-  onPointerClickRight( event ) {
-    let slotName = ""
-
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-    this.raycaster.setFromCamera( this.pointer, this.camera )
-    this.intersects = this.raycaster.intersectObjects( this.scene.children )
-
-    for ( let i = 0; i <  this.intersects.length; i ++ ) {
-      slotName =  this.intersects[ i ].object.name
-      if(slotName.startsWith("Slot_")) {
-        if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
-          this.intersects[ i ].object.remove(this.car.plants[slotName].model)
-          this.car.plants[slotName].dispose()
-        }
-      }
-    }
-  }
-
-  //Get mouse position on movement
-  onPointerMove( event ) {
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-  }
-
-  //Call in render, use to highlight slots
-  raycasterUpdate() {
-    let indexTemp = -1
-    this.raycaster.setFromCamera( this.pointer, this.camera );
-
-    const intersects = this.raycaster.intersectObjects( this.scene.children );
-
-    if(intersects.length > 0) {
-      intersects.forEach(intersect => {
-        if(intersect.object.name != null) {
-          if(intersect.object.name.startsWith("Slot_")) {
-            return
-          }
-        }
-        indexTemp++
-      });
-      if(indexTemp != -1){
-        if(this.intersect_Z1 != intersects[ indexTemp ].object) {
-          if(this.intersect_Z1 != null) {
-            if(this.intersect_Z1.name.startsWith("Slot_")) {
-              this.intersect_Z1.material = this.materialIntersect_Z1;
-            }
-          }
-          if(intersects[ indexTemp ].object.name.startsWith("Slot_")) {
-            this.materialIntersect_Z1 = intersects[ indexTemp ].object.material
-            intersects[ indexTemp ].object.material = new MeshStandardMaterial({color: 0x00ff00});
-          }
-        }
-        this.intersect_Z1 = intersects[ indexTemp ].object
-      }
-      
-    }
-    else {
-      if(this.intersect_Z1 != null) {
-        if(this.intersect_Z1.name.startsWith("Slot_")) {
-          this.intersect_Z1.material = this.materialIntersect_Z1;
-        }
-        this.intersect_Z1 = null
-      }
-    }
-    
-  }
-
 
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;
@@ -164,18 +75,16 @@ export class AppWebGL {
     const needResize = this.canvas.width !== width || this.canvas.height !== height
     if (needResize) {
       this.renderer.setSize(width, height, false)
-    }
+    }    
     return needResize
   }
 
   render() {
-    this.raycasterUpdate()
     this.renderer.render(this.scene, this.camera)
   }
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
-    
 
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -197,10 +106,9 @@ export class AppWebGL {
         if((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
+          this.car.model.scale.set(0.01, 0.01, 0.01)
+          this.car.model.rotation.y = ((Math.PI * -(3/4)))
           this.scene.add(this.car.model)
-        }
-
-        if(ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) {
           this.load = true
         }
       }
@@ -211,16 +119,32 @@ export class AppWebGL {
     }
   }
 
+  onScroll(event) {
+      //console.log("Scrool")
+      console.log(this.scrollTrigger[0].start)
+      console.log(window.scrollY)
+      if((this.scrollTrigger[0].end - this.scrollTrigger[0].start) < window.scrollY) {
+        this.car.model.position.z -= window.scrollY / 10000
+        this.car.model.rotation.y -= window.scrollY / 10000
+      }
+      else if((this.scrollTrigger[1].end - this.scrollTrigger[1].start) < window.scrollY) {
+        this.car.model.position.z += window.scrollY / 10000
+        this.car.model.rotation.y += window.scrollY / 10000
+      }
+      else if((this.scrollTrigger[2].end - this.scrollTrigger[2].start) < window.scrollY) {
+        this.car.model.position.z -= window.scrollY / 10000
+        this.car.model.rotation.y -= window.scrollY / 10000
+      }
+  }
+
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
 
+    window.addEventListener('scroll', (event) => {this.onScroll(event);});
+
     this.animate()
     this.updateModelsLoad()
-
-    this.canvas.addEventListener('click', (event) => {this.onPointerClickLeft(event);});
-    this.canvas.addEventListener('contextmenu', (event) => {this.onPointerClickRight(event);});
-    this.canvas.addEventListener('mousemove', (event) => {this.onPointerMove(event);});
   }
 
   // Memory management
@@ -237,5 +161,6 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null  
     this.materialIntersect_Z1 = null  
+    this.scrollTrigger = null
   }
 }

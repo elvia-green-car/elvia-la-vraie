@@ -26,7 +26,8 @@
 
 <script>
 import {gsap} from "gsap";
-import {ScrollTrigger} from "gsap/ScrollTrigger"
+import {ScrollTrigger} from "gsap/ScrollTrigger";
+import {Landing} from "../js/Landing";
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -37,6 +38,10 @@ export default {
     this.canvas = this.$refs.canvas
   },
   mounted() {
+    const landing = new Landing(this.$refs.canvas) //document.getElementById('app-canvas')
+    landing.init()
+    landing.run()
+
     let sections = document.querySelectorAll('.section')
     sections.forEach(s => {
       let tl = gsap.timeline({
@@ -49,6 +54,9 @@ export default {
           scrub: true
         }
       })
+      
+      landing.addScrollTrigger(tl.scrollTrigger)
+
       gsap.set('.text', {x: -100})
       //tl.to(".text",  {x: 100, duration: 2})
       tl.fromTo(".text", {x: -100}, {x: 100, duration: 2})
