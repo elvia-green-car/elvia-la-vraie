@@ -1,4 +1,3 @@
-import {EquirectangularReflectionMapping} from "three";
 import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
@@ -8,18 +7,21 @@ export const MODEL_TYPE = {
   FBX: 0,
   GLTF: 1
 }
+
 export class ModelsManager {
     constructor () {
         this.loaderFbx = null
         this.loaderGltf = null
         this.instance = null
         this.models = null
+        this.hdri = null
     }
 
     init() {
         this.loaderFbx = new FBXLoader()
         this.loaderGltf = new GLTFLoader()
         this.models = new Array()
+        this.hdri = new Array()
     }
     
     /**
@@ -29,7 +31,7 @@ export class ModelsManager {
      * dictionaryPathType [1] : type of model (MODEL_TYPE.GLTF or MODEL_TYPE.FBX)
      * @param {[int][string, MODEL_TYPE]} dictionaryPathType 
      */
-    load(dictionaryPathType) {
+    load(dictionaryPathType, dictionaryPathHDRi) {
       for(var key in dictionaryPathType) {
         if(dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
           this.loadGltf(dictionaryPathType[key][0], (gltf, index) => { 
@@ -42,6 +44,11 @@ export class ModelsManager {
           }, key)
         }
       }
+      for(var key in dictionaryPathHDRi) {
+        this.loadHdr(dictionaryPathHDRi[key][0], dictionaryPathHDRi[key][1], (texture, index) => {
+          this.hdri[index] = texture;
+        }, key)
+      }
     }
 
     /**
@@ -50,7 +57,7 @@ export class ModelsManager {
      * @param {void(Group, index?)} callback : run when model is loaded
      * @param {int} index : return in the callback
      */
-    loadFbx(fbxPath, callback, index = -1) {
+    loadFbx(fbxPath, callback, index = 0) {
         this.loaderFbx.load( 
           fbxPath, 
           ( fbx ) => {    
@@ -64,7 +71,7 @@ export class ModelsManager {
      * @param {void} callback : run when model is loaded
      * @param {int} index 
      */
-    loadGltf(gltfPath, callback, index = -1) {
+    loadGltf(gltfPath, callback, index = 0) {
       this.loaderGltf.load( 
         gltfPath, 
         ( gltf ) => {    
@@ -79,17 +86,17 @@ export class ModelsManager {
      * @param {Scene} scene 
      * @param {WebGLRenderer} render 
      */
-    loadHdr(path, textureName, scene, render) {
+    loadHdr(path, textureName, callback, index = 0) {
       new RGBELoader()
 					.setPath( path )
 					.load( textureName, function ( texture ) {
-
-						texture.mapping = EquirectangularReflectionMapping;
+            callback(texture, index)
+						/*texture.mapping = EquirectangularReflectionMapping;
 
 						scene.background = texture;
 						scene.environment = texture;
 
-						render();
+						render();*/
 					} );
     }
 

@@ -1,7 +1,7 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
-import {ModelsSingelton, MODELS} from "./ModelsSingelton";
+import {ModelsSingelton, MODELS, HDRI} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
 
@@ -14,6 +14,7 @@ export class AppWebGL {
 
     this.load = false
     this.car = null
+    this.hdri = null
     this.raycaster = null
     this.pointer = null
     this.intersects = null
@@ -200,11 +201,21 @@ export class AppWebGL {
           this.scene.add(this.car.model)
         }
 
-        if(ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) {
+        if((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) 
+          && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)){
           this.load = true
         }
       }
     }
+    //Add hdri
+    if(this.hdri == null && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)) {
+      this.hdri = ModelsSingelton.getInstance().getModelManager().hdri[HDRI.Studio].clone()
+      this.hdri.mapping = EquirectangularReflectionMapping;
+      this.scene.background = this.hdri.renderTarget;           //.renderTarget use to hide hdri in background
+      this.scene.environment = this.hdri;
+      //render();
+    }
+
     //if the load is not finished, we recheck 10ms later
     if(this.load == false) {
       setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
@@ -237,5 +248,7 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null  
     this.materialIntersect_Z1 = null  
+    this.hdri.dispose()
+    this.hdri = null
   }
 }

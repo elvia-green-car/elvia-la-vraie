@@ -15,17 +15,24 @@ export const MODELS = {
   Plant_Planteserpent: 11
 }
 
+export const HDRI = {
+  Studio: 0
+}
+
 export var ModelsSingelton = (function() {
     var modelManager = null;
     var modelsPathType = null;
+    var hdriPath = null;
 
     var constructeur = function() {
       modelsPathType = new Array()
+      hdriPath = new Array()
 
       modelManager = new ModelsManager()
       modelManager.init()
   
-      modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
+      hdriPath[HDRI.Studio] = ['assets/textures/Background/hdri/', 'studio_small_08_1k.hdr']
+      //modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', HDRI.Studio)
   
       modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
       modelsPathType[MODELS.Plant_Aglaomene] = ['assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
@@ -40,7 +47,7 @@ export var ModelsSingelton = (function() {
       modelsPathType[MODELS.Plant_Paquerette] = ['assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
       modelsPathType[MODELS.Plant_Planteserpent] = ['assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
   
-      modelManager.load(modelsPathType)
+      modelManager.load(modelsPathType, hdriPath)
 
       this.getModelManager = function() {
         return modelManager
