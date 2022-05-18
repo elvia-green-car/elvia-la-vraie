@@ -1,4 +1,6 @@
 <template>
+  <section class="w-full h-full">
+  </section>
   <section class="section w-full h-full flex bg-yellow-normal p-10">
     <div class="flex flex-col justify-center items-center w-full h-full opacity-30 bg-red-500">
       <span class="text">Text section 1</span>
