@@ -4,6 +4,8 @@ import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingel
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
 
+const steps = ["Hood", "Roof", "Door", ""]
+
 export class AppWebGL {
   constructor(canvas) {
     this.canvas = canvas
@@ -78,6 +80,7 @@ export class AppWebGL {
   onPointerClickLeft( event ) {
     if(this.step >= 0 && this.step <= 3) {
       let slotName = ""
+      let slotNameTemp = ""
 
       this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
       this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -87,7 +90,7 @@ export class AppWebGL {
 
       for ( let i = 0; i <  this.intersects.length; i ++ ) {
         slotName =  this.intersects[ i ].object.name
-        if(slotName.startsWith("Slot_")) {
+        if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
           //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
           if(this.plantSelected != null) {
             if(this.car.plants[slotName] != null) {
@@ -97,10 +100,23 @@ export class AppWebGL {
               }
               
             }
-            this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotName)       
+            this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotName) 
             this.intersects[ i ].object.attach(this.car.plants[slotName].model)
             this.car.plants[slotName].model.position.set(0,0,0)
             this.car.plants[slotName].model
+
+            if(this.step == 2) {
+              slotNameTemp = slotName.replace("Right", "Left")
+              this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotNameTemp)
+              this.car.model.traverse( (child) => {
+                if(child.name == slotNameTemp) {
+                  child.attach(this.car.plants[slotNameTemp].model)
+                  return
+                }
+              })
+              this.car.plants[slotNameTemp].model.position.set(0,0,0)
+              this.car.plants[slotNameTemp].model          
+            }
           }
         }
       }
@@ -111,6 +127,7 @@ export class AppWebGL {
   onPointerClickRight( event ) {
     if(this.step >= 0 && this.step <= 3) {
       let slotName = ""
+      let slotNameTemp = ""
 
       this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
       this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -120,10 +137,20 @@ export class AppWebGL {
 
       for ( let i = 0; i <  this.intersects.length; i ++ ) {
         slotName =  this.intersects[ i ].object.name
-        if(slotName.startsWith("Slot_")) {
+        if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
           if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.intersects[ i ].object.remove(this.car.plants[slotName].model)
             this.car.plants[slotName].dispose()
+            if(this.step == 2) {
+              slotNameTemp = slotName.replace("Right", "Left")
+              this.car.model.traverse( (child) => {
+                if(child.name == slotNameTemp) {
+                  child.remove(this.car.plants[slotNameTemp].model)
+                  return
+                }
+              })
+              this.car.plants[slotNameTemp].dispose()        
+            }
           }
         }
       }
@@ -155,11 +182,11 @@ export class AppWebGL {
       if(indexTemp != -1){
         if(this.intersect_Z1 != intersects[ indexTemp ].object) {
           if(this.intersect_Z1 != null) {
-            if(this.intersect_Z1.name.startsWith("Slot_")) {
+            if(this.intersect_Z1.name.startsWith("Slot_") && this.intersect_Z1.name.includes(steps[this.step])) {
               this.intersect_Z1.material = this.materialIntersect_Z1;
             }
           }
-          if(intersects[ indexTemp ].object.name.startsWith("Slot_")) {
+          if(intersects[ indexTemp ].object.name.startsWith("Slot_") && intersects[ indexTemp ].object.name.includes(steps[this.step])) {
             this.materialIntersect_Z1 = intersects[ indexTemp ].object.material
             intersects[ indexTemp ].object.material = new MeshStandardMaterial({color: 0x00ff00});
           }
@@ -170,7 +197,7 @@ export class AppWebGL {
     }
     else {
       if(this.intersect_Z1 != null) {
-        if(this.intersect_Z1.name.startsWith("Slot_")) {
+        if(this.intersect_Z1.name.startsWith("Slot_") && this.intersect_Z1.name.includes(steps[this.step])) {
           this.intersect_Z1.material = this.materialIntersect_Z1;
         }
         this.intersect_Z1 = null
@@ -287,6 +314,10 @@ export class AppWebGL {
 
     this.canvas.addEventListener('click', (event) => {this.onPointerClickLeft(event);});
     this.canvas.addEventListener('contextmenu', (event) => {this.onPointerClickRight(event);});
+    this.canvas.oncontextmenu = function ()
+    {
+        return false;     // cancel default menu
+    }
     this.canvas.addEventListener('mousemove', (event) => {this.onPointerMove(event);});
   }
 
