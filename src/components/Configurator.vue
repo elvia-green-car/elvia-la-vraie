@@ -3,7 +3,8 @@
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
     <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
     <!-- v-if="activeStep !== 'devis'" -->
-    <PlantPopin :is-open="isPopinOpen" @close-popin="isPopinOpen = false" :plants="plantsToShow" :plant="plantSelected"/>
+    <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="isPopinOpen = false"
+                :plants="plantsToShow" :plant="plantSelected"/>
     <!-- v-if="activeStep === 'devis'" -->
     <DevisPopin :is-open="activeStep === 'devis'"/>
     <!--keep-alive>
