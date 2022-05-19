@@ -1,4 +1,5 @@
 import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
+import { FileLoader } from "three";
 
 export const MODELS = {
   Car: 0,
@@ -27,27 +28,31 @@ export var ModelsSingelton = (function() {
     var constructeur = function() {
       modelsPathType = new Array()
       hdriPath = new Array()
+      var json
 
       modelManager = new ModelsManager()
       modelManager.init()
   
       hdriPath[HDRI.Studio] = ['textures/Background/hdri/', 'studio_small_08_1k.hdr']
       //modelManager.loadHdr('textures/Background/hdri/', 'studio_small_08_1k.hdr', HDRI.Studio)
-  
-      modelsPathType[MODELS.Car] = ['models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
-      modelsPathType[MODELS.Plant_Aglaomene] = ['models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Bambou] = ['models/Plants/gltf/Configurator_Bambou_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Chlorophytum] = ['models/Plants/gltf/Configurator_Chlorophytum_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Chlorophytum02] = ['models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Eucalyptus] = ['models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_FicusRoberta] = ['models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Gerbera] = ['models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Monstera] = ['models/Plants/gltf/Configurator_Monstera_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Monstera02] = ['models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Paquerette] = ['models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
-      modelsPathType[MODELS.Plant_Planteserpent] = ['models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
-  
-      modelManager.load(modelsPathType, hdriPath)
+      
+      modelsPathType[MODELS.Car] = ['models/Car/fbx/Configurateur_VoitureExterieur_v10.fbx', MODEL_TYPE.FBX]
+
+      const url = 'json/plants.json'
+      var loader = new FileLoader( this.manager );
+			loader.setPath( this.path );
+			loader.setWithCredentials( this.withCredentials );
+			loader.load( url, ( text ) => {
+				json = JSON.parse( text );
+        console.log(json)
+				json.forEach((element) => {
+          if(element.index != null && element.models.length > 0 && element.type != null) {
+            modelsPathType[1 + element.index] = [element.models[0], element.type]
+          }
+        });
+        console.log(modelsPathType)
+        modelManager.load(modelsPathType, hdriPath)
+			});      
 
       this.getModelManager = function() {
         return modelManager
