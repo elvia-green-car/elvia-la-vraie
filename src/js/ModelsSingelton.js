@@ -20,6 +20,8 @@ export const HDRI = {
   Studio: 0
 }
 
+export const MODELS_OFFSET_PLANT = 1;         //offset of index plant
+
 export var ModelsSingelton = (function() {
     var modelManager = null;
     var modelsPathType = null;
@@ -47,7 +49,7 @@ export var ModelsSingelton = (function() {
         console.log(json)
 				json.forEach((element) => {
           if(element.index != null && element.models.length > 0 && element.type != null) {
-            modelsPathType[1 + element.index] = [element.models[0], element.type]
+            modelsPathType[MODELS_OFFSET_PLANT + element.index] = [element.models[0], element.type]
           }
         });
         console.log(modelsPathType)
