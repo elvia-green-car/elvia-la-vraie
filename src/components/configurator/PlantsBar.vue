@@ -12,13 +12,13 @@
       <div ref="helper"
            class="pointer-events-auto absolute hidden flex flex-col items-center gap-2 -translate-y-full mt-4 -translate-x-1/2"
            @click="openPlantPopin($event)">
-        <span class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal">+</span>
+        <span class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal text-40">+</span>
         <span class="h-8 w-[2px] bg-white"/>
       </div>
       <div :style="{'max-width': swiperWidth}">
-        <swiper ref="slider" :slides-per-view="'auto'" :space-between="10" :modules="modules"
+        <swiper ref="slider" :slides-per-view="'auto'" :modules="modules"
                 @slideChange="onSlideChange" :navigation="navigation">
-          <swiper-slide class="w-32" v-for="(plant, index) in plantsToShow" :key="index"
+          <swiper-slide class="p-4 w-32" v-for="(plant, index) in plantsToShow" :key="index"
                         @mouseover.native="onMouseOver($event, plant, index)">
             <div class="Plant flex justify-center items-center">
               <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file" @click="plantClicked($event, plant, index)"/>
