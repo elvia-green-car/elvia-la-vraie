@@ -1,4 +1,4 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, AxesHelper, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, AxesHelper, MeshStandardMaterial, EquirectangularReflectionMapping, Vector3} from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
@@ -54,7 +54,7 @@ export class AppWebGL {
     this.controls.enablePan = false;
     this.controls.enableZoom = false;
     this.controls.maxPolarAngle = (Math.PI /8) * 3
-    this.controls.minPolarAngle = (Math.PI /8) * 3
+    this.controls.minPolarAngle = (Math.PI /8) * 2
 
     this.dirLight1 = new DirectionalLight (0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
@@ -184,11 +184,26 @@ export class AppWebGL {
           if(this.intersect_Z1 != null) {
             if(this.intersect_Z1.name.startsWith("Slot_") && this.intersect_Z1.name.includes(steps[this.step])) {
               this.intersect_Z1.material = this.materialIntersect_Z1;
+              const pos = this.intersect_Z1.position
+              if(this.step == 2) {
+                this.intersect_Z1.position.set(pos.x, pos.y - 0.005, pos.z)
+              }
+              else {
+                this.intersect_Z1.position.set(pos.x, pos.y, pos.z - 0.005)
+              }
             }
           }
           if(intersects[ indexTemp ].object.name.startsWith("Slot_") && intersects[ indexTemp ].object.name.includes(steps[this.step])) {
             this.materialIntersect_Z1 = intersects[ indexTemp ].object.material
             intersects[ indexTemp ].object.material = new MeshStandardMaterial({color: 0x00ff00});
+            const pos = intersects[ indexTemp ].object.position
+            if(this.step == 2) {
+              intersects[ indexTemp ].object.position.set(pos.x, pos.y + 0.005, pos.z)
+            }
+            else {
+              intersects[ indexTemp ].object.position.set(pos.x, pos.y, pos.z + 0.005)
+            }
+            
           }
         }
         this.intersect_Z1 = intersects[ indexTemp ].object
@@ -199,6 +214,13 @@ export class AppWebGL {
       if(this.intersect_Z1 != null) {
         if(this.intersect_Z1.name.startsWith("Slot_") && this.intersect_Z1.name.includes(steps[this.step])) {
           this.intersect_Z1.material = this.materialIntersect_Z1;
+          const pos = this.intersect_Z1.position
+          if(this.step == 2) {
+            this.intersect_Z1.position.set(pos.x, pos.y - 0.005, pos.z)
+          }
+          else {
+            this.intersect_Z1.position.set(pos.x, pos.y, pos.z - 0.005)
+          }
         }
         this.intersect_Z1 = null
       }
