@@ -1,9 +1,23 @@
 [
   {
+    "index": null,
+    "name": "",
+    "type": "",
+    "models": [],
+    "file": "",
+    "description": "",
+    "arrosage": 0,
+    "price": 0,
+    "co2": 0,
+    "pollinisation": 0,
+    "zone": []
+  },
+  {
     "index": 0,
     "name": "aloe vera",
+    "type": "gltf",
     "models": [
-      
+      ""
     ],
     "file": "aloe.png",
     "description": "Véritable bombe à oxygène, l'aloe vera absorbe les gaz les plus néfastes pour rejeter un air 100% purifié.\nFacile d'entretien, elle résistera à la chaleur et saura s'adapter à toutes les conditions météorologiques\nVous pourrez en plus bénéficier du gel produit par la plante, dont les bienfaits cutanés et capillaires ne sont plus à démontrer.",
@@ -16,6 +30,7 @@
   {
     "index": 1,
     "name": "aglaoneme",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Aglaomene_V02.gltf"
     ],
@@ -30,6 +45,7 @@
   {
     "index": 2,
     "name": "bambou",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Bambou_V02.gltf"
     ],
@@ -46,6 +62,7 @@
   {
     "index": 3,
     "name": "chlorophytum",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Chlorophytum_V02.gltf",
       "models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf"
@@ -64,6 +81,7 @@
   {
     "index": 4,
     "name": "eucalyptus",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Eucalyptus_V02.gltf"
     ],
@@ -78,6 +96,7 @@
   {
     "index": 5,
     "name": "ficus roberta",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_FicusRoberta_V02.gltf"
     ],
@@ -94,6 +113,7 @@
   {
     "index": 6,
     "name": "gerbera",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Gerbera_V02.gltf"
     ],
@@ -112,6 +132,7 @@
   {
     "index": 7,
     "name": "monstera",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Monstera_V02.gltf",
       "models/Plants/gltf/Configurator_Monstera02_V02.gltf"
@@ -130,6 +151,7 @@
   {
     "index": 8,
     "name": "paquerette",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Paquerette_V02.gltf"
     ],
@@ -147,6 +169,7 @@
   {
     "index": 9,
     "name": "sansevieria trifasciata",
+    "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Sansevieria_V02.gltf"
     ],
