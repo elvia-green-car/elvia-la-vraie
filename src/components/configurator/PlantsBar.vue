@@ -18,7 +18,7 @@
       <div :style="{'max-width': swiperWidth}">
         <swiper ref="slider" :slides-per-view="'auto'" :modules="modules"
                 @slideChange="onSlideChange" :navigation="navigation">
-          <swiper-slide class="p-4 w-32" v-for="(plant, index) in plantsToShow" :key="index"
+          <swiper-slide class="p-4 w-32" v-for="(plant, index) in plants" :key="index"
                         @mouseover.native="onMouseOver($event, plant, index)">
             <div class="Plant flex justify-center items-center">
               <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file" @click="plantClicked($event, plant, index)"/>
@@ -54,6 +54,7 @@ export default {
     Arrow
   },
   props: {
+    plants: Array,
     activeStep: String,
     slidesPerView: Number,
     // plants: Array
@@ -69,21 +70,6 @@ export default {
         prevEl: this.$refs.prev,
         nextEl: this.$refs.next
       },
-      breakpoints: {
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 10
-        },
-        1024: {
-          slidesPerView: 4,
-          spaceBetween: 50
-        },
-
-        1280: {
-          slidesPerView: 6,
-          spaceBetween: 30
-        }
-      }
     }
   },
   setup() {
@@ -109,16 +95,6 @@ export default {
     }
   },
   computed: {
-    plantsToShow() {
-      let array = []
-      Object.values(plantsData).forEach(value => {
-        if (value.zone && value.zone.find(zone => zone === this.activeStep)) {
-          //array.push(value.name + '.png')
-          array.push(value)
-        }
-      });
-      return array
-    },
     swiperWidth() {
       return this.width - 116 +'px'
     }
@@ -143,6 +119,7 @@ export default {
       this.$emit('plantSelected', plant, index)
     },
     openPlantPopin() {
+      this.$refs.helper.classList.add('hidden')
       this.$emit('openPlantPopin')
       this.$emit('plantSelected', this.plantSelected, this.plantSelectedIndex)
     }

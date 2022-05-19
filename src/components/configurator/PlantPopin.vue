@@ -9,8 +9,8 @@
           @swiper="onSwiper"
           @slideChange="onSlideChange"
       >
-        <swiper-slide class="relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
-          <div class="flex flex-col items-center ">
+        <swiper-slide v-for="(plant, index) in plants" :key="plant" class="relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
+          <div class="flex w-1/2 flex-col items-center ">
             <img :src="'/images/png/chlorophytum.png'"/>
             <div class="flex">
               <div class="flex items-center justify-center w-8 h-8 btn-border">
@@ -18,38 +18,12 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-start gap-6 xl:gap-14">
+          <div class="flex w-1/2 flex-col items-start gap-6 xl:gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
-              <p class="text-14 xl:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40 capitalize">{{plant.name}}</h2>
+              <p class="text-14 xl:text-16">{{plant.description}}</p>
             </div>
-            <Rates reverse :data="[
-          {name: 'Absorption CO2', rate: 86},
-          {name: 'Besoin en eau', rate: 54},
-          {name: 'Pollinisation', rate: 67}
-        ]"/>
-            <Button text="Placer" @click.native="selectedPlant"/>
-          </div>
-        </swiper-slide>
-        <swiper-slide class="relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
-          <div class="flex flex-col items-center ">
-            <img :src="'/images/png/chlorophytum.png'"/>
-            <div class="flex">
-              <div class="flex items-center justify-center w-8 h-8 btn-border">
-                <span class="w-full h-full hover:scale-50 transition-all ease-in-out btn-border bg-green-normal"/>
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col items-start gap-6 xl:gap-14">
-            <div>
-              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
-              <p class="text-14 xl:text-16">Loreum ipsum</p>
-            </div>
-            <Rates reverse :data="[
-          {name: 'Absorption CO2', rate: 86},
-          {name: 'Besoin en eau', rate: 54},
-          {name: 'Pollinisation', rate: 67}
-        ]"/>
+            <Rates reverse :data="rates(plant)"/>
             <Button text="Placer" @click.native="selectedPlant"/>
           </div>
         </swiper-slide>
@@ -78,7 +52,9 @@ export default {
   props: {
     data: Object,
     isOpen: Boolean,
-  }, setup() {
+    plants: Array
+  },
+  setup() {
     const onSwiper = (swiper) => {
       //console.log(swiper);
     };
@@ -91,11 +67,21 @@ export default {
       modules: [Navigation],
     };
   },
-  computed: {},
+  mounted() {
+    console.log(this.plants)
+  },
   methods: {
     selectedPlant() {
       this.$emit('selectedPlant')
       this.$emit('closePopin')
+    },
+    rates(plant) {
+      console.log(plant)
+      return [
+        {name: 'Absorption CO2', rate: plant.co2},
+        {name: 'Besoin en eau', rate: plant.arrosage},
+        {name: 'Pollinisation', rate: plant.pollinisation}
+      ]
     }
   }
 }

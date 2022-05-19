@@ -3,7 +3,7 @@
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
     <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
     <!-- v-if="activeStep !== 'devis'" -->
-    <PlantPopin :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
+    <PlantPopin :is-open="isPopinOpen" @close-popin="isPopinOpen = false" :plants="plantsToShow" :plant="plantSelected"/>
     <!-- v-if="activeStep === 'devis'" -->
     <DevisPopin :is-open="activeStep === 'devis'"/>
     <!--keep-alive>
@@ -30,7 +30,7 @@
                class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-14 z-10">
         <!-- isPopinOpen ? 1 : 5.5 -->
         <PlantsBar active-step="capot" @plant-selected="onPlant" @open-plant-popin="isPopinOpen = true"
-                   :width="plantsBarWidth"/>
+                   :width="plantsBarWidth" :plants="plantsToShow"/>
         <div ref="nextStep" class="flex gap-6">
           <div class="flex flex-col justify-center items-center font-title text-14">
             <span>0{{ activeStepIndex + 1 }}</span>
@@ -75,6 +75,7 @@ import Socials from "./configurator/Socials.vue";
 import Scroll from "./configurator/Scroll.vue";
 import PlantPopin from "./configurator/PlantPopin.vue";
 import DevisPopin from "./configurator/DevisPopin.vue";
+import plantsData from "../../public/json/plants.json";
 
 export default {
   name: "Configurator",
@@ -113,6 +114,16 @@ export default {
           break
       }
     },*/
+    plantsToShow() {
+      let array = []
+      Object.values(plantsData).forEach(value => {
+        if (value.zone && value.zone.find(zone => zone === this.activeStep)) {
+          //array.push(value.name + '.png')
+          array.push(value)
+        }
+      });
+      return array
+    },
     plantsBarWidth() {
       switch (this.activeStep) {
         case 'devis':
@@ -151,7 +162,7 @@ export default {
     onPlant(plant) {
       this.plantSelected = plant
       console.log(this.plantSelected)
-      if(this.app) {
+      if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)
       }
     }
