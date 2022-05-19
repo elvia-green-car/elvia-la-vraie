@@ -23,8 +23,8 @@
           </div>
           <div class="flex flex-col items-start w-1/2 gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 lg:text-40">Titre</h2>
-              <p class="text-14 lg:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
+              <p class="text-14 xl:text-16">Loreum ipsum</p>
             </div>
             <Rates reverse :data="[
           {name: 'Absorption CO2', rate: 86},
@@ -39,14 +39,14 @@
             <img :src="'/images/png/chlorophytum.png'"/>
             <div class="flex">
               <div class="flex items-center justify-center w-8 h-8 btn-border btn-round">
-                <span class="w-8 h-8 hover:scale-50 transition-all ease-in-out btn-border btn-round bg-green-normal"/>
+                <span class="w-8 h-8 hover:scale-50 transition-all ease-in-out btn-border bg-green-normal"/>
               </div>
             </div>
           </div>
           <div class="flex flex-col items-start w-1/2 gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 lg:text-40">Titre</h2>
-              <p class="text-14 lg:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
+              <p class="text-14 xl:text-16">Loreum ipsum</p>
             </div>
             <Rates reverse :data="[
           {name: 'Absorption CO2', rate: 86},
