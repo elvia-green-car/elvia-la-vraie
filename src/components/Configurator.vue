@@ -81,7 +81,7 @@ export default {
   components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin},
   data() {
     return {
-      app: null,
+      //app: null,
       steps: ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
       activeStepIndex: 0,
       activeStep: 'capot',
@@ -151,12 +151,15 @@ export default {
     onPlant(plant) {
       this.plantSelected = plant
       console.log(this.plantSelected)
+      if(this.app) {
+        this.app.updatePlantSelected(this.plantSelected)
+      }
     }
   },
   mounted() {
-    const app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
-    app.init()
-    app.run()
+    this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
+    this.app.init()
+    this.app.run()
   }
 }
 </script>

@@ -1,93 +1,176 @@
 [
   {
+    "index": null,
     "name": "",
+    "models": [],
     "file": "",
     "description": "",
     "arrosage": 0,
+    "price": 0,
     "co2": 0,
-    "o2": 0,
+    "pollinisation": 0,
     "zone": []
   },
   {
-    "name": "monstera",
-    "file": "chlorophytum.png",
-    "description": "",
-    "arrosage": 2,
-    "co2": 2,
-    "o2": 1,
-    "zone": [
-      "capot",
-      "portiere",
-      "toit",
-      "coffre"
-    ]
+    "index": 0,
+    "name": "aloe vera",
+    "models": [
+      ""
+    ],
+    "file": "aloe.png",
+    "description": "Véritable bombe à oxygène, l'aloe vera absorbe les gaz les plus néfastes pour rejeter un air 100% purifié.\nFacile d'entretien, elle résistera à la chaleur et saura s'adapter à toutes les conditions météorologiques\nVous pourrez en plus bénéficier du gel produit par la plante, dont les bienfaits cutanés et capillaires ne sont plus à démontrer.",
+    "price": 14.99,
+    "arrosage": 1,
+    "co2": 4,
+    "pollinisation": 0,
+    "zone": []
   },
   {
-    "name": "sansevieria trifasciata",
-    "file": "chlorophytum.png",
-    "description": "",
-    "arrosage": 2,
-    "co2": 2,
-    "o2": 1,
-    "zone": [
-      "capot",
-      "toit"
-    ]
-  },
-  {
-    "name": "gerbera",
-    "file": "",
-    "description": "",
+    "index": 1,
+    "name": "aglaoneme",
+    "models": [
+      "models/Plants/gltf/Configurator_Aglaomene_V02.gltf"
+    ],
+    "file": "aglaoneme.png",
+    "description": "L'Aglaonema est une plante ornementale fortement appréciée pour son feuillage panaché très lumineux, elle saura illuminer votre carrosserie et l'embellir de son feuillage original. \nSes origines tropicales permettent à cette espèce de s'adapter aux aléas climatiques, et fait d'elle une espèce très résistante. \nNe nécessitant très peu d'entretien, elle se satisfera seulement d'arrosages réguliers. \nSon efficace neutralisation de solvants très polluants comme le benzène, le formaldéhyde ou le toluène la place comme une plante incontournable à intégrer dans votre composition. ",
+    "price": 14.99,
     "arrosage": 3,
-    "co2": 2,
-    "o2": 2,
-    "zone": [
-      "toit",
-      "portiere",
-      "coffre"
-    ]
+    "co2": 3,
+    "pollinisation": 1,
+    "zone": []
   },
   {
+    "index": 2,
     "name": "bambou",
-    "file": "",
-    "description": "",
-    "arrosage": 0,
-    "co2": 0,
-    "o2": 0,
+    "models": [
+      "models/Plants/gltf/Configurator_Bambou_V02.gltf"
+    ],
+    "file": "bambou.png",
+    "description": "Le bambou est polyvalent. Sa résistance est inégalée. A la fois flexible et solide, il peut faire face à tout environnement et s'adapte à l'allure de la voiture. Simple d'entretien, il aime la chaleur mais résiste très bien au froid, un arrosage modéré lui suffira. \nGrâce à son absorption cinq fois supérieure à celle d'un arbre lambda, il saura absorber efficacement toutes vos émissions carbonnées.",
+    "price": 19.99,
+    "arrosage": 1,
+    "co2": 3,
+    "pollinisation": 0,
     "zone": [
       "toit"
     ]
   },
   {
+    "index": 3,
     "name": "chlorophytum",
-    "file": "",
-    "description": "",
+    "models": [
+      "models/Plants/gltf/Configurator_Chlorophytum_V02.gltf",
+      "models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf"
+    ],
+    "file": "chlorophytum.png",
+    "description": "Le chlorophytum, en plus de ses propriétés dépolluantes avérées, égayera la voiture grâce à ses longues feuilles nervurées blanches et vertes. Sa floraison au printemps offrira de jolies fleurs blanches qui attireront abeilles et bourdons pour une pollinisation naturelle.",
+    "price": 9.99,
     "arrosage": 2,
     "co2": 3,
-    "o2": 0,
+    "pollinisation": 2,
     "zone": [
       "portiere",
       "coffre"
     ]
   },
   {
-    "name": "ficus roberta",
-    "file": "",
-    "description": "",
-    "arrosage": 0,
-    "co2": 0,
-    "o2": 3,
+    "index": 4,
+    "name": "eucalyptus",
+    "models": [
+      "models/Plants/gltf/Configurator_Eucalyptus_V02.gltf"
+    ],
+    "file": "eucalyptus.png",
+    "description": "L'eucalyptus est polyvalent, il pousse sous tous les climats et supporte très bien le manque d'eau. Sa croissance rapide est un avantage non négligeable car il sera très vite performant. Au printemps, il se pare de nombreuses fleurs qui vont égayer la voiture et attirer des insectes en tout genre. En plus d'absorber efficacement le CO2, il possède de nombreuses vertus thérapeutiques dont vous pourrez profiter tout au long de l'année.",
+    "price": 24.99,
+    "arrosage": 2,
+    "co2": 2,
+    "pollinisation": 3,
     "zone": []
   },
   {
-    "name": "paquerette",
-    "file": "chlorophytum.png",
-    "description": "",
-    "arrosage": 0,
-    "co2": 0,
-    "o2": 0,
+    "index": 5,
+    "name": "ficus roberta",
+    "models": [
+      "models/Plants/gltf/Configurator_FicusRoberta_V02.gltf"
+    ],
+    "file": "ficus.png",
+    "description": "Ce petit arbre d'apparence commune fait partie des espèces les plus dépolluantes. Il se portera divinement bien sous une grande luminosité et n'aura besoin que d'un arrosage modéré. Sa croissance rapide vous permettra de rapidement bénéficier de tous ses avantages et ainsi absorber tous gaz toxiques émis par la voiture. ",
+    "price": 14.99,
+    "arrosage": 2,
+    "co2": 4,
+    "pollinisation": 1,
     "zone": [
-      "capot"
+      "toit"
+    ]
+  },
+  {
+    "index": 6,
+    "name": "gerbera",
+    "models": [
+      "models/Plants/gltf/Configurator_Gerbera_V02.gltf"
+    ],
+    "file": "gerbera.png",
+    "description": "Disponible en plusieurs teintes, la gerbera illuminera votre voiture grâce à ses couleurs éclatantes.\nSous un soleil intense, elle éclatera en vitalité et sera des plus performantes. Elle peut effectivement absorber\ndirectement le benzène présent dans la fumée des cigarettes. Vous pourrez ainsi fumer librement au volant sans aucune crainte de polluer.",
+    "price": 0,
+    "arrosage": 3,
+    "co2": 3,
+    "pollinisation": 3,
+    "zone": [
+      "toit",
+      "portiere",
+      "coffre"
+    ]
+  },
+  {
+    "index": 7,
+    "name": "monstera",
+    "models": [
+      "models/Plants/gltf/Configurator_Monstera_V02.gltf",
+      "models/Plants/gltf/Configurator_Monstera02_V02.gltf"
+    ],
+    "file": "monstera.png",
+    "description": "Accompagnée de ses élégantes feuilles, la monstera ornera élégamment votre voiture. Issue des forêts tropicales, ce spécimen apportera de l'exotisme à votre composition. Ses capacités de purification ne sont plus à démontrer, elle absorbe de nombreux gazs dangereux comme l’ammoniac et le formaldéhyde.",
+    "price": 19.99,
+    "arrosage": 2,
+    "co2": 2,
+    "pollinisation": 1,
+    "zone": [
+      "portiere",
+      "coffre"
+    ]
+  },
+  {
+    "index": 8,
+    "name": "paquerette",
+    "models": [
+      "models/Plants/gltf/Configurator_Paquerette_V02.gltf"
+    ],
+    "file": "paquerette.png",
+    "description": "La paquerette est la fleur à intégrer dans votre composition : mignonne, elle décorera avec légèreté votre voiture qui s'intégrera mieux dans les environnements naturels qu'elle traversera. Sa fleur attirera tous types d'insectes qui participeront à la pollinisation de l'entièreté de la carrosserie. Petites mais résistantes, les paquerettes traversent tout type de conditions météorologiques, et leur entretien est d'une simplicité surprenante.",
+    "price": 4.99,
+    "arrosage": 1,
+    "co2": 1,
+    "pollinisation": 3,
+    "zone": [
+      "capot",
+      "toit"
+    ]
+  },
+  {
+    "index": 9,
+    "name": "sansevieria trifasciata",
+    "models": [
+      "models/Plants/gltf/Configurator_Sansevieria_V02.gltf"
+    ],
+    "file": "sansevieria.png",
+    "description": "La Sansevieria Trifasciata est une des plantes les plus performantes pour absorber le CO2.\nSon utilisation en Inde pour lutter contre la pollution excessive est une preuve des capacités hors normes de ce spécimen en termes de dépollution. Arborant des feuilles bicolores, elle donnera allure et élégance à votre voiture tout en purifiant efficacement l'environnement.",
+    "price": 14.99,
+    "arrosage": 2,
+    "co2": 4,
+    "pollinisation": 1,
+    "zone": [
+      "capot",
+      "toit"
     ]
   }
 ]
