@@ -88,7 +88,6 @@ export default {
       this.$emit('closePopin')
     },
     rates(plant) {
-      console.log(plant)
       return [
         {name: 'Absorption CO2', rate: plant.co2 * 100 / this.maxRate},
         {name: 'Besoin en eau', rate: plant.arrosage * 100 / this.maxRate},

@@ -1,7 +1,12 @@
+import {reactive} from "vue";
+import {useStore} from "./stores/global";
+import {pinia} from "../main";
+
 export class Car {
     
     constructor(model) {
         this.model = model
+        this.store = useStore(pinia)
         this.plants = new Array()
     }
 
@@ -12,6 +17,15 @@ export class Car {
      */
     addPlant(model, keySlot) {
         this.plants[keySlot] = model
+
+        /**
+         * Format du tableau:
+         */
+        this.store.carPlants = {
+            "sansevieria trifasciata": 12,
+            "paquerette": 5
+        }
+
     }
 
     dispose() {

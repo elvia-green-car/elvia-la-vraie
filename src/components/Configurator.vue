@@ -17,11 +17,8 @@
           <Button text="Quitter"/>
         </a>
         <p :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
-        <Rates :data="[
-          {name: 'Absorption CO2', rate: 86},
-          {name: 'Besoin en eau', rate: 54},
-          {name: 'Pollinisation', rate: 67}
-      ]"/>
+        <Rates v-if="rates" :data="rates"/>
+       ici:  {{ store.carPlants }}
         <Breadcrumb :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     :active-step="activeStep" :steps="steps" @step-selected="updateSteps"/>
         <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
@@ -65,6 +62,7 @@ TODO: connect components with logic
 TODO: change cursor
 -->
 <script>
+import { useStore } from '../js/stores/global'
 import {AppWebGL} from "../js/AppWebGL";
 
 import Button from "./Button.vue";
@@ -77,10 +75,18 @@ import Scroll from "./configurator/Scroll.vue";
 import PlantPopin from "./configurator/PlantPopin.vue";
 import DevisPopin from "./configurator/DevisPopin.vue";
 import plantsData from "../../public/json/plants.json";
+import {reactive} from "vue";
 
 export default {
   name: "Configurator",
   components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin},
+  setup() {
+    const store = useStore()
+
+    return {
+      store,
+    }
+  },
   data() {
     return {
       //app: null,
@@ -95,7 +101,7 @@ export default {
 
       firstSwiper: null,
       secondSwiper: null,
-      isMounted: false
+      isMounted: false,
     }
   },
   computed: {
@@ -144,6 +150,14 @@ export default {
         return window.innerWidth - 194
       }
     },
+    rates() {
+      console.log('rates')
+      if(this.carPlants) {
+        console.log(this.cars)
+        return
+      }
+      return
+    }
   },
   methods: {
     //setFirstSwiper(swiper) {
@@ -166,12 +180,21 @@ export default {
       if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)
       }
+    },
+    updateRates() {
+      console.log('rates')
+      if(this.app && this.app.car) {
+        console.log(this.app.car)
+        return
+      }
+      return
     }
   },
   mounted() {
     this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
     this.app.init()
     this.app.run()
+    //this.carPlants = this.app.car.plants
   }
 }
 </script>
