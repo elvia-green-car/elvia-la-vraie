@@ -147,6 +147,7 @@ export default {
       this.activeStepIndex = index
       this.activeStep = this.steps[index]
       this.isPopinOpen = false
+      this.app.updateStep(index)
     },
     onPlant(plant) {
       this.plantSelected = plant
