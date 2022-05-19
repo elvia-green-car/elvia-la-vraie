@@ -1,24 +1,8 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial} from "three";
-import {HUD} from "./HUD";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
 import {Car} from "./Car";
-import { ModelsManager, MODEL_TYPE } from "./Managers/ModelsManager";
+import {ModelsSingelton, MODELS, HDRI} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
-
-export const MODELS = {
-  Car: 0,
-  Plant_Aglaomene: 1,
-  Plant_Bambou: 2,
-  Plant_Clorophytum: 3,
-  Plant_Clorophytum02: 4,
-  Plant_Eucalyptus: 5,
-  Plant_FicusRoberta: 6,
-  Plant_Gerbera: 7,
-  Plant_Monstera: 8,
-  Plant_Monstera02: 9,
-  Plant_Paquerette: 10,
-  Plant_Planteserpent: 11
-}
 
 export class AppWebGL {
   constructor(canvas) {
@@ -27,16 +11,15 @@ export class AppWebGL {
     this.camera = null
     this.renderer = null
 
-    this.modelManager = null
-    this.modelsPathType = new Array()
     this.load = false
     this.car = null
+    this.plant = null
+    this.hdri = null
     this.raycaster = null
     this.pointer = null
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
     this.materialIntersect_Z1 = null      //to save the material of the last intersect
-
 
     console.log("New App created")
   }
@@ -79,26 +62,6 @@ export class AppWebGL {
 
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
-
-    this.modelManager = new ModelsManager()
-    this.modelManager.init()
-
-    this.modelManager.loadHdr('assets/textures/Background/hdri/', 'studio_small_08_1k.hdr', this.scene, this.render)
-
-    this.modelsPathType[MODELS.Car] = ['assets/models/Car/fbx/Configurateur_VoitureExterieur_v08.fbx', MODEL_TYPE.FBX]
-    this.modelsPathType[MODELS.Plant_Aglaomene] = ['assets/models/Plants/gltf/Configurator_Aglaomene_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Bambou] = ['assets/models/Plants/gltf/Configurator_Bambou_V03.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Clorophytum] = ['assets/models/Plants/gltf/Configurator_Chlorophytum_V03.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Clorophytum02] = ['assets/models/Plants/gltf/Configurator_Clorophytum02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Eucalyptus] = ['assets/models/Plants/gltf/Configurator_Eucalyptus_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_FicusRoberta] = ['assets/models/Plants/gltf/Configurator_FicusRoberta_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Gerbera] = ['assets/models/Plants/gltf/Configurator_Gerbera_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera] = ['assets/models/Plants/gltf/Configurator_Monstera_V04.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Monstera02] = ['assets/models/Plants/gltf/Configurator_Monstera02_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Paquerette] = ['assets/models/Plants/gltf/Configurator_Paquerette_V02.gltf', MODEL_TYPE.GLTF]
-    this.modelsPathType[MODELS.Plant_Planteserpent] = ['assets/models/Plants/gltf/Configurator_Planteserpent_V02.gltf', MODEL_TYPE.GLTF]
-
-    this.modelManager.load(this.modelsPathType)
   }
 
   //Left click to add a plant
@@ -115,7 +78,7 @@ export class AppWebGL {
       slotName =  this.intersects[ i ].object.name
       if(slotName.startsWith("Slot_")) {
         if(this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
-          this.car.addPlant(new Plants(this.modelManager.models[MODELS.Plant_Monstera].model.clone()), slotName)       
+          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS.Plant_Monstera].model.clone()), slotName)       
           this.intersects[ i ].object.attach(this.car.plants[slotName].model)
           this.car.plants[slotName].model.position.set(0,0,0)
           this.car.plants[slotName].model
@@ -194,7 +157,6 @@ export class AppWebGL {
     
   }
 
-
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;
     const height = this.canvas.clientHeight;
@@ -212,6 +174,7 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    
 
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -228,27 +191,43 @@ export class AppWebGL {
 
   // this function execute while all model isn't load
   updateModelsLoad() {
-    for(let i = 0; i < this.modelsPathType.length; i++) {
-      if(this.modelManager.models[i] != null) {
+    for(let i = 0; i < ModelsSingelton.getInstance().getModelManager().models.length; i++) {
+      if(ModelsSingelton.getInstance().getModelManager().models[i] != null) {
         if((i == MODELS.Car) && (this.car == null)) {
-          this.car = new Car(this.modelManager.models[MODELS.Car].model.clone())
+          this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
+          this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.scene.add(this.car.model)
         }
 
-        if(this.modelsPathType.length == this.modelManager.models.length) {
+        if((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) 
+          && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)){
           this.load = true
         }
       }
     }
+    //Add hdri
+    if(this.hdri == null && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)) {
+      this.hdri = ModelsSingelton.getInstance().getModelManager().hdri[HDRI.Studio].clone()
+      this.hdri.mapping = EquirectangularReflectionMapping;
+      this.scene.background = this.hdri.renderTarget;           //.renderTarget use to hide hdri in background
+      this.scene.environment = this.hdri;
+      //render();
+    }
+
     //if the load is not finished, we recheck 10ms later
     if(this.load == false) {
       setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
     }
   }
 
+  updatePlantSelected(plant) {
+    console.log('updatePlantSelected', plant)
+  }
+
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
+
     this.animate()
     this.updateModelsLoad()
 
@@ -267,8 +246,11 @@ export class AppWebGL {
     this.pointer = null
     this.raycaster = null
     this.car.dispose()
+    this.car = null
     this.intersects = null
     this.intersect_Z1 = null  
     this.materialIntersect_Z1 = null  
+    this.hdri.dispose()
+    this.hdri = null
   }
 }
