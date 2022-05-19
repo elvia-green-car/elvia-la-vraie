@@ -1,6 +1,6 @@
 import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
 import {Car} from "./Car";
-import {ModelsSingelton, MODELS, HDRI} from "./ModelsSingelton";
+import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
 
@@ -13,7 +13,7 @@ export class AppWebGL {
 
     this.load = false
     this.car = null
-    this.plant = null
+    this.plantSelected = null
     this.hdri = null
     this.raycaster = null
     this.pointer = null
@@ -77,8 +77,16 @@ export class AppWebGL {
     for ( let i = 0; i <  this.intersects.length; i ++ ) {
       slotName =  this.intersects[ i ].object.name
       if(slotName.startsWith("Slot_")) {
-        if(this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
-          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS.Plant_Monstera].model.clone()), slotName)       
+        //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
+        if(this.plantSelected != null) {
+          if(this.car.plants[slotName] != null) {
+            if(this.car.plants[slotName].model != null) {
+              this.intersects[ i ].object.remove(this.car.plants[slotName].model)
+              this.car.plants[slotName].dispose()
+            }
+            
+          }
+          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotName)       
           this.intersects[ i ].object.attach(this.car.plants[slotName].model)
           this.car.plants[slotName].model.position.set(0,0,0)
           this.car.plants[slotName].model
@@ -221,7 +229,8 @@ export class AppWebGL {
   }
 
   updatePlantSelected(plant) {
-    console.log('updatePlantSelected', plant)
+    console.log('updatePlantSelected', plant.index)
+    this.plantSelected = plant
   }
 
   // Run app, load things, add listeners, ...
@@ -247,6 +256,7 @@ export class AppWebGL {
     this.raycaster = null
     this.car.dispose()
     this.car = null
+    this.plantSelected = null
     this.intersects = null
     this.intersect_Z1 = null  
     this.materialIntersect_Z1 = null  

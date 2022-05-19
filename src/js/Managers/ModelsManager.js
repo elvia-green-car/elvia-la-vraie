@@ -4,8 +4,8 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { Model } from "../Model";
 
 export const MODEL_TYPE = {
-  FBX: 0,
-  GLTF: 1
+  FBX: 'fbx',
+  GLTF: 'gltf'
 }
 
 export class ModelsManager {
