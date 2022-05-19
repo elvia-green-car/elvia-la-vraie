@@ -1,5 +1,5 @@
 <template>
-  <section :class="isOpen ? 'w-[55%] p-10 lg:p-14 border-r': 'w-0'"
+  <section :class="isOpen ? 'w-[55%] p-10 xl:p-14 border-r': 'w-0'"
            class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out bg-white bg-opacity-30 backdrop-blur-xs">
     <Button class="ml-auto" icon="close" :background="false" round @click.native="$emit('closePopin')"/>
     <div class="flex justify-center items-center my-auto">
@@ -9,7 +9,7 @@
           @swiper="onSwiper"
           @slideChange="onSlideChange"
       >
-        <swiper-slide class="relative flex flex-col lg:flex-row gap-10 lg:gap-0 justify-center items-center">
+        <swiper-slide class="relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
           <div class="flex flex-col items-center ">
             <img :src="'/images/png/chlorophytum.png'"/>
             <div class="flex">
@@ -18,10 +18,10 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-start gap-6 lg:gap-14">
+          <div class="flex flex-col items-start gap-6 xl:gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 lg:text-40">Titre</h2>
-              <p class="text-14 lg:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
+              <p class="text-14 xl:text-16">Loreum ipsum</p>
             </div>
             <Rates reverse :data="[
           {name: 'Absorption CO2', rate: 86},
@@ -31,7 +31,7 @@
             <Button text="Placer" @click.native="selectedPlant"/>
           </div>
         </swiper-slide>
-        <swiper-slide class="relative flex flex-col lg:flex-row gap-10 lg:gap-0 justify-center items-center">
+        <swiper-slide class="relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
           <div class="flex flex-col items-center ">
             <img :src="'/images/png/chlorophytum.png'"/>
             <div class="flex">
@@ -40,10 +40,10 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-col items-start gap-6 lg:gap-14">
+          <div class="flex flex-col items-start gap-6 xl:gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 lg:text-40">Titre</h2>
-              <p class="text-14 lg:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
+              <p class="text-14 xl:text-16">Loreum ipsum</p>
             </div>
             <Rates reverse :data="[
           {name: 'Absorption CO2', rate: 86},

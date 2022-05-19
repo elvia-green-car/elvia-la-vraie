@@ -23,8 +23,8 @@
           </div>
           <div class="flex flex-col items-start w-1/2 gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 lg:text-40">Titre</h2>
-              <p class="text-14 lg:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
+              <p class="text-14 xl:text-16">Loreum ipsum</p>
             </div>
             <Rates reverse :data="[
           {name: 'Absorption CO2', rate: 86},
@@ -45,8 +45,8 @@
           </div>
           <div class="flex flex-col items-start w-1/2 gap-14">
             <div>
-              <h2 class="font-title font-bold text-30 lg:text-40">Titre</h2>
-              <p class="text-14 lg:text-16">Loreum ipsum</p>
+              <h2 class="font-title font-bold text-30 xl:text-40">Titre</h2>
+              <p class="text-14 xl:text-16">Loreum ipsum</p>
             </div>
             <Rates reverse :data="[
           {name: 'Absorption CO2', rate: 86},

@@ -10,7 +10,7 @@
   },
   {
     "name": "monstera",
-    "file": "Configurateur_Monstera_v01.gltf",
+    "file": "chlorophytum.png",
     "description": "",
     "arrosage": 2,
     "co2": 2,
@@ -24,7 +24,7 @@
   },
   {
     "name": "sansevieria trifasciata",
-    "file": "",
+    "file": "chlorophytum.png",
     "description": "",
     "arrosage": 2,
     "co2": 2,
@@ -81,7 +81,7 @@
   },
   {
     "name": "paquerette",
-    "file": "",
+    "file": "chlorophytum.png",
     "description": "",
     "arrosage": 0,
     "co2": 0,

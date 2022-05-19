@@ -1,5 +1,4 @@
 import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
-import {HUD} from "./HUD";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
@@ -14,13 +13,13 @@ export class AppWebGL {
 
     this.load = false
     this.car = null
+    this.plant = null
     this.hdri = null
     this.raycaster = null
     this.pointer = null
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
     this.materialIntersect_Z1 = null      //to save the material of the last intersect
-
 
     console.log("New App created")
   }
@@ -158,7 +157,6 @@ export class AppWebGL {
     
   }
 
-
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;
     const height = this.canvas.clientHeight;
@@ -220,6 +218,10 @@ export class AppWebGL {
     if(this.load == false) {
       setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
     }
+  }
+
+  updatePlantSelected(plant) {
+    console.log('updatePlantSelected', plant)
   }
 
   // Run app, load things, add listeners, ...

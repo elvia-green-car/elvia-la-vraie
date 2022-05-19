@@ -1,5 +1,6 @@
 <template>
   <!-- TODO: Custom slider -->
+  <!-- TODO : mouseover, follow slider woth popinOpen-->
   <!-- :modules="[Controller]"
       @swiper="setFirstSwiper"
       :controller="{ control: secondSwiper }"-->
@@ -10,19 +11,21 @@
     <div class="btn-bg btn-border" @mouseleave.native="onMouseLeave">
       <div ref="helper"
            class="pointer-events-auto absolute hidden flex flex-col items-center gap-2 -translate-y-full mt-4 -translate-x-1/2"
-           @click="openPlantPopin($event, plantOverviewIndex)">
+           @click="openPlantPopin($event)">
         <span class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal">+</span>
         <span class="h-8 w-[2px] bg-white"/>
       </div>
-      <swiper ref="slider" :slides-per-view="slidesPerView" :space-between="10" :modules="modules"
-              @slideChange="onSlideChange" :navigation="navigation">
-        <swiper-slide v-for="(plant, index) in plantsToShow" :key="index"
-                      @mouseover.native="onMouseOver($event, i)">
-          <div class="Plant flex justify-center items-center">
-            <img class="w-32 h-32" :src="'/images/png/'+plant" @click="plantClicked($event, i)"/>
-          </div>
-        </swiper-slide>
-      </swiper>
+      <div :style="{'max-width': swiperWidth}">
+        <swiper ref="slider" :slides-per-view="'auto'" :space-between="10" :modules="modules"
+                @slideChange="onSlideChange" :navigation="navigation">
+          <swiper-slide class="w-32" v-for="(plant, index) in plantsToShow" :key="index"
+                        @mouseover.native="onMouseOver($event, plant, index)">
+            <div class="Plant flex justify-center items-center">
+              <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file" @click="plantClicked($event, plant, index)"/>
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
     </div>
     <button slot="button-next" ref="next" @click="swiper.slideNext()">
       <Arrow class="w-4 rotate-180"/>
@@ -54,19 +57,35 @@ export default {
     activeStep: String,
     slidesPerView: Number,
     // plants: Array
-    secondSwiper: Object
+    secondSwiper: Object,
+    width: Number,
   },
   data() {
     return {
-      plant: null,
-      plantOverviewIndex: null,
+      plantEl: null,
+      plantSelected: null,
+      plantSelectedIndex: null,
       navigation: {
         prevEl: this.$refs.prev,
         nextEl: this.$refs.next
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 10
+        },
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 50
+        },
+
+        1280: {
+          slidesPerView: 6,
+          spaceBetween: 30
+        }
       }
     }
   },
-
   setup() {
     const swiper = useSwiper();
 
@@ -91,34 +110,41 @@ export default {
   },
   computed: {
     plantsToShow() {
-      //let array = []
-      Object.entries(plantsData).forEach(([key, value]) => {
-        if (value.zone.find(zone => zone === this.activeStep)) {
-          //array.push(key+ '.png')
+      let array = []
+      Object.values(plantsData).forEach(value => {
+        if (value.zone && value.zone.find(zone => zone === this.activeStep)) {
+          //array.push(value.name + '.png')
+          array.push(value)
         }
       });
-      const array = ['chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png', 'chlorophytum.png']
       return array
+    },
+    swiperWidth() {
+      return this.width - 116 +'px'
     }
   },
   methods: {
-    onMouseOver($event, i) {
-      this.plant = $event.target.getBoundingClientRect()
-      this.$refs.helper.style.left = this.plant.x + this.plant.width / 2 + 'px'
+    onMouseOver($event, plant, index) {
+      this.plantEl = $event.target.getBoundingClientRect()
+      this.plantSelected = plant
+      this.plantSelectedIndex = index
+      this.$refs.helper.style.left = this.plantEl.x + this.plantEl.width / 2 + 'px'
       this.$refs.helper.classList.remove('hidden')
-      this.plantOverviewIndex = i
     },
     onMouseLeave() {
       this.$refs.helper.classList.add('hidden')
-      this.plantOverviewIndex = null
-      this.plant = null
+      this.plantEl = null
+      this.plantSelected = null
+      this.plantSelectedIndex = null
     },
-    plantClicked($event, i) {
-      console.log('plantSelected', i)
-      this.$emit('plantSelected', i)
+    plantClicked($event, plant, index) {
+      this.plantSelected = plant
+      this.plantSelectedIndex = index
+      this.$emit('plantSelected', plant, index)
     },
     openPlantPopin() {
-      this.$emit('openPlantPopin', this.plantOverviewIndex)
+      this.$emit('openPlantPopin')
+      this.$emit('plantSelected', this.plantSelected, this.plantSelectedIndex)
     }
   }
 }
