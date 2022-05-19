@@ -1,26 +1,40 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, Vector3, MeshStandardMaterial, EquirectangularReflectionMapping} from "three";
+import {
+  Scene,
+  WebGLRenderer,
+  PerspectiveCamera,
+  DirectionalLight,
+  Raycaster,
+  Vector2,
+  Vector3,
+  MeshStandardMaterial,
+  AnimationMixer, Clock, BoxGeometry, MeshBasicMaterial, Mesh
+} from "three";
 import {HUD} from "./HUD";
 import {Car} from "./Car";
-import {ModelsSingelton, MODELS, HDRI} from "./ModelsSingelton";
+import {ModelsSingelton, MODELS} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import { Plants } from "./Plants";
+import {Plants} from "./Plants";
 
 export class AppWebGL {
   constructor(canvas) {
     this.canvas = canvas
     this.scene = null
     this.camera = null
+    this.carCameraPath = null
     this.renderer = null
+
+    this.cameraIsAnimated = false
+    this.cameraOrder = [2, 4, 3, 1, 0, 2]
+    this.cameraIndex = 0
+    this.cameraPrevIndex = 0
 
     this.load = false
     this.car = null
-    this.hdri = null
     this.raycaster = null
     this.pointer = null
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
     this.materialIntersect_Z1 = null      //to save the material of the last intersect
-
 
     console.log("New App created")
   }
@@ -29,6 +43,8 @@ export class AppWebGL {
   init() {
     console.log("App init")
     this.scene = new Scene()
+
+    this.clock = new Clock();
 
     this.renderer = new WebGLRenderer({
       canvas: this.canvas,
@@ -45,13 +61,13 @@ export class AppWebGL {
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    this.dirLight1 = new DirectionalLight (0xffffff, 1)
+    this.dirLight1 = new DirectionalLight(0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
-    this.dirLight2 = new DirectionalLight (0xffffff, 1)
+    this.dirLight2 = new DirectionalLight(0xffffff, 1)
     this.dirLight2.position.set(-600, 300, -200)
-    this.dirLight3 = new DirectionalLight (0xffffff, 1)
+    this.dirLight3 = new DirectionalLight(0xffffff, 1)
     this.dirLight3.position.set(600, 300, 200)
-    this.dirLight4 = new DirectionalLight (0xffffff, 1)
+    this.dirLight4 = new DirectionalLight(0xffffff, 1)
     this.dirLight4.position.set(600, 300, -200)
     this.scene.add(this.dirLight1)
     this.scene.add(this.dirLight2)
@@ -66,43 +82,43 @@ export class AppWebGL {
   }
 
   //Left click to add a plant
-  onPointerClickLeft( event ) {
+  onPointerClickLeft(event) {
     let slotName = ""
 
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    this.raycaster.setFromCamera( this.pointer, this.camera )
-    this.intersects = this.raycaster.intersectObjects( this.scene.children )
+    this.raycaster.setFromCamera(this.pointer, this.camera)
+    this.intersects = this.raycaster.intersectObjects(this.scene.children)
 
-    for ( let i = 0; i <  this.intersects.length; i ++ ) {
-      slotName =  this.intersects[ i ].object.name
-      if(slotName.startsWith("Slot_")) {
-        if(this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
-          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS.Plant_Monstera].model.clone()), slotName)       
-          this.intersects[ i ].object.attach(this.car.plants[slotName].model)
-          this.car.plants[slotName].model.position.set(0,0,0)
-          this.car.plants[slotName].model
+    for (let i = 0; i < this.intersects.length; i++) {
+      slotName = this.intersects[i].object.name
+      if (slotName.startsWith("Slot_")) {
+        if (this.car.plants[slotName] == null || this.car.plants[slotName].model == null) {
+          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS.Plant_Monstera].model.clone()), slotName)
+          this.intersects[i].object.attach(this.car.plants[slotName].model)
+          this.car.plants[slotName].model.position.set(0, 0, 0)
+          //this.car.plants[slotName].model
         }
       }
     }
   }
 
   //right click to delete a plant
-  onPointerClickRight( event ) {
+  onPointerClickRight(event) {
     let slotName = ""
 
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    this.raycaster.setFromCamera( this.pointer, this.camera )
-    this.intersects = this.raycaster.intersectObjects( this.scene.children )
+    this.raycaster.setFromCamera(this.pointer, this.camera)
+    this.intersects = this.raycaster.intersectObjects(this.scene.children)
 
-    for ( let i = 0; i <  this.intersects.length; i ++ ) {
-      slotName =  this.intersects[ i ].object.name
-      if(slotName.startsWith("Slot_")) {
-        if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
-          this.intersects[ i ].object.remove(this.car.plants[slotName].model)
+    for (let i = 0; i < this.intersects.length; i++) {
+      slotName = this.intersects[i].object.name
+      if (slotName.startsWith("Slot_")) {
+        if (this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
+          this.intersects[i].object.remove(this.car.plants[slotName].model)
           this.car.plants[slotName].dispose()
         }
       }
@@ -110,54 +126,52 @@ export class AppWebGL {
   }
 
   //Get mouse position on movement
-  onPointerMove( event ) {
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  onPointerMove(event) {
+    this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
   //Call in render, use to highlight slots
   raycasterUpdate() {
     let indexTemp = -1
-    this.raycaster.setFromCamera( this.pointer, this.camera );
+    this.raycaster.setFromCamera(this.pointer, this.camera);
 
-    const intersects = this.raycaster.intersectObjects( this.scene.children );
+    const intersects = this.raycaster.intersectObjects(this.scene.children);
 
-    if(intersects.length > 0) {
+    if (intersects.length > 0) {
       intersects.forEach(intersect => {
-        if(intersect.object.name != null) {
-          if(intersect.object.name.startsWith("Slot_")) {
+        if (intersect.object.name != null) {
+          if (intersect.object.name.startsWith("Slot_")) {
             return
           }
         }
         indexTemp++
       });
-      if(indexTemp != -1){
-        if(this.intersect_Z1 != intersects[ indexTemp ].object) {
-          if(this.intersect_Z1 != null) {
-            if(this.intersect_Z1.name.startsWith("Slot_")) {
+      if (indexTemp != -1) {
+        if (this.intersect_Z1 != intersects[indexTemp].object) {
+          if (this.intersect_Z1 != null) {
+            if (this.intersect_Z1.name.startsWith("Slot_")) {
               this.intersect_Z1.material = this.materialIntersect_Z1;
             }
           }
-          if(intersects[ indexTemp ].object.name.startsWith("Slot_")) {
-            this.materialIntersect_Z1 = intersects[ indexTemp ].object.material
-            intersects[ indexTemp ].object.material = new MeshStandardMaterial({color: 0x00ff00});
+          if (intersects[indexTemp].object.name.startsWith("Slot_")) {
+            this.materialIntersect_Z1 = intersects[indexTemp].object.material
+            intersects[indexTemp].object.material = new MeshStandardMaterial({color: 0x00ff00});
           }
         }
-        this.intersect_Z1 = intersects[ indexTemp ].object
+        this.intersect_Z1 = intersects[indexTemp].object
       }
-      
-    }
-    else {
-      if(this.intersect_Z1 != null) {
-        if(this.intersect_Z1.name.startsWith("Slot_")) {
+
+    } else {
+      if (this.intersect_Z1 != null) {
+        if (this.intersect_Z1.name.startsWith("Slot_")) {
           this.intersect_Z1.material = this.materialIntersect_Z1;
         }
         this.intersect_Z1 = null
       }
     }
-    
-  }
 
+  }
 
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;
@@ -176,7 +190,8 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
-    
+
+    this.updateCamera()
 
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -185,40 +200,74 @@ export class AppWebGL {
       this.camera.updateProjectionMatrix()
     }
 
-    if ( this.mixer ) this.mixer.update( delta );
+    const delta = this.clock.getDelta();
+    if (this.mixer) this.mixer.update(delta);
 
     // Render ...
     this.render()
   }
 
+  updateCamera() {
+    if (this.carCamera && this.carCameras.length > 1) {
+      const target = new Vector3();
+      this.camera.position.copy(this.carCamera.getWorldPosition(target))
+      this.camera.lookAt(this.car ? this.car.model.position : 0, 0, 0)
+
+      switch (this.cameraIndex) {
+        default:
+          break
+      }
+
+      // let nextPos = this.carCameras[this.cameraOrder[this.cameraIndex]].getWorldPosition(target)
+      let nextPos = this.car.model.animations[0].tracks[5].values
+      // console.log('nextPos', nextPos)
+
+      if (nextPos[0] - 10 < this.camera.position.x && this.camera.position.x < nextPos[0] + 10
+        && nextPos[1] - 10 < this.camera.position.y && this.camera.position.y < nextPos[1] + 10
+        && nextPos[2] - 10 < this.camera.position.z && this.camera.position.z < nextPos[2] + 10) {
+        if (this.action && this.cameraIsAnimated) {
+          this.action.paused = true
+          this.cameraIsAnimated = false
+        }
+      }
+    }
+  }
+
   // this function execute while all model isn't load
   updateModelsLoad() {
-    for(let i = 0; i < ModelsSingelton.getInstance().getModelManager().models.length; i++) {
-      if(ModelsSingelton.getInstance().getModelManager().models[i] != null) {
-        if((i == MODELS.Car) && (this.car == null)) {
+    for (let i = 0; i < ModelsSingelton.getInstance().getModelManager().models.length; i++) {
+      if (ModelsSingelton.getInstance().getModelManager().models[i] != null) {
+        if ((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
+          this.carCamera = this.car.model.children.filter(child => child.name.startsWith('Camera_path'))[0]
+
+          this.mixer = new AnimationMixer(this.car.model);
+          this.action = this.mixer.clipAction(this.car.model.animations[0]);
+          console.log(this.car.model.animations[0], this.action)
+          this.action.play();
+          this.cameraIsAnimated = true
+
+          this.carCameras = this.car.model.children.filter(child => child.name.startsWith('Camera_'))
+          this.carCameraPath = this.carCameras.shift()
+          console.log(this.carCameras, this.carCameraPath)
+
+
           this.scene.add(this.car.model)
+          this.scene.updateMatrixWorld()
+          this.car.model.updateMatrixWorld()
         }
 
-        if((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) 
-          && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)){
+        if (ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length) {
           this.load = true
         }
       }
     }
-    //Add hdri
-    if(this.hdri == null && (ModelsSingelton.getInstance().getModelManager().hdri.length == 1)) {
-      this.hdri = ModelsSingelton.getInstance().getModelManager().hdri[HDRI.Studio].clone()
-      this.hdri.mapping = EquirectangularReflectionMapping;
-      this.scene.background = this.hdri.renderTarget;           //.renderTarget use to hide hdri in background
-      this.scene.environment = this.hdri;
-      //render();
-    }
-
     //if the load is not finished, we recheck 10ms later
-    if(this.load == false) {
-      setTimeout(function() {this.updateModelsLoad()}.bind(this),10);
+    if (this.load == false) {
+      setTimeout(function () {
+        this.updateModelsLoad()
+      }.bind(this), 10);
     }
   }
 
@@ -229,9 +278,15 @@ export class AppWebGL {
     this.animate()
     this.updateModelsLoad()
 
-    this.canvas.addEventListener('click', (event) => {this.onPointerClickLeft(event);});
-    this.canvas.addEventListener('contextmenu', (event) => {this.onPointerClickRight(event);});
-    this.canvas.addEventListener('mousemove', (event) => {this.onPointerMove(event);});
+    this.canvas.addEventListener('click', (event) => {
+      this.onPointerClickLeft(event);
+    });
+    this.canvas.addEventListener('contextmenu', (event) => {
+      this.onPointerClickRight(event);
+    });
+    this.canvas.addEventListener('mousemove', (event) => {
+      this.onPointerMove(event);
+    });
   }
 
   // Memory management
@@ -246,9 +301,7 @@ export class AppWebGL {
     this.car.dispose()
     this.car = null
     this.intersects = null
-    this.intersect_Z1 = null  
-    this.materialIntersect_Z1 = null  
-    this.hdri.dispose()
-    this.hdri = null
+    this.intersect_Z1 = null
+    this.materialIntersect_Z1 = null
   }
 }
