@@ -66,30 +66,49 @@ export class AppWebGL {
 
   //Left click to add a plant
   onPointerClickLeft( event ) {
-    let slotName = ""
+    if(this.step >= 0 && this.step <= 3) {
+      let slotName = ""
+      let slotNameTemp = ""
 
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-    this.raycaster.setFromCamera( this.pointer, this.camera )
-    this.intersects = this.raycaster.intersectObjects( this.scene.children )
+      this.raycaster.setFromCamera( this.pointer, this.camera )
+      this.intersects = this.raycaster.intersectObjects( this.scene.children )
 
-    for ( let i = 0; i <  this.intersects.length; i ++ ) {
-      slotName =  this.intersects[ i ].object.name
-      if(slotName.startsWith("Slot_")) {
-        //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
-        if(this.plantSelected != null) {
-          if(this.car.plants[slotName] != null) {
-            if(this.car.plants[slotName].model != null) {
-              this.intersects[ i ].object.remove(this.car.plants[slotName].model)
-              this.car.plants[slotName].dispose()
+      for ( let i = 0; i <  this.intersects.length; i ++ ) {
+        slotName =  this.intersects[ i ].object.name
+        if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
+          //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
+          if(this.plantSelected != null) {
+            if(this.car.plants[slotName] != null) {
+              if(this.car.plants[slotName].model != null) {
+                this.intersects[ i ].object.remove(this.car.plants[slotName].model)
+                this.car.plants[slotName].dispose()
+              }
+              
             }
-            
+            this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotName) 
+            this.intersects[ i ].object.attach(this.car.plants[slotName].model)
+            this.car.plants[slotName].model.position.set(0,0,0)
+            this.car.plants[slotName].model
+
+            if(this.step == 2) {
+              slotNameTemp = slotName.replace("Right", "Left")
+              this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotNameTemp)
+              this.car.model.traverse( (child) => {
+                if(child.name == slotNameTemp) {
+                  child.attach(this.car.plants[slotNameTemp].model)
+                  return
+                }
+              })
+              this.car.plants[slotNameTemp].model.position.set(0,0,0)
+              this.car.plants[slotNameTemp].model          
+            }
           }
-          this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotName)       
-          this.intersects[ i ].object.attach(this.car.plants[slotName].model)
-          this.car.plants[slotName].model.position.set(0,0,0)
-          this.car.plants[slotName].model
+          else {
+            alert("Veuillez séléctionner une plante")
+          }
         }
       }
     }
@@ -97,20 +116,33 @@ export class AppWebGL {
 
   //right click to delete a plant
   onPointerClickRight( event ) {
-    let slotName = ""
+    if(this.step >= 0 && this.step <= 3) {
+      let slotName = ""
+      let slotNameTemp = ""
 
-    this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      this.pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      this.pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-    this.raycaster.setFromCamera( this.pointer, this.camera )
-    this.intersects = this.raycaster.intersectObjects( this.scene.children )
+      this.raycaster.setFromCamera( this.pointer, this.camera )
+      this.intersects = this.raycaster.intersectObjects( this.scene.children )
 
-    for ( let i = 0; i <  this.intersects.length; i ++ ) {
-      slotName =  this.intersects[ i ].object.name
-      if(slotName.startsWith("Slot_")) {
-        if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
-          this.intersects[ i ].object.remove(this.car.plants[slotName].model)
-          this.car.plants[slotName].dispose()
+      for ( let i = 0; i <  this.intersects.length; i ++ ) {
+        slotName =  this.intersects[ i ].object.name
+        if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
+          if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
+            this.intersects[ i ].object.remove(this.car.plants[slotName].model)
+            this.car.plants[slotName].dispose()
+            if(this.step == 2) {
+              slotNameTemp = slotName.replace("Right", "Left")
+              this.car.model.traverse( (child) => {
+                if(child.name == slotNameTemp) {
+                  child.remove(this.car.plants[slotNameTemp].model)
+                  return
+                }
+              })
+              this.car.plants[slotNameTemp].dispose()        
+            }
+          }
         }
       }
     }
