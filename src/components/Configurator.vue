@@ -18,7 +18,7 @@
         </a>
         <p :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
         <Rates v-if="rates" :data="rates"/>
-       ici:  {{ store.carPlants }}
+        <!--ici: {{ rates }}-->
         <Breadcrumb :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     :active-step="activeStep" :steps="steps" @step-selected="updateSteps"/>
         <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
@@ -62,7 +62,7 @@ TODO: connect components with logic
 TODO: change cursor
 -->
 <script>
-import { useStore } from '../js/stores/global'
+import {useStore} from '../js/stores/global'
 import {AppWebGL} from "../js/AppWebGL";
 
 import Button from "./Button.vue";
@@ -102,6 +102,8 @@ export default {
       firstSwiper: null,
       secondSwiper: null,
       isMounted: false,
+
+      maxRate: 4,
     }
   },
   computed: {
@@ -151,23 +153,26 @@ export default {
       }
     },
     rates() {
-      console.log('rates')
-      if(this.carPlants) {
-        console.log(this.cars)
-        return
+      let co2 = 0, arrosage = 0, pollinisation = 0, total = 0
+      if (this.store.carPlants) {
+        Object.entries(this.store.carPlants).forEach(([key, value]) => {
+          const found = plantsData.find(el => {
+            return el.name === key
+          })
+          co2 += found.co2 * value
+          arrosage += found.arrosage * value
+          pollinisation += found.pollinisation * value
+          total += value
+        })
       }
-      return
+      return [
+        {name: 'Absorption CO2', rate: co2 / total * 100 / this.maxRate},
+        {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},
+        {name: 'Pollinisation', rate: pollinisation / total * 100 / this.maxRate}
+      ]
     }
   },
   methods: {
-    //setFirstSwiper(swiper) {
-    //  console.log('setFirstSwiper', swiper)
-    //  this.firstSwiper = swiper
-    //},
-    //setSecondSwiper(swiper) {
-    //  console.log('setSecondSwiper', swiper)
-    //  this.secondSwiper = swiper
-    //},
     updateSteps(index) {
       console.log('updateSteps', index)
       this.activeStepIndex = index
@@ -181,20 +186,11 @@ export default {
         this.app.updatePlantSelected(this.plantSelected)
       }
     },
-    updateRates() {
-      console.log('rates')
-      if(this.app && this.app.car) {
-        console.log(this.app.car)
-        return
-      }
-      return
-    }
   },
   mounted() {
     this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
     this.app.init()
     this.app.run()
-    //this.carPlants = this.app.car.plants
   }
 }
 </script>

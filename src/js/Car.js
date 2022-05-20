@@ -22,8 +22,8 @@ export class Car {
          * Format du tableau:
          */
         this.store.carPlants = {
-            "sansevieria trifasciata": 12,
-            "paquerette": 5
+            "sansevieria trifasciata": 3,
+            "paquerette": 7
         }
 
     }
