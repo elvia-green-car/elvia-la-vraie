@@ -1,8 +1,9 @@
-import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, AxesHelper, MeshStandardMaterial, EquirectangularReflectionMapping, Vector3} from "three";
+import {Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, Raycaster, Vector2, MeshStandardMaterial, EquirectangularReflectionMapping, Vector3} from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
+import { TextureManager} from "./Managers/TextureManager";
 
 const steps = ["Hood", "Roof", "Door", ""]
 
@@ -117,6 +118,9 @@ export class AppWebGL {
               this.car.plants[slotNameTemp].model.position.set(0,0,0)
               this.car.plants[slotNameTemp].model          
             }
+          }
+          else {
+            alert("Veuillez séléctionner une plante")
           }
         }
       }
@@ -267,11 +271,29 @@ export class AppWebGL {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.car.model.position.set(this.car.model.position.x -100, this.car.model.position.y, this.car.model.position.z)
-          
-          console.log("Animations : ")
-          console.log(this.car.model.animations[0].tracks)
+          const textureGrass = new TextureManager();
+                textureGrass.init('textures/Car/grass/',
+                            'sfenffsa_4K_Albedo.jpg',
+                            '',
+                            'sfenffsa_4K_Normal.jpg',
+                            'sfenffsa_4K_Roughness.jpg',
+                            '',
+                            'sfenffsa_4K_AO.jpg',
+                            'sfenffsa_4K_Displacement.jpg',
+                            false,
+                            new Vector2(3, 3),
+                            0,
+                            0
+                )
+          this.car.model.traverse((child) => {
+            if(child.isMesh) {
+              if((child.name == "Body_Hood" || child.name == "Body_Roof" || (child.name.startsWith("Slot_") && (child.name.includes("Hood") || child.name.includes("Roof") ))) && child.name != "Slot_Hood_05"){
+                child.material = textureGrass.meshMaterial
+              }
+            }
+          })
+
           const pos = this.car.model.animations[0].tracks[5].values
-        
           this.camera.position.set(pos[0], pos[1], pos[2])
           this.camera.lookAt(0, 0, 0)
           this.camera.updateProjectionMatrix()
@@ -301,7 +323,6 @@ export class AppWebGL {
   }
 
   updatePlantSelected(plant) {
-    console.log('updatePlantSelected', plant.index)
     this.plantSelected = plant
   }
 
