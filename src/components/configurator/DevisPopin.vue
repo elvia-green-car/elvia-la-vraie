@@ -1,12 +1,13 @@
 <template>
   <!-- TODO : -->
   <section :class="isOpen ? 'w-[45%]': 'w-0'"
-           class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out btn-bg border-r border-white xl:pt-[140px]">
-    <div class="flex flex-col px-16 overflow-y">
+           class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out btn-bg border-r border-white pt-24 xl:pt-[140px]">
+    <div class="flex flex-col px-12 xl:px-16 overflow-y">
       <h2 class="font-title font-bold text-22 xl:text-30 mb-8">Votre configuration</h2>
       <p>Loreum ipsum</p>
       <h3 class="font-bold uppercase mt-8">Plantes</h3>
-      <div v-for="(value, key) in store.carPlants" :key="key" class="flex capitalize justify-between border-b border-white py-4">
+      <div v-for="(value, key) in store.carPlants" :key="key"
+           class="flex capitalize justify-between border-b border-white py-4">
         <span>{{ key }}<span class="ml-3">x{{ value }}</span></span>
         <span>{{ getPrice(key, value) }}€</span>
       </div>
@@ -39,7 +40,7 @@
       </fieldset>
     </div>
     <div
-        class="flex justify-between items-center mt-auto font-title font-bold text-16 xl:text-20 border-t border-white px-16 py-10">
+        class="flex justify-between items-center mt-auto font-title font-bold text-16 xl:text-20 border-t border-white px-12 xl:px-16 py-10">
       <span>Prix total de votre configuration</span>
       <span>{{ totalPrice }}€</span>
     </div>
