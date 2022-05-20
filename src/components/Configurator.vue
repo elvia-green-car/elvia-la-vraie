@@ -20,7 +20,7 @@
         <Rates v-if="rates" :data="rates"/>
         <!--ici: {{ rates }}-->
         <Breadcrumb :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
-                    :active-step="activeStep" :steps="steps" @step-selected="updateSteps"/>
+                    :active-step="activeStep" @step-selected="updateSteps"/>
         <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     class="opacity-0"/>
       </aside>
@@ -33,13 +33,13 @@
           <div class="flex flex-col justify-center items-center font-title text-14">
             <span>0{{ activeStepIndex + 1 }}</span>
             <span class="h-[1px] bg-white w-14 my-2"></span>
-            <span>0{{ steps.length }}</span>
+            <span>0{{ store.steps.length }}</span>
           </div>
           <Button icon="arrow" @click.native="updateSteps(activeStepIndex + 1)"/>
         </div>
       </section>
       <section v-if="activeStep === 'global'"
-               class="flex mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
+               class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
         <!--Scroll class="absolute z-20 left-10 top-1/2 -translate-y-1/2"/-->
         <Button icon="arrow" text="Configurateur" background @click=""/>
         <div class="flex gap-6">
@@ -48,7 +48,7 @@
         </div>
         <Socials/>
       </section>
-      <section v-if="activeStep === 'devis'" class="flex mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
+      <section v-if="activeStep === 'devis'" class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
@@ -74,8 +74,6 @@ import Socials from "./configurator/Socials.vue";
 import Scroll from "./configurator/Scroll.vue";
 import PlantPopin from "./configurator/PlantPopin.vue";
 import DevisPopin from "./configurator/DevisPopin.vue";
-import plantsData from "../../public/json/plants.json";
-import {reactive} from "vue";
 
 export default {
   name: "Configurator",
@@ -90,7 +88,6 @@ export default {
   data() {
     return {
       //app: null,
-      steps: ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
       activeStepIndex: 0,
       activeStep: 'capot',
 
@@ -125,7 +122,7 @@ export default {
     },*/
     plantsToShow() {
       let array = []
-      Object.values(plantsData).forEach(value => {
+      Object.values(this.store.plantsData).forEach(value => {
         if (value.zone && value.zone.find(zone => zone === this.activeStep)) {
           //array.push(value.name + '.png')
           array.push(value)
@@ -156,7 +153,7 @@ export default {
       let co2 = 0, arrosage = 0, pollinisation = 0, total = 0
       if (this.store.carPlants) {
         Object.entries(this.store.carPlants).forEach(([key, value]) => {
-          const found = plantsData.find(el => {
+          const found = this.store.plantsData.find(el => {
             return el.name === key
           })
           co2 += found.co2 * value
@@ -170,13 +167,13 @@ export default {
         {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},
         {name: 'Pollinisation', rate: pollinisation / total * 100 / this.maxRate}
       ]
-    }
+    },
   },
   methods: {
     updateSteps(index) {
       console.log('updateSteps', index)
       this.activeStepIndex = index
-      this.activeStep = this.steps[index]
+      this.activeStep = this.store.steps[index]
       this.isPopinOpen = false
     },
     onPlant(plant) {

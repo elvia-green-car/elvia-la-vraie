@@ -6,9 +6,9 @@
       <h2 class="font-title font-bold text-22 xl:text-30 mb-8">Votre configuration</h2>
       <p>Loreum ipsum</p>
       <h3 class="font-bold uppercase mt-8">Plantes</h3>
-      <div v-for="(plant, index) in plants" :key="index" class="flex justify-between border-b border-white py-4">
-        <span>{{ plant.name }} <span class="ml-3">x{{ plant.number }}</span></span>
-        <span>{{ plant.price }}€</span>
+      <div v-for="(value, key) in store.carPlants" :key="key" class="flex capitalize justify-between border-b border-white py-4">
+        <span>{{ key }}<span class="ml-3">x{{ value }}</span></span>
+        <span>{{ getPrice(key, value) }}€</span>
       </div>
       <h3 class="font-bold uppercase mt-8">Options</h3>
       <fieldset :class="options.length > 0 ? 'border-b border-white' : ''" class="flex items-center py-4 gap-7 mb-3">
@@ -47,32 +47,46 @@
 </template>
 
 <script>
+import {useStore} from "../../js/stores/global";
+
 import Check from '/public/svg/cross.svg?component'
 
 export default {
   name: "DevisPopin",
   components: {Check},
-  data() {
+  setup() {
+    const store = useStore()
+
     return {
-      plants: [{name: 'Aloe Vera', price: 12, number: 3}, {name: 'Chlorophytum', price: 10, number: 6}], // will be a props
-      carPrice: 12500,
-      withCar: false,
-      options: [
-        {name: "Lot d'outils", price: 50, checked: false},
-        {name: "Terreaux 10kg", price: 12, checked: false}
-      ],
+      store,
     }
   },
   props: {
     data: Object,
     isOpen: Boolean,
   },
+  data() {
+    return {
+      carPrice: 12500,
+      withCar: false,
+      options: [
+        {name: "Lot d'outils", price: 49.99, checked: false},
+        {name: "Terreaux 10kg", price: 12.99, checked: false}
+      ],
+    }
+  },
   computed: {
     totalPrice() {
       let totalPrice = 0
-      this.plants.forEach(plant => {
-        totalPrice += plant.price * plant.number
-      })
+      if (this.store.carPlants) {
+        Object.entries(this.store.carPlants).forEach(([key, value]) => {
+          const found = this.store.plantsData.find(el => {
+            return el.name === key
+          })
+          console.log(key, found.price, found.price * value)
+          totalPrice += found.price * value
+        })
+      }
       this.options.forEach(option => {
         if (option.checked) {
           totalPrice += option.price
@@ -83,6 +97,12 @@ export default {
     }
   },
   methods: {
+    getPrice(key, value) {
+      const found = this.store.plantsData.find(el => {
+        return el.name === key
+      })
+      return found.price
+    },
     clickOption(index) {
       this.$refs['option' + index][0].click()
     }
