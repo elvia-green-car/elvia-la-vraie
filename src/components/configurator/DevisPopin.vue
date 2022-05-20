@@ -89,7 +89,6 @@ export default {
       }
       this.options.forEach(option => {
         if (option.checked) {
-          console.log(option.price)
           totalPrice += option.price
         }
       })

@@ -102,7 +102,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.store.activeStep)
     this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
     this.app.init()
     this.app.run()
@@ -175,14 +174,12 @@ export default {
   },
   methods: {
     updateSteps(index) {
-      console.log('updateSteps', index)
       this.store.activeStepIndex = index
       this.store.activeStep = this.store.steps[index]
       this.isPopinOpen = false
     },
     onPlant(plant) {
       this.plantSelected = plant
-      console.log(this.plantSelected)
       if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)
       }

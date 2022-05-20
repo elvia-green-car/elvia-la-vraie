@@ -266,7 +266,6 @@ export class AppWebGL {
   }
 
   updatePlantSelected(plant) {
-    console.log('updatePlantSelected', plant.index)
     this.plantSelected = plant
   }
 
