@@ -28,6 +28,11 @@ export class Car {
     }
   }
 
+  removePlant(slotName) {
+    this.plants[slotName].dispose()
+    
+  }
+
   dispose() {
     this.model = null
     this.plants.forEach((plant) => {

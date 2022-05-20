@@ -131,7 +131,7 @@ export class AppWebGL {
         if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
           if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.intersects[ i ].object.remove(this.car.plants[slotName].model)
-            this.car.plants[slotName].dispose()
+            this.car.removePlant(slotName)
             if(this.step == 2) {
               slotNameTemp = slotName.replace("Right", "Left")
               this.car.model.traverse( (child) => {
@@ -140,7 +140,7 @@ export class AppWebGL {
                   return
                 }
               })
-              this.car.plants[slotNameTemp].dispose()        
+              this.car.removePlant(slotNameTemp)     
             }
           }
         }
