@@ -4,8 +4,13 @@ import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingel
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import { Plants } from "./Plants";
 
+import {useStore} from "./stores/global";
+import {pinia} from "../main";
+
 export class AppWebGL {
   constructor(canvas) {
+    this.store = useStore(pinia)
+
     this.canvas = canvas
     this.scene = null
     this.camera = null
@@ -66,7 +71,7 @@ export class AppWebGL {
 
   //Left click to add a plant
   onPointerClickLeft( event ) {
-    if(this.step >= 0 && this.step <= 3) {
+    if(this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
       let slotName = ""
       let slotNameTemp = ""
 
@@ -78,7 +83,7 @@ export class AppWebGL {
 
       for ( let i = 0; i <  this.intersects.length; i ++ ) {
         slotName =  this.intersects[ i ].object.name
-        if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
+        if(slotName.startsWith("Slot_") && slotName.includes(this.store.steps[this.store.activeStepIndex])) {
           //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
           if(this.plantSelected != null) {
             if(this.car.plants[slotName] != null) {
@@ -93,7 +98,7 @@ export class AppWebGL {
             this.car.plants[slotName].model.position.set(0,0,0)
             this.car.plants[slotName].model
 
-            if(this.step == 2) {
+            if(this.store.activeStepIndex == 2) {
               slotNameTemp = slotName.replace("Right", "Left")
               this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotNameTemp)
               this.car.model.traverse( (child) => {
@@ -116,7 +121,7 @@ export class AppWebGL {
 
   //right click to delete a plant
   onPointerClickRight( event ) {
-    if(this.step >= 0 && this.step <= 3) {
+    if(this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
       let slotName = ""
       let slotNameTemp = ""
 
@@ -128,11 +133,11 @@ export class AppWebGL {
 
       for ( let i = 0; i <  this.intersects.length; i ++ ) {
         slotName =  this.intersects[ i ].object.name
-        if(slotName.startsWith("Slot_") && slotName.includes(steps[this.step])) {
+        if(slotName.startsWith("Slot_") && slotName.includes(this.store.steps[this.store.activeStepIndex])) {
           if(this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.intersects[ i ].object.remove(this.car.plants[slotName].model)
             this.car.removePlant(slotName)
-            if(this.step == 2) {
+            if(this.store.activeStepIndex == 2) {
               slotNameTemp = slotName.replace("Right", "Left")
               this.car.model.traverse( (child) => {
                 if(child.name == slotNameTemp) {

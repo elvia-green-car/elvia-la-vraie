@@ -2,11 +2,11 @@
   <div class="relative flex justify-between w-full h-full">
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
     <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
-    <!-- v-if="activeStep !== 'devis'" -->
+    <!-- v-if="store.activeStep !== 'Estimate'" -->
     <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="isPopinOpen = false"
                 :plants="plantsToShow" :plant="plantSelected"/>
-    <!-- v-if="activeStep === 'devis'" -->
-    <DevisPopin :is-open="activeStep === 'devis'"/>
+    <!-- v-if="store.activeStep === 'Estimate'" -->
+    <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
     <!--keep-alive>
       <component :is="popinIs" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
     </keep-alive-->
@@ -16,39 +16,39 @@
         <a class="pointer-events-auto" href="/">
           <Button text="Quitter"/>
         </a>
-        <p :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
+        <p :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
         <Rates v-if="rates" :data="rates"/>
         <!--ici: {{ rates }}-->
-        <Breadcrumb :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
-                    :active-step="activeStep" @step-selected="updateSteps"/>
-        <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+        <Breadcrumb :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+                    :active-step="store.activeStep" @step-selected="updateSteps"/>
+        <SwitchView :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     class="opacity-0"/>
       </aside>
-      <section v-show="activeStep !== 'global' && activeStep !== 'devis'"
+      <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
                class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-14 z-10">
         <!-- isPopinOpen ? 1 : 5.5 -->
-        <PlantsBar active-step="capot" @plant-selected="onPlant" @open-plant-popin="isPopinOpen = true"
+        <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="isPopinOpen = true"
                    :width="plantsBarWidth" :plants="plantsToShow"/>
         <div ref="nextStep" class="flex gap-6">
           <div class="flex flex-col justify-center items-center font-title text-14">
-            <span>0{{ activeStepIndex + 1 }}</span>
+            <span>0{{ store.activeStepIndex + 1 }}</span>
             <span class="h-[1px] bg-white w-14 my-2"></span>
             <span>0{{ store.steps.length }}</span>
           </div>
-          <Button icon="arrow" @click.native="updateSteps(activeStepIndex + 1)"/>
+          <Button icon="arrow" @click.native="updateSteps(store.activeStepIndex + 1)"/>
         </div>
       </section>
-      <section v-if="activeStep === 'global'"
+      <section v-if="store.activeStep === 'Global'"
                class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
         <!--Scroll class="absolute z-20 left-10 top-1/2 -translate-y-1/2"/-->
         <Button icon="arrow" text="Configurateur" background @click=""/>
         <div class="flex gap-6">
           <Button icon="download" round/>
-          <Button text="Finaliser" @click.native="updateSteps(activeStepIndex + 1)"/>
+          <Button text="Finaliser" @click.native="updateSteps(store.activeStepIndex + 1)"/>
         </div>
         <Socials/>
       </section>
-      <section v-if="activeStep === 'devis'" class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
+      <section v-if="store.activeStep === 'Estimate'" class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
@@ -78,18 +78,9 @@ import DevisPopin from "./configurator/DevisPopin.vue";
 export default {
   name: "Configurator",
   components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin},
-  setup() {
-    const store = useStore()
-
-    return {
-      store,
-    }
-  },
   data() {
     return {
       //app: null,
-      activeStepIndex: 0,
-      activeStep: 'capot',
 
       isPopinOpen: false,
       popinWidth: 0,
@@ -103,15 +94,28 @@ export default {
       maxRate: 4,
     }
   },
+  setup() {
+    const store = useStore()
+
+    return {
+      store,
+    }
+  },
+  mounted() {
+    console.log(this.store.activeStep)
+    this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
+    this.app.init()
+    this.app.run()
+  },
   computed: {
     /*popinIs() {
-      switch (this.activeStep) {
-        case 'devis':
+      switch (this.store.activeStep) {
+        case 'Estimate':
           this.isPopinOpen = true
           this.popinWidth = window.innerWidth * 45 / 100
           return 'devis-popin'
           break;
-        case 'global':
+        case 'Global':
           return
           break;
         default:
@@ -123,7 +127,7 @@ export default {
     plantsToShow() {
       let array = []
       Object.values(this.store.plantsData).forEach(value => {
-        if (value.zone && value.zone.find(zone => zone === this.activeStep)) {
+        if (value.zone && value.zone.find(zone => zone === this.store.activeStep)) {
           //array.push(value.name + '.png')
           array.push(value)
         }
@@ -131,11 +135,11 @@ export default {
       return array
     },
     plantsBarWidth() {
-      switch (this.activeStep) {
-        case 'devis':
+      switch (this.store.activeStep) {
+        case 'Estimate':
           this.popinWidth = window.innerWidth * 45 / 100
           break;
-        case 'global':
+        case 'Global':
           return
           break;
         default:
@@ -172,8 +176,8 @@ export default {
   methods: {
     updateSteps(index) {
       console.log('updateSteps', index)
-      this.activeStepIndex = index
-      this.activeStep = this.store.steps[index]
+      this.store.activeStepIndex = index
+      this.store.activeStep = this.store.steps[index]
       this.isPopinOpen = false
     },
     onPlant(plant) {
@@ -184,11 +188,6 @@ export default {
       }
     },
   },
-  mounted() {
-    this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
-    this.app.init()
-    this.app.run()
-  }
 }
 </script>
 

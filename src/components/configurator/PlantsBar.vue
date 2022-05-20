@@ -12,7 +12,8 @@
       <div ref="helper"
            class="pointer-events-auto absolute hidden flex flex-col items-center gap-2 -translate-y-full mt-4 -translate-x-1/2"
            @click="openPlantPopin($event)">
-        <span class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal text-40">+</span>
+        <span
+            class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal text-40">+</span>
         <span class="h-8 w-[2px] bg-white"/>
       </div>
       <div :style="{'max-width': swiperWidth}">
@@ -21,7 +22,8 @@
           <swiper-slide class="p-4 w-32" v-for="(plant, index) in plants" :key="index"
                         @mouseover.native="onMouseOver($event, plant, index)">
             <div class="Plant flex justify-center items-center">
-              <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file" @click="plantClicked($event, plant, index)"/>
+              <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file"
+                   @click="plantClicked($event, plant, index)"/>
             </div>
           </swiper-slide>
         </swiper>
@@ -34,7 +36,8 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {useStore} from '../../js/stores/global'
+
 import {Navigation} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/vue';
 import {useSwiper} from 'swiper/vue';
@@ -53,9 +56,32 @@ export default {
     SwiperSlide,
     Arrow
   },
+  setup() {
+    const store = useStore()
+    const swiper = useSwiper();
+
+    const onSwiper = (swiper) => {
+      console.log(swiper);
+    }
+    const onSlideChange = () => {
+      console.log('slide change');
+    }
+    return {
+      store,
+      //Thumbs,
+      //thumbsSwiper,
+      //setThumbsSwiper,
+      //Controller,
+      //firstSwiper,
+      //setFirstSwiper,
+      swiper,
+      onSwiper,
+      onSlideChange,
+      modules: [Navigation],
+    }
+  },
   props: {
     plants: Array,
-    activeStep: String,
     slidesPerView: Number,
     // plants: Array
     secondSwiper: Object,
@@ -72,31 +98,9 @@ export default {
       },
     }
   },
-  setup() {
-    const swiper = useSwiper();
-
-    const onSwiper = (swiper) => {
-      console.log(swiper);
-    }
-    const onSlideChange = () => {
-      console.log('slide change');
-    }
-    return {
-      //Thumbs,
-      //thumbsSwiper,
-      //setThumbsSwiper,
-      //Controller,
-      //firstSwiper,
-      //setFirstSwiper,
-      swiper,
-      onSwiper,
-      onSlideChange,
-      modules: [Navigation],
-    }
-  },
   computed: {
     swiperWidth() {
-      return this.width - 116 +'px'
+      return this.width - 116 + 'px'
     }
   },
   methods: {

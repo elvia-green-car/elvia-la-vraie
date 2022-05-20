@@ -56,7 +56,7 @@
     "co2": 3,
     "pollinisation": 0,
     "zone": [
-      "toit"
+      "Roof"
     ]
   },
   {
@@ -74,8 +74,8 @@
     "co2": 3,
     "pollinisation": 2,
     "zone": [
-      "portiere",
-      "coffre"
+      "Door",
+      "Trunk"
     ]
   },
   {
@@ -107,7 +107,7 @@
     "co2": 4,
     "pollinisation": 1,
     "zone": [
-      "toit"
+      "Roof"
     ]
   },
   {
@@ -124,9 +124,9 @@
     "co2": 3,
     "pollinisation": 3,
     "zone": [
-      "toit",
-      "portiere",
-      "coffre"
+      "Roof",
+      "Door",
+      "Trunk"
     ]
   },
   {
@@ -144,8 +144,8 @@
     "co2": 2,
     "pollinisation": 1,
     "zone": [
-      "portiere",
-      "coffre"
+      "Door",
+      "Trunk"
     ]
   },
   {
@@ -162,8 +162,8 @@
     "co2": 1,
     "pollinisation": 3,
     "zone": [
-      "capot",
-      "toit"
+      "Hood",
+      "Roof"
     ]
   },
   {
@@ -180,8 +180,8 @@
     "co2": 4,
     "pollinisation": 1,
     "zone": [
-      "capot",
-      "toit"
+      "Hood",
+      "Roof"
     ]
   }
 ]

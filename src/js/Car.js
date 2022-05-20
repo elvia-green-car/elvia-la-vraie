@@ -1,4 +1,3 @@
-import {reactive} from "vue";
 import {useStore} from "./stores/global";
 import {pinia} from "../main";
 
@@ -22,7 +21,6 @@ export class Car {
 
     if (found) {
       this.store.carPlants[found] = this.store.carPlants[found] + 1
-      console.log(found, this.store.carPlants[found], this.plants[keySlot])
     } else {
       this.store.carPlants[model.data.name] = 1
     }
