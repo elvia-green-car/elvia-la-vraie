@@ -41,7 +41,7 @@
       <section v-if="store.activeStep === 'Global'"
                class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
         <!--Scroll class="absolute z-20 left-10 top-1/2 -translate-y-1/2"/-->
-        <Button icon="arrow" text="Configurateur" background @click=""/>
+        <Button icon="arrow" text="Configurateur" :rotate="true" @click.native="updateSteps(store.activeStepIndex - 1)"/>
         <div class="flex gap-6">
           <Button icon="download" round/>
           <Button text="Finaliser" @click.native="updateSteps(store.activeStepIndex + 1)"/>
