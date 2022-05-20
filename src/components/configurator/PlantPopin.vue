@@ -12,7 +12,7 @@
         <swiper-slide v-for="(plant, index) in plants" :key="plant"
                       class="relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
           <div class="flex w-1/2 flex-col items-center ">
-            <img :src="`/images/png/${plant.file}`"/>
+            <img class="xl:w-full" :src="`/images/png/${plant.file}`"/>
             <div v-if="plant.colors" class="flex">
               <div v-for="color in plant.colors" :key="color"
                    class="flex items-center justify-center w-8 h-8 btn-border">
@@ -21,11 +21,9 @@
               </div>
             </div>
           </div>
-          <div class="flex w-1/2 flex-col items-start gap-6 xl:gap-14">
-            <div>
-              <h2 class="font-title font-bold text-30 xl:text-40 capitalize">{{ plant.name }}</h2>
-              <p class="text-14 xl:text-16">{{ plant.description }}</p>
-            </div>
+          <div class="flex xl:w-1/2 flex-col items-start gap-6 xl:gap-14">
+            <h2 class="font-title font-bold text-30 xl:text-40 capitalize">{{ plant.name }}</h2>
+            <p class="text-14 xl:text-16">{{ plant.description }}</p>
             <Rates reverse :data="rates(plant)"/>
             <Button text="Placer" @click.native="plantClicked($event, plant, index)"/>
           </div>
