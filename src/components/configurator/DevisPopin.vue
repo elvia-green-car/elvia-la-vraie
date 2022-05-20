@@ -84,7 +84,6 @@ export default {
           const found = this.store.plantsData.find(el => {
             return el.name === key
           })
-          console.log(key, found.price, found.price * value)
           totalPrice += found.price * value
         })
       }
