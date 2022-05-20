@@ -42,7 +42,7 @@
     <div
         class="flex justify-between items-center mt-auto font-title font-bold text-16 xl:text-20 border-t border-white px-12 xl:px-16 py-10">
       <span>Prix total de votre configuration</span>
-      <span>{{ totalPrice }}€</span>
+      <span>{{ totalPrice }}</span>
     </div>
   </section>
 </template>
@@ -84,16 +84,17 @@ export default {
           const found = this.store.plantsData.find(el => {
             return el.name === key
           })
-          console.log(key, found.price, found.price * value)
           totalPrice += found.price * value
         })
       }
       this.options.forEach(option => {
         if (option.checked) {
+          console.log(option.price)
           totalPrice += option.price
         }
       })
       totalPrice += this.withCar ? this.carPrice : 0
+      totalPrice = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(totalPrice)
       return totalPrice
     }
   },
