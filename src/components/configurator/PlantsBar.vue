@@ -141,6 +141,7 @@ export default {
       }
     },
     onMouseUp(){
+      console.log('onMouseUp')
       this.drag = false
       if (this.$refs.draggable) {
         this.$refs.draggable.classList.add('hidden')
