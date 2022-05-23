@@ -4,7 +4,7 @@
     <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
     <!-- v-if="store.activeStep !== 'Estimate'" -->
     <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="isPopinOpen = false"
-                :plants="plantsToShow" :plant="plantSelected"/>
+                :plants="plantsToShow" :plant="openDetail"/>
     <!-- v-if="store.activeStep === 'Estimate'" -->
     <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
     <!--keep-alive>
@@ -12,7 +12,7 @@
     </keep-alive-->
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
-             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 z-10 xl:mb-10">
+             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 z-10">
         <a class="pointer-events-auto" href="/">
           <Button text="Quitter"/>
         </a>
@@ -27,7 +27,7 @@
       <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
                class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-14 z-10">
         <!-- isPopinOpen ? 1 : 5.5 -->
-        <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="isPopinOpen = true"
+        <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
                    :width="plantsBarWidth" :plants="plantsToShow"/>
         <div ref="nextStep" class="flex gap-6">
           <div class="flex flex-col justify-center items-center font-title text-14">
@@ -86,6 +86,7 @@ export default {
       popinWidth: 0,
 
       plantSelected: null,
+      openDetail: null,
 
       firstSwiper: null,
       secondSwiper: null,
@@ -179,11 +180,16 @@ export default {
       this.isPopinOpen = false
     },
     onPlant(plant) {
+      console.log('plantSelected', plant)
       this.plantSelected = plant
       if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)
       }
     },
+    onOpen(plant, index) {
+      this.openDetail = plant
+      this.isPopinOpen = true
+    }
   },
 }
 </script>
