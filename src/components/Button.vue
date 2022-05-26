@@ -1,6 +1,6 @@
 <template>
   <!-- TODO : resolve mix-blend-mode problem : mix-blend-difference-->
-  <button class="Btn relative flex items-center justify-center gap-4 btn-border overflow-hidden"
+  <button :ref="ref" class="Btn relative flex items-center justify-center gap-4 btn-border overflow-hidden"
           :class="{'btn-bg': background, 'btn-round': round, 'btn-oval': !round}">
     <component :is="icon" class="w-6 h-6 z-10" :class="{'rotate-180': rotate}"/>
     <span v-if="text" class=" z-10">{{ text }}</span>
@@ -11,6 +11,7 @@
 
 <script>
 import Arrow from '/public/svg/arrow.svg?component'
+import ArrowSlider from '/public/svg/slider-arrow.svg?component'
 import Download from '/public/svg/download.svg?component'
 import Close from '/public/svg/cross.svg?component'
 
@@ -19,9 +20,11 @@ export default {
   components: {
     Arrow,
     Download,
-    Close
+    Close,
+    ArrowSlider
   },
   props: {
+    ref: String,
     text: String,
     icon: String,
     round: {

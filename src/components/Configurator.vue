@@ -2,11 +2,12 @@
   <div class="relative flex justify-between w-full h-full">
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
     <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
-    <!-- v-if="store.activeStep !== 'Estimate'" -->
-    <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="isPopinOpen = false"
+    <!-- :is-open="isPopinOpen" -->
+    <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="onClose"
                 :plants="plantsToShow" :plant="openDetail"/>
-    <!-- v-if="store.activeStep === 'Estimate'" -->
+    <!-- :is-open="store.activeStep === 'Estimate'" -->
     <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
+    <div ref="fakePopin" class="bg-red-200 bg-opacity-10 pointer-events-none transition-transform ease-in-out z-10"/>
     <!--keep-alive>
       <component :is="popinIs" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
     </keep-alive-->
@@ -40,15 +41,17 @@
       </section>
       <section v-if="store.activeStep === 'Global'"
                class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
-        <!--Scroll class="absolute z-20 left-10 top-1/2 -translate-y-1/2"/-->
-        <Button icon="arrow" text="Configurateur" :rotate="true" @click.native="updateSteps(store.activeStepIndex - 1)"/>
+        <Scroll/>
+        <Button icon="arrow" text="Configurateur" :rotate="true"
+                @click.native="updateSteps(store.activeStepIndex - 1)"/>
         <div class="flex gap-6">
           <Button icon="download" round/>
           <Button text="Finaliser" @click.native="updateSteps(store.activeStepIndex + 1)"/>
         </div>
         <Socials/>
       </section>
-      <section v-if="store.activeStep === 'Estimate'" class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
+      <section v-if="store.activeStep === 'Estimate'"
+               class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
@@ -108,22 +111,6 @@ export default {
     this.app.run()
   },
   computed: {
-    /*popinIs() {
-      switch (this.store.activeStep) {
-        case 'Estimate':
-          this.isPopinOpen = true
-          this.popinWidth = window.innerWidth * 45 / 100
-          return 'devis-popin'
-          break;
-        case 'Global':
-          return
-          break;
-        default:
-          this.popinWidth = window.innerWidth * 55 / 100
-          return 'plant-popin'
-          break
-      }
-    },*/
     plantsToShow() {
       let array = []
       Object.values(this.store.plantsData).forEach(value => {
@@ -135,17 +122,7 @@ export default {
       return array
     },
     plantsBarWidth() {
-      switch (this.store.activeStep) {
-        case 'Estimate':
-          this.popinWidth = window.innerWidth * 45 / 100
-          break;
-        case 'Global':
-          return
-          break;
-        default:
-          this.popinWidth = window.innerWidth * 55 / 100
-          break
-      }
+      this.popinWidth = window.innerWidth * 55 / 100
 
       if (this.isPopinOpen) {
         return window.innerWidth - this.popinWidth - 194
@@ -177,7 +154,7 @@ export default {
     updateSteps(index) {
       this.store.activeStepIndex = index
       this.store.activeStep = this.store.steps[index]
-      this.isPopinOpen = false
+      this.onClose()
     },
     onPlant(plant) {
       console.log('plantSelected', plant)
@@ -189,6 +166,11 @@ export default {
     onOpen(plant, index) {
       this.openDetail = plant
       this.isPopinOpen = true
+      this.$refs.fakePopin.style.width = this.popinWidth + 'px'
+    },
+    onClose() {
+      this.isPopinOpen = false
+      this.$refs.fakePopin.style.width = 0 + 'px'
     }
   },
 }

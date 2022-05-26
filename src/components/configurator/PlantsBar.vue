@@ -1,11 +1,6 @@
 <template>
-  <!-- TODO: Custom slider -->
-  <!-- TODO : mouseover, follow slider with popinOpen-->
-  <!-- :modules="[Controller]"
-      @swiper="setFirstSwiper"
-      :controller="{ control: secondSwiper }"-->
-  <div class="flex gap-8">
-    <button ref="prev" class="swiper-button-prev">
+  <div ref="wrapper" class="flex gap-8">
+    <button ref="prev">
       <Arrow class="w-4"/>
     </button>
     <div class="btn-bg btn-border overflow-hidden" @mouseleave="onMouseLeave">
@@ -29,7 +24,7 @@
             <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plants" :key="index"
                  @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)"
                  @click="onClick($event, plant, index)">
-              <div class="Plant flex justify-center items-center">
+              <div class="Plant flex justify-center items-center pointer-events-none">
                 <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file"/>
               </div>
             </div>
@@ -37,7 +32,7 @@
         </div>
       </div>
     </div>
-    <button ref="next" class="swiper-button-next">
+    <button ref="next">
       <Arrow class="w-4 rotate-180"/>
     </button>
   </div>
@@ -46,8 +41,7 @@
 <script>
 import {useStore} from '../../js/stores/global'
 
-import Swiper, {Navigation} from 'swiper';
-
+import Swiper, {Navigation, Controller} from 'swiper';
 import 'swiper/css';
 
 import Arrow from "../../../public/svg/slider-arrow.svg?component";
@@ -62,13 +56,10 @@ export default {
   props: {
     plants: Array,
     slidesPerView: Number,
-    // plants: Array
-    secondSwiper: Object,
     width: Number,
   },
   data() {
     return {
-      swiper: null,
       plantEl: null,
       drag: false,
       plantSelected: null,
@@ -85,30 +76,35 @@ export default {
     }
   },
   mounted() {
-    this.swiper = new Swiper(this.$refs.slider, {
+    this.store.thumbs = new Swiper(this.$refs.slider, {
       slidesPerView: 'auto',
       spaceBetween: 45,
-      //loop: true,
-      //centeredSlides: true,
+
       navigation: {
         nextEl: this.$refs.next,
         prevEl: this.$refs.prev,
       },
 
-      // For drag'n'drop
+      // Allow drag'n'drop
       touchStartPreventDefault: false,
       allowTouchMove: true,
 
-      modules: [Navigation]
+      modules: [Navigation, Controller]
     })
 
-    window.addEventListener('mouseup', this.onMouseUp)
+    if (this.store.parent) {
+      console.log('this.store.parent', this.store.parent)
+      this.store.thumbs.controller.control = this.store.parent
+      console.log(this.store.thumbs.controller)
+    }
 
+    window.addEventListener('mouseup', this.onMouseUp)
     window.addEventListener('mousemove', ($event) => this.onMouseMove($event))
   },
   beforeDestroy() {
     window.removeEventListener('mouseup', this.onMouseUp)
     window.removeEventListener('mousemove', this.onMouseMove)
+    this.store.parent.destroy()
   },
   computed: {
     swiperWidth() {
@@ -140,8 +136,7 @@ export default {
         this.$refs.draggable.style.top = $event.clientY - this.$refs.draggable.offsetHeight / 2 + 'px'
       }
     },
-    onMouseUp(){
-      console.log('onMouseUp')
+    onMouseUp() {
       this.drag = false
       if (this.$refs.draggable) {
         this.$refs.draggable.classList.add('hidden')
@@ -154,7 +149,12 @@ export default {
     },
     openPlantPopin() {
       this.$emit('openPlantPopin', this.plantOpenDetail, this.plantOpenDetailIndex)
+      this.slideTo(this.plantOpenDetailIndex)
       this.$refs.helper.classList.add('hidden')
+    },
+    slideTo(index) {
+      this.store.parent.slideToLoop(index, 500, true)
+      this.store.thumbs.slideTo(index, 500, true)
     }
   }
 }
