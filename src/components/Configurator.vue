@@ -1,57 +1,54 @@
 <template>
   <div class="relative flex justify-between w-full h-full">
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
-    <a href="/" class="absolute top-16 left-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
-    <!-- v-if="activeStep !== 'devis'" -->
-    <PlantPopin :is-open="isPopinOpen" @close-popin="isPopinOpen = false" @second-swiper="setSecondSwiper"
-                :first-swiper="firstSwiper"/>
-    <!-- v-if="activeStep === 'devis'" -->
-    <DevisPopin :is-open="activeStep === 'devis'"/>
+    <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
+    <!-- v-if="store.activeStep !== 'Estimate'" -->
+    <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="isPopinOpen = false"
+                :plants="plantsToShow" :plant="openDetail"/>
+    <!-- v-if="store.activeStep === 'Estimate'" -->
+    <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
     <!--keep-alive>
       <component :is="popinIs" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
     </keep-alive-->
-    <div class="flex flex-col flex-1">
+    <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
-             class="flex flex-col h-full self-end justify-between items-end text-right p-10 lg:p-14 z-10 lg:mb-10">
-        <a href="/">
+             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 z-10">
+        <a class="pointer-events-auto" href="/">
           <Button text="Quitter"/>
         </a>
-        <p :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
-        <Rates :data="[
-          {name: 'Absorption CO2', rate: 86},
-          {name: 'Besoin en eau', rate: 54},
-          {name: 'Pollinisation', rate: 67}
-      ]"/>
-        <Breadcrumb :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''"
-                    :active-step="activeStep" :steps="steps" @step-selected="updateSteps"/>
-        <SwitchView :class="activeStep === 'devis' ? 'opacity-0 pointer-events-none':''" class="opacity-0"/>
+        <p :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
+        <Rates v-if="rates" :data="rates"/>
+        <!--ici: {{ rates }}-->
+        <Breadcrumb :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+                    :active-step="store.activeStep" @step-selected="updateSteps"/>
+        <SwitchView :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+                    class="opacity-0"/>
       </aside>
-      <section v-show="activeStep !== 'global' && activeStep !== 'devis'" :style="{'width':`${plantsBarWidth}px`}"
-               class="flex gap-10 shrink grow-0 mt-auto justify-between items-center p-10 lg:p-14 z-10">
-        <div class="flex-1 w-1/3">
-          <PlantsBar active-step="capot" @plant-selected="" @first-swiper="setFirstSwiper"
-                     :second-swiper="secondSwiper"/> <!-- :slides-per-view="isPopinOpen ? 1 : 5.5" -->
-        </div>
-        <div class="flex gap-6">
+      <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
+               class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-14 z-10">
+        <!-- isPopinOpen ? 1 : 5.5 -->
+        <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
+                   :width="plantsBarWidth" :plants="plantsToShow"/>
+        <div ref="nextStep" class="flex gap-6">
           <div class="flex flex-col justify-center items-center font-title text-14">
-            <span>0{{ activeStepIndex + 1 }}</span>
+            <span>0{{ store.activeStepIndex + 1 }}</span>
             <span class="h-[1px] bg-white w-14 my-2"></span>
-            <span>0{{ steps.length }}</span>
+            <span>0{{ store.steps.length }}</span>
           </div>
-          <Button icon="arrow" @click.native="updateSteps(activeStepIndex + 1)"/>
+          <Button icon="arrow" @click.native="updateSteps(store.activeStepIndex + 1)"/>
         </div>
       </section>
-      <section v-if="activeStep === 'global'"
-               class="flex mt-auto justify-between items-center gap-10 p-10 lg:p-14 z-10">
+      <section v-if="store.activeStep === 'Global'"
+               class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
         <!--Scroll class="absolute z-20 left-10 top-1/2 -translate-y-1/2"/-->
-        <Button icon="arrow" text="Configurateur" background @click=""/>
+        <Button icon="arrow" text="Configurateur" :rotate="true" @click.native="updateSteps(store.activeStepIndex - 1)"/>
         <div class="flex gap-6">
           <Button icon="download" round/>
-          <Button text="Finaliser" @click.native="updateSteps(activeStepIndex + 1)"/>
+          <Button text="Finaliser" @click.native="updateSteps(store.activeStepIndex + 1)"/>
         </div>
         <Socials/>
       </section>
-      <section v-if="activeStep === 'devis'" class="flex mt-auto justify-end items-center gap-10 p-10 lg:p-14 z-10">
+      <section v-if="store.activeStep === 'Estimate'" class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
@@ -65,6 +62,7 @@ TODO: connect components with logic
 TODO: change cursor
 -->
 <script>
+import {useStore} from '../js/stores/global'
 import {AppWebGL} from "../js/AppWebGL";
 
 import Button from "./Button.vue";
@@ -82,24 +80,42 @@ export default {
   components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin},
   data() {
     return {
-      steps: ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
-      activeStepIndex: 0,
-      activeStep: 'capot',
-      isPopinOpen: true,
+      //app: null,
+
+      isPopinOpen: false,
       popinWidth: 0,
+
+      plantSelected: null,
+      openDetail: null,
+
       firstSwiper: null,
       secondSwiper: null,
+      isMounted: false,
+
+      maxRate: 4,
     }
+  },
+  setup() {
+    const store = useStore()
+
+    return {
+      store,
+    }
+  },
+  mounted() {
+    this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
+    this.app.init()
+    this.app.run()
   },
   computed: {
     /*popinIs() {
-      switch (this.activeStep) {
-        case 'devis':
+      switch (this.store.activeStep) {
+        case 'Estimate':
           this.isPopinOpen = true
           this.popinWidth = window.innerWidth * 45 / 100
           return 'devis-popin'
           break;
-        case 'global':
+        case 'Global':
           return
           break;
         default:
@@ -108,46 +124,73 @@ export default {
           break
       }
     },*/
+    plantsToShow() {
+      let array = []
+      Object.values(this.store.plantsData).forEach(value => {
+        if (value.zone && value.zone.find(zone => zone === this.store.activeStep)) {
+          //array.push(value.name + '.png')
+          array.push(value)
+        }
+      });
+      return array
+    },
     plantsBarWidth() {
-      switch (this.activeStep) {
-        case 'devis':
+      switch (this.store.activeStep) {
+        case 'Estimate':
           this.popinWidth = window.innerWidth * 45 / 100
           break;
-        case 'global':
+        case 'Global':
           return
           break;
         default:
           this.popinWidth = window.innerWidth * 55 / 100
           break
       }
+
       if (this.isPopinOpen) {
-        return window.innerWidth - this.popinWidth
+        return window.innerWidth - this.popinWidth - 194
       } else {
-        return window.innerWidth
+        return window.innerWidth - 194
       }
+    },
+    rates() {
+      let co2 = 0, arrosage = 0, pollinisation = 0, total = 0
+      if (this.store.carPlants) {
+        Object.entries(this.store.carPlants).forEach(([key, value]) => {
+          const found = this.store.plantsData.find(el => {
+            return el.name === key
+          })
+          co2 += found.co2 * value
+          arrosage += found.arrosage * value
+          pollinisation += found.pollinisation * value
+          total += value
+        })
+      }
+      return [
+        {name: 'Absorption CO2', rate: co2 / total * 100 / this.maxRate},
+        {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},
+        {name: 'Pollinisation', rate: pollinisation / total * 100 / this.maxRate}
+      ]
     },
   },
   methods: {
-    setFirstSwiper(swiper) {
-      console.log('setFirstSwiper', swiper)
-      this.firstSwiper = swiper
-    },
-    setSecondSwiper(swiper) {
-      console.log('setSecondSwiper', swiper)
-      this.secondSwiper = swiper
-    },
     updateSteps(index) {
-      console.log('updateSteps', index)
-      this.activeStepIndex = index
-      this.activeStep = this.steps[index]
+      this.store.activeStepIndex = index
+      this.store.activeStep = this.store.steps[index]
       this.isPopinOpen = false
     },
+    onPlant(plant) {
+      console.log('plantSelected', plant)
+      this.plantSelected = plant
+      if (this.app) {
+        this.app.updatePlantSelected(this.plantSelected)
+      }
+    },
+    onOpen(plant, index) {
+      this.openDetail = plant
+      this.isPopinOpen = true
+    }
   },
-  mounted() {
-    const app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
-    app.init()
-    app.run()
-  }
 }
 </script>
 
