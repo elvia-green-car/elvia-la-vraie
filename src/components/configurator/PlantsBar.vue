@@ -79,6 +79,10 @@ export default {
     this.store.thumbs = new Swiper(this.$refs.slider, {
       slidesPerView: 'auto',
       spaceBetween: 45,
+      threshold: 5,
+      centeredSlides: true,
+      //loop: true,
+      //loopedSlides: this.plants.length,
 
       navigation: {
         nextEl: this.$refs.next,
@@ -89,14 +93,18 @@ export default {
       touchStartPreventDefault: false,
       allowTouchMove: true,
 
-      modules: [Navigation, Controller]
+      modules: [Navigation]
     })
 
-    if (this.store.parent) {
-      console.log('this.store.parent', this.store.parent)
-      this.store.thumbs.controller.control = this.store.parent
-      console.log(this.store.thumbs.controller)
-    }
+    this.store.thumbs.on('activeIndexChange', (e) => {
+      this.store.sliderActiveIndex = e.activeIndex
+    })
+
+    this.store.$subscribe((mutation, state) => {
+      if (mutation.events.key === "sliderActiveIndex") {
+        this.store.thumbs.slideTo(state.sliderActiveIndex, 300, true)
+      }
+    })
 
     window.addEventListener('mouseup', this.onMouseUp)
     window.addEventListener('mousemove', ($event) => this.onMouseMove($event))
@@ -104,7 +112,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener('mouseup', this.onMouseUp)
     window.removeEventListener('mousemove', this.onMouseMove)
-    this.store.parent.destroy()
+    this.store.thumbs.destroy()
   },
   computed: {
     swiperWidth() {
@@ -149,12 +157,8 @@ export default {
     },
     openPlantPopin() {
       this.$emit('openPlantPopin', this.plantOpenDetail, this.plantOpenDetailIndex)
-      this.slideTo(this.plantOpenDetailIndex)
+      this.store.sliderActiveIndex = this.plantOpenDetailIndex
       this.$refs.helper.classList.add('hidden')
-    },
-    slideTo(index) {
-      this.store.parent.slideToLoop(index, 500, true)
-      this.store.thumbs.slideTo(index, 500, true)
     }
   }
 }

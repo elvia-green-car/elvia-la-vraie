@@ -7,7 +7,7 @@
                 :plants="plantsToShow" :plant="openDetail"/>
     <!-- :is-open="store.activeStep === 'Estimate'" -->
     <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
-    <div ref="fakePopin" class="bg-red-200 bg-opacity-10 pointer-events-none transition-transform ease-in-out z-10"/>
+    <div ref="fakePopin" class="pointer-events-none transition-transform ease-in-out z-10"/>
     <!--keep-alive>
       <component :is="popinIs" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
     </keep-alive-->
@@ -61,7 +61,7 @@
 </template>
 
 <!--
-TODO: connect components with logic
+TODO: Hide fake panel at first open, create bugs at close
 TODO: change cursor
 -->
 <script>

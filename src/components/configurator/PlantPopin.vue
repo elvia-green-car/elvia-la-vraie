@@ -31,8 +31,8 @@
       </div>
     </div>
     <div class="flex justify-center items-center gap-6 pointer-events-auto">
-      <Button ref="prev" class="thumbs-prev" icon="ArrowSlider" :round="true"/>
-      <Button ref="next" class="thumbs-next" icon="ArrowSlider" :round="true" :rotate="true"/>
+      <Button ref="prev" class="parent-prev" icon="ArrowSlider" :round="true"/>
+      <Button ref="next" class="parent-next" icon="ArrowSlider" :round="true" :rotate="true"/>
     </div>
   </section>
 </template>
@@ -76,29 +76,30 @@ export default {
     }
   },
   mounted() {
+
     this.store.parent = new Swiper(this.$refs.slider, {
       slidesPerView: 1,
-      loop: true,
+      threshold: 5,
       navigation: {
-        nextEl: '.thumbs-next',// this.$refs.next,
-        prevEl: '.thumbs-prev'// this.$refs.prev,
+        nextEl: '.parent-next',// this.$refs.next,
+        prevEl: '.parent-prev'// this.$refs.prev,
       },
 
-      modules: [Navigation, Controller]
+      modules: [Navigation]
     })
 
-    if (this.store.thumbs) {
-      console.log('this.store.thumbs')
-      this.store.parent.controller.control = this.store.thumbs
-    }
+    this.store.parent.on('activeIndexChange', (e) => {
+      this.store.sliderActiveIndex = e.activeIndex
+    })
 
-    //this.store.thumbs.on('slideChangeTransitionEnd', () => {
-    //  console.log(this.store.thumbs.realIndex)
-    //  this.store.parent.slideTo(this.store.thumbs.realIndex, 300, true)
-    //})
+    this.store.$subscribe((mutation, state) => {
+      if(mutation.events.key === "sliderActiveIndex") {
+        this.store.parent.slideTo(state.sliderActiveIndex, 300, true)
+      }
+    })
   },
   beforeDestroy() {
-    this.store.thumbs.destroy()
+    this.store.parent.destroy()
   },
   methods: {
     selectedPlant() {
