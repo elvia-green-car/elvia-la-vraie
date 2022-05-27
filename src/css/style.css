@@ -1,4 +1,5 @@
 @import url('./panchang.css');
+@import url('/public/images/png/bambou_test.css');
 
 @tailwind base;
 @tailwind components;
@@ -20,12 +21,15 @@
     .btn-border {
         @apply rounded-full border border-white;
     }
+
     .btn-bg {
         @apply bg-white bg-opacity-20;
     }
+
     .btn-round {
-        @apply  p-2 xl:p-4;
+        @apply p-2 xl:p-4;
     }
+
     .btn-oval {
         @apply p-4 py-2 xl:px-8 xl:py-4
     }
@@ -39,3 +43,20 @@ html, body {
 .Btn:hover .Btn__bg {
     @apply w-24 h-24;
 }
+
+.Animate__bambou {
+    width: 300px;
+    height: 300px;
+    background-image: url("/public/images/png/sprite_bambou.png");
+    animation: animatePNG 5s steps(45) infinite;
+}
+
+@keyframes animatePNG {
+    from {
+        background-position-x: 0
+    }
+    to {
+        background-position-x: -14999px;
+    }
+}
+

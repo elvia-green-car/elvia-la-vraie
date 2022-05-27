@@ -1,6 +1,8 @@
 <template>
   <div ref="container"></div>
-  <img ref="image" src="images/png/Bambou/Bambou_00_0000.png">
+  <img ref="image" style="height: 300px; width: 300px" src="images/png/Bambou/Bambou_00_0000.png">
+  <div class="Animate__bambou"/>
+  <div ref="bamboo" class="Bambou_00_0000"></div>
 </template>
 
 <script>
@@ -24,6 +26,8 @@ export default {
     }
   },
   mounted() {
+
+
     document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < this.totalFrames; i++) {
         let frame = this.addLeadingZeros(i, 2)
@@ -46,6 +50,9 @@ export default {
       if (this.timeFromLastUpdate > this.animationDuration / this.totalFrames) {
         this.$refs.image.setAttribute('src', this.imagePath + `${frame}.png`);
         this.timeWhenLastUpdate = startTime;
+
+        console.log('frame', frame)
+        this.$refs.bamboo.setAttribute('class', 'Bambou_00_00' + frame)
 
         console.log(this.frame)
         if (this.frame >= this.totalFrames - 1) {
