@@ -46,7 +46,7 @@ import 'swiper/css';
 import Button from "../Button.vue";
 import Rates from "./Rates.vue";
 
-import Arrow from "../../../public/svg/slider-arrow.svg";
+import Arrow from "/public/svg/slider-arrow.svg";
 
 export default {
   name: "Plant",
@@ -98,7 +98,7 @@ export default {
       }
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.store.parent.destroy()
   },
   methods: {

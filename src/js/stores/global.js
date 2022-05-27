@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 
-import plantsData from "../../../public/json/plants.json";
+import plantsData from "/public/json/plants.json";
 
 export const useStore = defineStore('main', {
   state() {

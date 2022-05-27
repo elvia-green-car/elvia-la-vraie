@@ -44,9 +44,9 @@ import {Swiper, SwiperSlide} from 'swiper/vue';
 import 'swiper/css';
 //import 'swiper/css/navigation';
 
-import plantsData from "../../../public/json/plants.json";
+import plantsData from "/public/json/plants.json";
 
-import Arrow from "../../../public/svg/slider-arrow.svg?component";
+import Arrow from "/public/svg/slider-arrow.svg?component";
 
 export default {
   name: "PlantsBar",

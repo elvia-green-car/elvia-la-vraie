@@ -1,16 +1,21 @@
 <template>
   <div class="relative flex justify-between w-full h-full">
+    <div ref="cursor" class="absolute flex justify-center items-center btn-border rounded-full w-16 h-16 z-10">
+      <span v-show="store.activeStep !== 'Global'" class="bg-white w-1 h-1 rounded-full m-auto"/>
+      <div v-if="store.activeStep === 'Global'" class="relative w-full h-full flex justify-center items-center">
+        <span class="text-12">Drag</span>
+        <Arrow class="absolute w-3 h-3 rotate-90 -top-3 -translate-y-full left-1/2 -translate-x-1/2"/>
+        <Arrow class="absolute w-3 h-3 rotate-180 -right-3 translate-x-full top-1/2 -translate-y-1/2"/>
+        <Arrow class="absolute w-3 h-3 -rotate-90 -bottom-3 translate-y-full left-1/2 -translate-x-1/2"/>
+        <Arrow class="absolute w-3 h-3 -left-3 top-1/2 -translate-x-full -translate-y-1/2"/>
+      </div>
+    </div>
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
     <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
-    <!-- :is-open="isPopinOpen" -->
     <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="onClose"
                 :plants="plantsToShow" :plant="openDetail"/>
-    <!-- :is-open="store.activeStep === 'Estimate'" -->
     <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
     <div ref="fakePopin" class="pointer-events-none transition-transform ease-in-out z-10"/>
-    <!--keep-alive>
-      <component :is="popinIs" :is-open="isPopinOpen" @close-popin="isPopinOpen = false"/>
-    </keep-alive-->
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
              class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 z-10">
@@ -62,7 +67,7 @@
 
 <!--
 TODO: Hide fake panel at first open, create bugs at close
-TODO: change cursor
+TODO: cursor lerp
 -->
 <script>
 import {useStore} from '../js/stores/global'
@@ -78,12 +83,17 @@ import Scroll from "./configurator/Scroll.vue";
 import PlantPopin from "./configurator/PlantPopin.vue";
 import DevisPopin from "./configurator/DevisPopin.vue";
 
+import Arrow from "/public/svg/slider-arrow.svg?component";
+
 export default {
   name: "Configurator",
-  components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin},
+  components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin, Arrow},
   data() {
     return {
       //app: null,
+
+      x: 0,
+      y: 0,
 
       isPopinOpen: false,
       popinWidth: 0,
@@ -109,6 +119,14 @@ export default {
     this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
     this.app.init()
     this.app.run()
+
+    window.addEventListener('mousemove', this.onMouseMove)
+    //this.animate()
+
+    console.log(this.$refs.cursor.style.left)
+  },
+  beforeUnmount() {
+    window.addEventListener('mousemove', this.onMouseMove)
   },
   computed: {
     plantsToShow() {
@@ -171,6 +189,30 @@ export default {
     onClose() {
       this.isPopinOpen = false
       this.$refs.fakePopin.style.width = 0 + 'px'
+    },
+    onMouseMove($event) {
+      this.x = $event.clientX
+      this.y = $event.clientY
+
+      if (!this.store.drag && this.$refs.cursor) {
+        if (this.$refs.cursor.classList.contains('hidden')) {
+          this.$refs.cursor.classList.remove('hidden')
+        }
+
+        this.$refs.cursor.style.left = $event.clientX - this.$refs.cursor.offsetWidth * 3 / 4 + 'px'
+        this.$refs.cursor.style.top = $event.clientY - this.$refs.cursor.offsetHeight * 3 / 4 + 'px'
+      }
+    },
+    animate() {
+
+      //this.$refs.cursor.style.left += (this.x - this.$refs.cursor.style.left) * 0.1
+      //this.$refs.cursor.style.top += (this.y - this.$refs.cursor.style.top) * 0.1
+
+      if (this.$refs.cursor) {
+        //console.log(this.x, this.$refs.cursor.style.left, this.x - this.$refs.cursor.style.left)
+
+      }
+      requestAnimationFrame(this.animate)
     }
   },
 }

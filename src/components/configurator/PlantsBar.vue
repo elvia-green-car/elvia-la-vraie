@@ -44,8 +44,8 @@ import {useStore} from '../../js/stores/global'
 import Swiper, {Navigation, Controller} from 'swiper';
 import 'swiper/css';
 
-import Arrow from "../../../public/svg/slider-arrow.svg?component";
-import More from "../../../public/svg/more.svg?component";
+import Arrow from "/public/svg/slider-arrow.svg?component";
+import More from "/public/svg/more.svg?component";
 
 export default {
   name: "PlantsBar",
@@ -109,7 +109,7 @@ export default {
     window.addEventListener('mouseup', this.onMouseUp)
     window.addEventListener('mousemove', ($event) => this.onMouseMove($event))
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('mouseup', this.onMouseUp)
     window.removeEventListener('mousemove', this.onMouseMove)
     this.store.thumbs.destroy()
