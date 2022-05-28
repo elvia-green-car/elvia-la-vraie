@@ -1,43 +1,40 @@
 <template>
-  <div class="flex flex-col gap-5">
-    <p class="text-14 xl:text-16 ml-28">Placer les plantes de votre choix sur les emplacements prévus à cet effet</p>
-    <div ref="wrapper" class="flex gap-8">
-      <button ref="prev">
-        <Arrow class="w-4"/>
-      </button>
-      <div class="btn-bg btn-border overflow-hidden" @mouseleave="onMouseLeave">
-        <div ref="helper"
-             class="pointer-events-auto absolute hidden flex flex-col items-center gap-2 -translate-y-full mt-4 -translate-x-1/2"
-             @click="openPlantPopin($event)">
-          <More
-              class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal text-40"/>
-          <span class="h-8 w-[2px] bg-white"/>
-        </div>
-        <div ref="draggable"
-             class="pointer-events-none absolute hidden btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
-          <img v-if="plantSelected" :src="'/images/png/'+plantSelected.file" class="w-full h-full object-cover">
-        </div>
-        <div :style="{'max-width': swiperWidth}">
-          <!-- Swiper -->
-          <div ref="slider" class="swiper">
-            <!-- Swiper-wrapper -->
-            <div class="swiper-wrapper">
-              <!-- Swiper-slide -->
-              <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plants" :key="index"
-                   @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)"
-                   @click="onClick($event, plant, index)">
-                <div class="Plant flex justify-center items-center pointer-events-none select-none">
-                  <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file"/>
-                </div>
+  <div ref="wrapper" class="flex gap-8">
+    <button ref="prev">
+      <Arrow class="w-4"/>
+    </button>
+    <div class="btn-bg btn-border overflow-hidden" @mouseleave="onMouseLeave">
+      <div ref="helper"
+           class="pointer-events-auto absolute hidden flex flex-col items-center gap-2 -translate-y-full mt-4 -translate-x-1/2"
+           @click="openPlantPopin($event)">
+        <More
+            class="flex items-center justify-center rounded-full w-12 h-12 bg-white text-green-normal text-40"/>
+        <span class="h-8 w-[2px] bg-white"/>
+      </div>
+      <div ref="draggable"
+           class="pointer-events-none absolute hidden btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+        <img v-if="plantSelected" :src="'/images/png/'+plantSelected.file" class="w-full h-full object-cover">
+      </div>
+      <div :style="{'max-width': swiperWidth}">
+        <!-- Swiper -->
+        <div ref="slider" class="swiper">
+          <!-- Swiper-wrapper -->
+          <div class="swiper-wrapper">
+            <!-- Swiper-slide -->
+            <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plants" :key="index"
+                 @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)"
+                 @click="onClick($event, plant, index)">
+              <div class="Plant flex justify-center items-center pointer-events-none select-none">
+                <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file"/>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button ref="next">
-        <Arrow class="w-4 rotate-180"/>
-      </button>
     </div>
+    <button ref="next">
+      <Arrow class="w-4 rotate-180"/>
+    </button>
   </div>
 </template>
 

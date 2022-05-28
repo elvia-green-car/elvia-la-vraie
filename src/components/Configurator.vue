@@ -34,17 +34,21 @@
                 :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>
       </aside>
       <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
-               class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-12 pt-0 xl:pt-0 z-10">
+               class="flex flex-col gap-5 pointer-events-auto mt-auto p-10 xl:p-12 pt-0 xl:pt-0 z-10">
         <!-- isPopinOpen ? 1 : 5.5 -->
-        <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
-                   :width="plantsBarWidth" :plants="plantsToShow"/>
-        <div ref="nextStep" class="flex gap-6">
-          <div class="flex flex-col justify-center items-center font-title text-14">
-            <span>0{{ store.activeStepIndex + 1 }}</span>
-            <span class="h-[1px] bg-white w-14 my-2"></span>
-            <span>0{{ store.steps.length }}</span>
+        <p class="text-14 xl:text-16 ml-28">Placer les plantes de votre choix sur les emplacements prévus à cet
+          effet</p>
+        <div class="flex gap-6 justify-between items-center">
+          <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
+                     :width="plantsBarWidth" :plants="plantsToShow"/>
+          <div ref="nextStep" class="flex gap-6">
+            <div class="flex flex-col justify-center items-center font-title text-14">
+              <span>0{{ store.activeStepIndex + 1 }}</span>
+              <span class="h-[1px] bg-white w-14 my-2"></span>
+              <span>0{{ store.steps.length }}</span>
+            </div>
+            <Button icon="arrow" @click.native="updateSteps(store.activeStepIndex + 1)"/>
           </div>
-          <Button icon="arrow" @click.native="updateSteps(store.activeStepIndex + 1)"/>
         </div>
       </section>
       <section v-if="store.activeStep === 'Global'"
