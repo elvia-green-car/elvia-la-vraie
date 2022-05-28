@@ -19,11 +19,13 @@
     <div ref="fakePopin" class="pointer-events-none transition-transform ease-in-out z-10"/>
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
-             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 pb-0 xl:pb-0 z-10">
+             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-12 pb-0 xl:pb-0 z-10">
         <a class="pointer-events-auto" href="/">
           <Button text="Quitter"/>
         </a>
-        <p :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''">Loreum ipsum</p>
+        <p class="w-32 xl:w-48" :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''">
+          Une voiture fournie en plantes pour un impact décarbonisant plus grand
+        </p>
         <Rates v-if="rates" :data="rates"/>
         <!--ici: {{ rates }}-->
         <Breadcrumb :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
@@ -32,7 +34,7 @@
                 :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>
       </aside>
       <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
-               class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-14 z-10">
+               class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-12 pt-0 xl:pt-0 z-10">
         <!-- isPopinOpen ? 1 : 5.5 -->
         <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
                    :width="plantsBarWidth" :plants="plantsToShow"/>
@@ -46,7 +48,7 @@
         </div>
       </section>
       <section v-if="store.activeStep === 'Global'"
-               class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-14 z-10">
+               class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-12 z-10">
         <Scroll/>
         <Button icon="arrow" text="Configurateur" :rotate="true"
                 @click.native="updateSteps(store.activeStepIndex - 1)"/>
@@ -57,7 +59,7 @@
         <Socials/>
       </section>
       <section v-if="store.activeStep === 'Estimate'"
-               class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-14 z-10">
+               class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-12 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
