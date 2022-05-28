@@ -24,7 +24,7 @@
             <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plants" :key="index"
                  @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)"
                  @click="onClick($event, plant, index)">
-              <div class="Plant flex justify-center items-center pointer-events-none">
+              <div class="Plant flex justify-center items-center pointer-events-none select-none">
                 <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file"/>
               </div>
             </div>
@@ -61,7 +61,6 @@ export default {
   data() {
     return {
       plantEl: null,
-      drag: false,
       plantSelected: null,
       plantSelectedIndex: null,
       plantOpenDetail: null,
@@ -131,12 +130,12 @@ export default {
       this.$refs.helper.classList.add('hidden')
     },
     onMouseDown($event, plant, index) {
-      this.drag = true
+      this.store.drag = true
       this.onClick($event, plant, index)
       this.$refs.draggable.classList.remove('hidden')
     },
     onMouseMove($event) {
-      if (this.drag && this.$refs.draggable) {
+      if (this.store.drag && this.$refs.draggable) {
         if (this.$refs.draggable.classList.contains('hidden')) {
           this.$refs.draggable.classList.remove('hidden')
         }
@@ -145,7 +144,7 @@ export default {
       }
     },
     onMouseUp() {
-      this.drag = false
+      this.store.drag = false
       if (this.$refs.draggable) {
         this.$refs.draggable.classList.add('hidden')
       }

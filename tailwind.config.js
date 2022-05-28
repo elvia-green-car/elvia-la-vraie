@@ -35,6 +35,9 @@ module.exports = {
       },
       blur: {
         xs: '2px',
+      },
+      animation: {
+        'spin-slow': 'spin 7s linear infinite',
       }
     },
   },

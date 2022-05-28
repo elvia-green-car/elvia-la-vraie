@@ -10,6 +10,8 @@ export const useStore = defineStore('main', {
       activeStepIndex: 0,
       activeStep: 'Hood',
 
+      drag: false,
+
       // Sliders content
       plantsData: plantsData,
       plantsToShow: {},

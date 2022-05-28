@@ -1,6 +1,7 @@
 <template>
   <div class="relative flex justify-between w-full h-full">
-    <div ref="cursor" class="absolute flex justify-center items-center btn-border rounded-full w-16 h-16 z-10">
+    <div ref="cursor" :class="store.drag ? 'hidden': 'flex'"
+         class="pointer-events-none absolute justify-center items-center btn-border rounded-full w-16 h-16 z-20">
       <span v-show="store.activeStep !== 'Global'" class="bg-white w-1 h-1 rounded-full m-auto"/>
       <div v-if="store.activeStep === 'Global'" class="relative w-full h-full flex justify-center items-center">
         <span class="text-12">Drag</span>
@@ -18,7 +19,7 @@
     <div ref="fakePopin" class="pointer-events-none transition-transform ease-in-out z-10"/>
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
-             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 z-10">
+             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-14 pb-0 xl:pb-0 z-10">
         <a class="pointer-events-auto" href="/">
           <Button text="Quitter"/>
         </a>
@@ -27,8 +28,8 @@
         <!--ici: {{ rates }}-->
         <Breadcrumb :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     :active-step="store.activeStep" @step-selected="updateSteps"/>
-        <SwitchView :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
-                    class="opacity-0"/>
+        <Switch class="w-32 h-32 animate-spin-slow"
+                :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>
       </aside>
       <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
                class="flex gap-6 pointer-events-auto mt-auto justify-between items-center p-10 xl:p-14 z-10">
@@ -74,7 +75,6 @@ import {useStore} from '../js/stores/global'
 import {AppWebGL} from "../js/AppWebGL";
 
 import Button from "./Button.vue";
-import SwitchView from "./configurator/SwitchView.vue";
 import PlantsBar from "./configurator/PlantsBar.vue";
 import Rates from "./configurator/Rates.vue";
 import Breadcrumb from "./configurator/Breadcrumb.vue";
@@ -84,10 +84,22 @@ import PlantPopin from "./configurator/PlantPopin.vue";
 import DevisPopin from "./configurator/DevisPopin.vue";
 
 import Arrow from "/public/svg/slider-arrow.svg?component";
+import Switch from "/public/svg/switchview.svg?component";
 
 export default {
   name: "Configurator",
-  components: {Button, SwitchView, PlantsBar, Rates, Breadcrumb, Socials, Scroll, PlantPopin, DevisPopin, Arrow},
+  components: {
+    Button,
+    PlantsBar,
+    Rates,
+    Breadcrumb,
+    Socials,
+    Scroll,
+    PlantPopin,
+    DevisPopin,
+    Arrow,
+    Switch
+  },
   data() {
     return {
       //app: null,
@@ -193,6 +205,7 @@ export default {
     onMouseMove($event) {
       this.x = $event.clientX
       this.y = $event.clientY
+
 
       if (!this.store.drag && this.$refs.cursor) {
         if (this.$refs.cursor.classList.contains('hidden')) {
