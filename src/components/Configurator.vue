@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex justify-between w-full h-full">
+  <div class="relative bg-gradient-green flex justify-between w-full h-full">
     <div ref="cursor" :class="store.drag ? 'hidden': 'flex'"
          class="pointer-events-none absolute justify-center items-center btn-border rounded-full w-16 h-16 z-20">
       <span v-show="store.activeStep !== 'Global'" class="bg-white w-1 h-1 rounded-full m-auto"/>
@@ -211,7 +211,6 @@ export default {
     onMouseMove($event) {
       this.x = $event.clientX
       this.y = $event.clientY
-
 
       if (!this.store.drag && this.$refs.cursor) {
         if (this.$refs.cursor.classList.contains('hidden')) {
