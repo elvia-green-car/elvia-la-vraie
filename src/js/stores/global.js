@@ -24,7 +24,7 @@ export const useStore = defineStore('main', {
       isPopinOpen: false,
 
       // Loader
-      isLoading: false,
+      isLoading: true,
       load: 10,
     }
   }
