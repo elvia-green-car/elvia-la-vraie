@@ -94,7 +94,7 @@ export class AppWebGL {
 
       for (let i = 0; i < this.intersects.length; i++) {
         slotName = this.intersects[i].object.name
-        if (slotName.startsWith("Slot_") && slotName.includes(this.store.steps[this.store.activeStepIndex])) {
+        if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
           //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
           if (this.plantSelected != null) {
             if (this.car.plants[slotName] != null) {
@@ -143,7 +143,7 @@ export class AppWebGL {
 
       for (let i = 0; i < this.intersects.length; i++) {
         slotName = this.intersects[i].object.name
-        if (slotName.startsWith("Slot_") && slotName.includes(this.store.steps[this.store.activeStepIndex])) {
+        if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
           if (this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.intersects[i].object.remove(this.car.plants[slotName].model)
             this.car.removePlant(slotName)

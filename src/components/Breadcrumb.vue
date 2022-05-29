@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <div class="flex justify-end items-center gap-3" v-for="(step, index) in store.steps" :key="index"
+    <div class="flex justify-end items-center gap-3" v-for="(step, index) in store.configSteps" :key="index"
          @click="stepClicked($event, step, index)">
       <span :class="[step === activeStep ? 'capitalize' : 'hidden']">0{{ index + 1 }} - {{ getLabel(step) }}</span>
       <span
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {useStore} from "../../js/stores/global";
+import {useStore} from "../js/stores/global";
 
 export default {
   name: "Breadcrumb",

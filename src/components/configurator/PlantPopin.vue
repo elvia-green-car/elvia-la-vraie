@@ -43,7 +43,7 @@ import {useStore} from "../../js/stores/global";
 import Swiper, {Navigation, Controller} from 'swiper';
 import 'swiper/css';
 
-import Button from "../Button.vue";
+import Button from "../ButtonT.vue";
 import Rates from "./Rates.vue";
 
 import Arrow from "/public/svg/slider-arrow.svg";

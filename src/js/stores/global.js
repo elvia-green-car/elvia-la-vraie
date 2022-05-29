@@ -6,10 +6,12 @@ export const useStore = defineStore('main', {
   state() {
     return {
       // Global steps
-      steps: ["Hood", "Roof", "Door", "Trunk", "Global", "Estimate"], // ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
+      configSteps: ["Hood", "Roof", "Door", "Trunk", "Global", "Estimate"], // ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
+      landingSteps: ["Home", "Configure", "Plants", "Tools", "Global", "Services"],
       activeStepIndex: 0,
-      activeStep: 'Hood',
+      activeStep: null,
 
+      // Cursor
       drag: false,
 
       // Sliders content
@@ -24,10 +26,15 @@ export const useStore = defineStore('main', {
 
       // Popin
       isPopinOpen: false,
+      isMenuOpen: false,
 
       // Loader
       isLoading: true,
-      load: 10,
+      load: 0,
+
+      cart: {
+        length: 0
+      }
     }
   }
 })

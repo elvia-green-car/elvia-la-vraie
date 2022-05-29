@@ -12,7 +12,6 @@
       </div>
     </div>
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
-    <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
     <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="onClose"
                 :plants="plantsToShow" :plant="openDetail"/>
     <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
@@ -42,11 +41,7 @@
           <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
                      :width="plantsBarWidth" :plants="plantsToShow"/>
           <div ref="nextStep" class="flex gap-6">
-            <div class="flex flex-col justify-center items-center font-title text-14">
-              <span>0{{ store.activeStepIndex + 1 }}</span>
-              <span class="h-[1px] bg-white w-14 my-2"></span>
-              <span>0{{ store.steps.length }}</span>
-            </div>
+            <StepsIndicator/>
             <Button icon="arrow" @click.native="updateSteps(store.activeStepIndex + 1)"/>
           </div>
         </div>
@@ -80,10 +75,11 @@ TODO: cursor lerp
 import {useStore} from '../js/stores/global'
 import {AppWebGL} from "../js/AppWebGL";
 
-import Button from "./Button.vue";
+import Button from "./ButtonT.vue";
 import PlantsBar from "./configurator/PlantsBar.vue";
 import Rates from "./configurator/Rates.vue";
-import Breadcrumb from "./configurator/Breadcrumb.vue";
+import Breadcrumb from "./Breadcrumb.vue";
+import StepsIndicator from "./StepsIndicator.vue";
 import Socials from "./configurator/Socials.vue";
 import Scroll from "./configurator/Scroll.vue";
 import PlantPopin from "./configurator/PlantPopin.vue";
@@ -95,6 +91,7 @@ import Switch from "/public/svg/switchview.svg?component";
 export default {
   name: "Configurator",
   components: {
+    StepsIndicator,
     Button,
     PlantsBar,
     Rates,
@@ -134,14 +131,12 @@ export default {
     }
   },
   mounted() {
+    this.store.activeStep = this.store.configSteps[0]
     this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
     this.app.init()
     this.app.run()
 
     window.addEventListener('mousemove', this.onMouseMove)
-    //this.animate()
-
-    console.log(this.$refs.cursor.style.left)
   },
   beforeUnmount() {
     window.addEventListener('mousemove', this.onMouseMove)
@@ -151,7 +146,6 @@ export default {
       let array = []
       Object.values(this.store.plantsData).forEach(value => {
         if (value.zone && value.zone.find(zone => zone === this.store.activeStep)) {
-          //array.push(value.name + '.png')
           array.push(value)
         }
       });
@@ -189,7 +183,7 @@ export default {
   methods: {
     updateSteps(index) {
       this.store.activeStepIndex = index
-      this.store.activeStep = this.store.steps[index]
+      this.store.activeStep = this.store.configSteps[index]
       this.onClose()
     },
     onPlant(plant) {
