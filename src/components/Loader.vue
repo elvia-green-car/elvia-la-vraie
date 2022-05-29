@@ -1,5 +1,5 @@
 <template>
-  <div :class="content.bgColor, store.isLoading ? '':''"
+  <div :class="content.bgColor, store.isLoading ? '':'hidden'"
        class="flex flex-col justify-center items-center w-full h-full z-50">
     <h1 class="font-title font-bold text-40 xl:text-80">{{ content.title }}</h1>
     <span class="text-16 xl:text-20 mb-10">{{ content.subtitle }}</span>

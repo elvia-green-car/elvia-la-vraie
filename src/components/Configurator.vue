@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex justify-between w-full h-full">
+  <div class="relative bg-gradient-green flex justify-between w-full h-full">
     <div ref="cursor" class="absolute flex justify-center items-center btn-border rounded-full w-16 h-16 z-10">
       <span v-show="store.activeStep !== 'Global'" class="bg-white w-1 h-1 rounded-full m-auto"/>
       <div v-if="store.activeStep === 'Global'" class="relative w-full h-full flex justify-center items-center">
