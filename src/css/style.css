@@ -37,11 +37,16 @@
         @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal;
         opacity: 20%;
     }
+    .bg-gradient-green {
+        background: radial-gradient(var(--green-light), var(--green-normal));
+    }
+    .bg-gradient-yellow {
+        background: radial-gradient(var(--yellow-light), var(--yellow-normal));
+    }
 }
 
 html, body {
     @apply h-full m-0 text-white text-14 xl:text-16 font-body leading-tight;
-    background: radial-gradient(var(--green-light), var(--green-normal));
 }
 
 .Btn:hover .Btn__bg {

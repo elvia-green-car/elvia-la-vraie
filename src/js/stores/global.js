@@ -6,7 +6,7 @@ export const useStore = defineStore('main', {
   state() {
     return {
       // Global steps
-      steps:  ["Hood", "Roof", "Door", "Trunk", "Global", "Estimate"], // ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
+      steps: ["Hood", "Roof", "Door", "Trunk", "Global", "Estimate"], // ['capot', 'toit', 'portiere', 'coffre', 'global', 'devis'],
       activeStepIndex: 0,
       activeStep: 'Hood',
 
@@ -22,6 +22,10 @@ export const useStore = defineStore('main', {
 
       // Popin
       isPopinOpen: false,
+
+      // Loader
+      isLoading: false,
+      load: 10,
     }
   }
 })
