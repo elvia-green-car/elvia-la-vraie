@@ -1,6 +1,6 @@
 <template>
   <div :class="content.bgColor, store.isLoading ? '':'opacity-0 pointer-events-none'"
-       class="absolute left-0 top-0 flex flex-col justify-center items-center w-full h-full z-50 transition-opacity duration-1000">
+       class="fixed left-0 top-0 flex flex-col justify-center items-center w-screen h-screen z-50 transition-opacity duration-1000">
     <h1 class="font-title font-bold text-40 xl:text-80">{{ content.title }}</h1>
     <span class="text-16 xl:text-20 mb-10">{{ content.subtitle }}</span>
     <div class="w-1/2">

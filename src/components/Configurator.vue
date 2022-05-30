@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-gradient-green flex justify-between w-full h-full">
+  <div class="relative bg-gradient-green flex justify-between w-full h-screen">
     <div ref="cursor" :class="store.drag ? 'hidden': 'flex'"
          class="pointer-events-none absolute justify-center items-center btn-border rounded-full w-16 h-16 z-20">
       <span v-show="store.activeStep !== 'Global'" class="bg-white w-1 h-1 rounded-full m-auto"/>
@@ -11,7 +11,7 @@
         <Arrow class="absolute w-3 h-3 -left-3 top-1/2 -translate-x-full -translate-y-1/2"/>
       </div>
     </div>
-    <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full border-red-200" id="app-canvas"></canvas>
+    <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full" id="app-canvas"></canvas>
     <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="onClose"
                 :plants="plantsToShow" :plant="openDetail"/>
     <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
@@ -27,8 +27,8 @@
         </p>
         <Rates v-if="rates" :data="rates"/>
         <!--ici: {{ rates }}-->
-        <Breadcrumb :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
-                    :active-step="store.activeStep" @step-selected="updateSteps"/>
+        <Breadcrumb :steps="store.configSteps" :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+                    @step-selected="updateSteps"/>
         <Switch class="w-32 h-32 animate-spin-slow"
                 :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>
       </aside>
@@ -41,7 +41,7 @@
           <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
                      :width="plantsBarWidth" :plants="plantsToShow"/>
           <div ref="nextStep" class="flex gap-6">
-            <StepsIndicator/>
+            <StepsIndicator :steps="store.configSteps"/>
             <Button icon="arrow" @click.native="updateSteps(store.activeStepIndex + 1)"/>
           </div>
         </div>

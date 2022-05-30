@@ -1,7 +1,8 @@
 <template>
-  <div class="w-full h-full bg-gradient-yellow">
+  <div ref="home" class="w-full h-auto bg-gradient-yellow">
+    <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full" id="app-canvas"/>
     <Menu/>
-    <header class="fixed flex gap-8 top-0 right-0 p-10 xl:p-12">
+    <header class="fixed flex gap-8 top-0 right-0 p-10 xl:p-12 z-30">
       <Button :round="true" :pin="store.cart.length > 0">
         <Cart class="w-6 h-6"/>
       </Button>
@@ -13,12 +14,15 @@
         <Close class="w-6 h-6" v-if="store.isMenuOpen"/>
       </Button>
     </header>
-    <Breadcrumb class="fixed z-10 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12"/>
-    <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12"/>
+    <Breadcrumb class="fixed z-10 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12" :steps="store.landingSteps"
+                @step-selected="updateSteps"/>
+    <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12" :steps="store.landingSteps"/>
     <Scroll ref="scroll" class="animate-spin-slow fixed z-10 bottom-0 left-0 w-40 h-40 m-10 xl:m-12"/>
     <div class="flex justify-center items-center w-32 h-32 fixed z-10 bottom-0 left-0 w-40 h-40 m-10 xl:m-12">
       <Arrow class="w-10 h-10 rotate-90"/>
     </div>
+    <div class="h-screen w-full"></div>
+    <div class="h-screen w-full"></div>
   </div>
 </template>
 
@@ -48,6 +52,18 @@ export default {
   },
   mounted() {
     this.store.isLoading = false
+    this.store.activeStep = this.store.landingSteps[0]
+    window.addEventListener('scroll', () => {
+      if (this.$refs.home) {
+        //console.log('landing progress', (window.scrollY - window.innerHeight) / this.$refs.home.clientHeight * 100)
+      }
+    })
+  },
+  methods: {
+    updateSteps(index) {
+      this.store.activeStepIndex = index
+      this.store.activeStep = this.store.landingSteps[index]
+    },
   }
 }
 </script>

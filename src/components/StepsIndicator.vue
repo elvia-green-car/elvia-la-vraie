@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-center items-center font-title text-14">
     <span>0{{ store.activeStepIndex + 1 }}</span>
     <span class="h-[1px] bg-white w-14 my-2"></span>
-    <span>0{{ store.length }}</span>
+    <span>0{{ steps.length }}</span>
   </div>
 </template>
 
@@ -17,6 +17,9 @@ export default {
     return {
       store
     }
+  },
+  props: {
+    steps: Array,
   }
 }
 </script>
