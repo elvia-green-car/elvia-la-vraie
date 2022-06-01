@@ -34,6 +34,7 @@ export class AppWebGL {
     this.pointer = null
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
+    this.intersectClone = null
     this.materialIntersect_Z1 = null      //to save the material of the last intersect
 
     console.log("New App created")
@@ -177,24 +178,39 @@ export class AppWebGL {
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
     if (intersects.length > 0) {
-      intersects.forEach(intersect => {
-        if (intersect.object.name != null) {
-          if (intersect.object.name.startsWith("Slot_")) {
-            return
-          }
+      for(let i = 0; i < intersects.length; i++) {
+        if (intersects[i].object.name.startsWith("Slot_")) {
+          indexTemp = i;
         }
-        indexTemp++
-      });
+      }
       if (indexTemp != -1) {
         if (this.intersect_Z1 != intersects[indexTemp].object) {
           if (this.intersect_Z1 != null) {
             if (this.intersect_Z1.name.startsWith("Slot_")) {
-              this.intersect_Z1.material = this.materialIntersect_Z1;
+              this.intersect_Z1.remove(this.intersectClone)
+              this.intersectClone = null
             }
           }
           if (intersects[indexTemp].object.name.startsWith("Slot_")) {
             this.materialIntersect_Z1 = intersects[indexTemp].object.material
-            intersects[indexTemp].object.material = new MeshStandardMaterial({color: 0x00ff00});
+            this.intersectClone = intersects[indexTemp].object.clone()
+            if(this.intersectClone.children.length > 0){
+              for (var i = this.intersectClone.children.length - 1; i >= 0; i--) {
+                this.intersectClone.remove(this.intersectClone.children[i]);
+              }
+            }
+            this.intersectClone.name = "Clone_" + this.intersectClone.name
+            if(this.intersectClone.name.includes("BackRockerPanel")) {
+              this.intersectClone.position.set(0.02, 0, 0)
+              this.intersectClone.rotation.set(0,0,0)
+            }
+            else {
+              this.intersectClone.position.set(0, 0, 0.02)
+              this.intersectClone.rotation.set(0,0,0)
+            }
+            
+            this.intersectClone.material = new MeshStandardMaterial({color: 0x00ff00, opacity: 0.5, transparent: true});
+            intersects[indexTemp].object.add(this.intersectClone)
           }
         }
         this.intersect_Z1 = intersects[indexTemp].object
@@ -203,7 +219,8 @@ export class AppWebGL {
     } else {
       if (this.intersect_Z1 != null) {
         if (this.intersect_Z1.name.startsWith("Slot_")) {
-          this.intersect_Z1.material = this.materialIntersect_Z1;
+          this.intersect_Z1.remove(this.intersectClone)
+          this.intersectClone = null
         }
         this.intersect_Z1 = null
       }
@@ -313,6 +330,7 @@ export class AppWebGL {
     this.plantSelected = null
     this.intersects = null
     this.intersect_Z1 = null
+    this.intersectClone = null
     this.materialIntersect_Z1 = null
     this.hdri.dispose()
     this.hdri = null
