@@ -201,11 +201,11 @@ export class AppWebGL {
             }
             this.intersectClone.name = "Clone_" + this.intersectClone.name
             if(this.intersectClone.name.includes("BackRockerPanel")) {
-              this.intersectClone.position.set(0.02, 0, 0)
+              this.intersectClone.position.set(0.05, 0, 0)
               this.intersectClone.rotation.set(0,0,0)
             }
             else {
-              this.intersectClone.position.set(0, 0, 0.02)
+              this.intersectClone.position.set(0, 0, 0.05)
               this.intersectClone.rotation.set(0,0,0)
             }
             
