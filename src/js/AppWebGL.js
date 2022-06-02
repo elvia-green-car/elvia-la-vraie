@@ -35,7 +35,6 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
     this.intersectClone = null
-    this.materialIntersect_Z1 = null      //to save the material of the last intersect
 
     console.log("New App created")
   }
@@ -192,8 +191,9 @@ export class AppWebGL {
             }
           }
           if (intersects[indexTemp].object.name.startsWith("Slot_")) {
-            this.materialIntersect_Z1 = intersects[indexTemp].object.material
+            //Create a clone object to save the original 
             this.intersectClone = intersects[indexTemp].object.clone()
+            //Remove all childs on the slot clone (like plants)
             if(this.intersectClone.children.length > 0){
               for (var i = this.intersectClone.children.length - 1; i >= 0; i--) {
                 this.intersectClone.remove(this.intersectClone.children[i]);
@@ -331,7 +331,6 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null
     this.intersectClone = null
-    this.materialIntersect_Z1 = null
     this.hdri.dispose()
     this.hdri = null
   }
