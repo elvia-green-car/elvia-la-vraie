@@ -7,7 +7,10 @@ import {
   Vector2,
   Vector3,
   MeshStandardMaterial,
-  EquirectangularReflectionMapping
+  EquirectangularReflectionMapping,
+  Clock,
+  AnimationMixer, 
+  LoopOnce
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
@@ -25,6 +28,8 @@ export class AppWebGL {
     this.scene = null
     this.camera = null
     this.renderer = null
+    this.mixerCar = null
+    this.clock = null
 
     this.load = false
     this.car = null
@@ -54,6 +59,8 @@ export class AppWebGL {
 
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
 
+    this.clock = new Clock();
+
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
@@ -72,7 +79,8 @@ export class AppWebGL {
     this.scene.add(this.dirLight3)
     this.scene.add(this.dirLight4)
 
-    this.camera.position.set(-300, 200, 100)
+    this.camera.position.set(-470, 190, 502)
+    this.camera.rotation.set(0, 0.03, 0.06)
     this.camera.lookAt(0, 0, 0)
 
     this.raycaster = new Raycaster()
@@ -253,8 +261,16 @@ export class AppWebGL {
       this.camera.aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
       this.camera.updateProjectionMatrix()
     }
-
-    if (this.mixer) this.mixer.update(delta);
+    const delta = this.clock.getDelta();
+    if (this.mixerCar) {
+      this.mixerCar.update(delta);
+      console.log(this.mixerCar.getRoot().children[6])
+      const pos = this.mixerCar.getRoot().children[6].position
+      const quat = this.mixerCar.getRoot().children[6].quaternion
+      this.camera.position.set(pos.x, pos.y, pos.z)
+      this.camera.quaternion.set(quat.w, quat.x, quat.y, quat.z)
+    } 
+    
 
     // Render ...
     this.render()
@@ -267,6 +283,7 @@ export class AppWebGL {
         if ((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
+          this.mixerCar = new AnimationMixer( this.car.model );
           this.scene.add(this.car.model)
         }
 
@@ -291,6 +308,13 @@ export class AppWebGL {
         this.updateModelsLoad()
       }.bind(this), 10);
     }
+  }
+
+  updateSteps(index) {
+    console.log(this.mixerCar)
+    const action = this.mixerCar.clipAction( this.car.model.animations[2+index] );
+    action.setLoop(LoopOnce, 1)
+		action.play();
   }
 
   updatePlantSelected(plant) {
@@ -322,6 +346,8 @@ export class AppWebGL {
     this.camera = null
     this.renderer = null
     this.canvas = null
+    this.mixerCar = null
+    this.clock = null
     this.load = false
     this.pointer = null
     this.raycaster = null

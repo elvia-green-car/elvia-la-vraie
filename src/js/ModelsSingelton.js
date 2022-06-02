@@ -38,7 +38,7 @@ export var ModelsSingelton = (function () {
     hdriPath[HDRI.Studio] = ['textures/Background/hdri/', 'studio_small_08_1k.hdr']
     //modelManager.loadHdr('textures/Background/hdri/', 'studio_small_08_1k.hdr', HDRI.Studio)
 
-    modelsPathType[MODELS.Car] = ['models/Car/fbx/Configurateur_VoitureExterieur_v13.fbx', MODEL_TYPE.FBX]
+    modelsPathType[MODELS.Car] = ['models/Car/fbx/Configurateur_VoitureExterieur_v14.fbx', MODEL_TYPE.FBX]
 
     const url = 'json/plants.json'
     var loader = new FileLoader(this.manager);

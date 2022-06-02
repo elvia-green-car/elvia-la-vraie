@@ -185,6 +185,9 @@ export default {
       this.store.activeStepIndex = index
       this.store.activeStep = this.store.configSteps[index]
       this.onClose()
+      if (this.app) {
+        this.app.updateSteps(index)
+      }
     },
     onPlant(plant) {
       console.log('plantSelected', plant)
