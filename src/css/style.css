@@ -4,11 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*@font-face {
-    font-family: 'Roboto';
-    src: local('Roboto'), url(/fonts/Roboto-Regular.ttf) format('ttf');
-}*/
-
 :root {
     --green-normal: #52C099;
     --green-light: #78E2A9;
@@ -18,7 +13,11 @@
 
 @layer components {
     .btn-border {
-        @apply rounded-full border border-white;
+        @apply border border-white;
+    }
+
+    .btn-square {
+        @apply rounded-lg p-2 xl:p-3;
     }
 
     .btn-bg {
@@ -26,12 +25,14 @@
     }
 
     .btn-round {
-        @apply p-2 xl:p-3;
+        @apply rounded-full p-2 xl:p-3;
     }
 
     .btn-oval {
-        @apply p-4 py-2 xl:px-7 xl:py-3
+        @apply rounded-full p-4 py-2 xl:px-7 xl:py-3
     }
+
+
 
     .bg-layered::before {
         @apply content-[''] absolute top-0 left-0 w-full h-full bg-white;
@@ -56,4 +57,8 @@ html, body {
 
 .Btn:hover .Btn__bg {
     @apply w-24 h-24;
+}
+
+.section {
+    @apply relative w-full h-screen;
 }

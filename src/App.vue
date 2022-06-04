@@ -3,7 +3,9 @@ import Loader from "./components/Loader.vue";
 </script>
 
 <template>
-  <a href="/" class="absolute p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">Elvia</a>
+  <div class="fixed p-12 xl:p-16 font-title font-bold text-14 uppercase z-20">
+    <router-link to="/">Elvia</router-link>
+  </div>
   <Loader/>
   <router-view></router-view>
 </template>
