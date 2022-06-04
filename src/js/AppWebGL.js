@@ -252,8 +252,8 @@ export class AppWebGL {
   }
 
   animate() {
+    const delta = this.clock.getDelta();
     window.requestAnimationFrame(this.animate.bind(this))
-
 
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -261,17 +261,13 @@ export class AppWebGL {
       this.camera.aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
       this.camera.updateProjectionMatrix()
     }
-    const delta = this.clock.getDelta();
-    if (this.mixerCar) {
+    if (this.mixerCar && this.store.activeStepIndex < 4) {
       this.mixerCar.update(delta);
-      console.log(this.mixerCar.getRoot().children[6])
-      const pos = this.mixerCar.getRoot().children[6].position
-      const quat = this.mixerCar.getRoot().children[6].quaternion
-      this.camera.position.set(pos.x, pos.y, pos.z)
-      this.camera.quaternion.set(quat.w, quat.x, quat.y, quat.z)
+      const target = new Vector3();
+      this.camera.position.lerp(this.mixerCar.getRoot().children[6].getWorldPosition(target), 0.01);
+      this.camera.lookAt(150, 0, 0)
     } 
     
-
     // Render ...
     this.render()
   }
@@ -284,6 +280,8 @@ export class AppWebGL {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.mixerCar = new AnimationMixer( this.car.model );
+          //this.car.model.position.x -= 150 
+          this.car.model.add(this.camera)
           this.scene.add(this.car.model)
         }
 
@@ -311,10 +309,34 @@ export class AppWebGL {
   }
 
   updateSteps(index) {
-    console.log(this.mixerCar)
-    const action = this.mixerCar.clipAction( this.car.model.animations[2+index] );
-    action.setLoop(LoopOnce, 1)
-		action.play();
+    console.log("index : " + index)
+    console.log(this.car.model.animations)
+    let animation = null;
+    switch (index) {
+      case 0 :
+        animation = this.car.model.animations[5]
+        //animation = this.car.model.animations[2]
+      break;
+      case 1 :
+        animation = this.car.model.animations[2]
+        //animation = this.car.model.animations[3]
+      break;
+      case 2 :
+        animation = this.car.model.animations[4]
+        //animation = this.car.model.animations[4]
+      break;
+      case 3 :
+        animation = this.car.model.animations[3]
+        //animation = this.car.model.animations[5]
+      break;
+    }
+    if(animation != null) {
+      const action = this.mixerCar.clipAction(animation);
+      action.setLoop(LoopOnce, 1)
+      action.clampWhenFinished = true
+		  action.play();
+    }
+    
   }
 
   updatePlantSelected(plant) {
