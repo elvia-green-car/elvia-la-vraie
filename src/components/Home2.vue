@@ -1,7 +1,6 @@
 <template>
-  <div ref="home" class="relative w-full">
-    <div class="fixed top-0 left-0 w-full h-screen pointer-events-none bg-gradient-yellow"/>
-    <canvas ref="canvas" id="app-canvas" class="fixed top-0 left-0 w-full h-screen pointer-events-none"/>
+  <div ref="home" class="w-screen h-screen overflow-y-scroll">
+    <canvas ref="canvas" id="app-canvas" class="absolute top-0 left-0 z-0 w-full h-full pointer-events-none"/>
     <Menu/>
     <header class="fixed flex gap-8 top-0 right-0 p-10 xl:p-12 z-30">
       <Button type="round" :pin="store.cart.length > 0">
@@ -18,12 +17,12 @@
     <Breadcrumb class="fixed z-10 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12" :steps="store.landingSteps"
                 @step-selected="updateSteps"/>
     <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12" :steps="store.landingSteps"/>
-    <Scroll ref="scroll" class="fixed animate-spin-slow z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12"/>
-    <div class="fixed flex justify-center items-center z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12">
+    <Scroll ref="scroll" class="animate-spin-slow fixed z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12"/>
+    <div class="flex justify-center items-center fixed z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12">
       <Arrow class="w-10 h-10 rotate-90"/>
     </div>
     <!-- Scrooooooll -->
-    <main ref="main" class="main">
+    <main ref="main" class="w-full h-full">
       <section class="section text-center">
         <div class="section__content flex flex-col items-center justify-around">
           <div class="text max-w-xl">
@@ -187,6 +186,7 @@ export default {
     }
   },
   mounted() {
+    document.body.classList.add('bg-gradient-yellow')
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
 
@@ -194,16 +194,15 @@ export default {
     sections.forEach(s => {
       gsap.set(s, {opacity: 0})
       let texts = s.querySelectorAll(".text")
-      let content = s.querySelectorAll(".section__content")
 
-      //ScrollTrigger.create({
-      //  trigger: s,
-      //  start: "top top",
-      //  //end: "+=50%",
-      //  markers: {startColor: "blue", endColor: "purple"},
-      //  pin: true,
-      //  invalidateOnRefresh: true,
-      //})
+      ScrollTrigger.create({
+        trigger: s,
+        start: "top top",
+        end: "+=50%",
+        markers: {startColor: "blue", endColor: "purple"},
+        pin: true,
+        invalidateOnRefresh: true
+      })
 
       let tl = gsap.timeline({
         scrollTrigger: {
@@ -211,20 +210,20 @@ export default {
           start: "top center",
           end: "bottom top",
           //toggleActions: "restart, pause, reverse, pause",
-          // markers: true,
+          markers: true,
           scrub: true,
           invalidateOnRefresh: true
         }
       })
       tl.set(s, {opacity: 1})
-      tl.set(content, {
-        opacity: 0
-      }).to(content, {
-        opacity: 1, duration: 2, delay: 3
-      }).to(content, {
-        opacity: 0,
-        duration: 1
-      })
+      //tl.set(texts, {
+      //  opacity: 0
+      //}).to(texts, {
+      //  opacity: 1, duration: 2, delay: 3
+      //}).to(texts, {
+      //  opacity: 0,
+      //  duration: 1
+      //})
     })
 
     window.addEventListener('scroll', () => {
