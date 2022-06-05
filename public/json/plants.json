@@ -47,7 +47,7 @@
     "name": "bambou",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Bambou_V02.gltf"
+      "models/Plants/gltf/Configurator_Bambou_V03.gltf"
     ],
     "file": "bambou.png",
     "description": "Le bambou est polyvalent. Sa résistance est inégalée. A la fois flexible et solide, il peut faire face à tout environnement et s'adapte à l'allure de la voiture. Simple d'entretien, il aime la chaleur mais résiste très bien au froid, un arrosage modéré lui suffira. \nGrâce à son absorption cinq fois supérieure à celle d'un arbre lambda, il saura absorber efficacement toutes vos émissions carbonnées.",
@@ -64,7 +64,7 @@
     "name": "chlorophytum",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Chlorophytum_V02.gltf",
+      "models/Plants/gltf/Configurator_Chlorophytum_V03.gltf",
       "models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf"
     ],
     "file": "chlorophytum.png",
@@ -134,7 +134,7 @@
     "name": "monstera",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Monstera_V02.gltf",
+      "models/Plants/gltf/Configurator_Monstera_V04.gltf",
       "models/Plants/gltf/Configurator_Monstera02_V02.gltf"
     ],
     "file": "monstera.png",
