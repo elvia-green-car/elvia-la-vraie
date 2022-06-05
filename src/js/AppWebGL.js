@@ -144,6 +144,7 @@ export class AppWebGL {
 
   //right click to delete a plant
   onPointerClickRight(event) {
+    event.preventDefault();         //to disable context menu 
     if (this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
       let slotName = ""
       let slotNameTemp = ""
@@ -370,6 +371,9 @@ export class AppWebGL {
     this.canvas.addEventListener('click', (event) => this.onPointerClickLeft(event));
     this.canvas.addEventListener('contextmenu', (event) => this.onPointerClickRight(event));
     this.canvas.addEventListener('mousemove', (event) => this.onPointerMove(event));
+
+    window.onselectstart = function(){ return false };        //disbale selection text for drag and drop
+    window.onmousedown = function(){ return false };          //disbale selection text for drag and drop
   }
 
   // Memory management
