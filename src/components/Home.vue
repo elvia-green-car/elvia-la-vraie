@@ -26,11 +26,11 @@
     <main ref="main" class="main">
       <section class="section text-center">
         <div class="section__content flex flex-col items-center justify-around">
-          <div class="text max-w-xl">
+          <div class="title max-w-xl">
             <h1 class="font-title font-bold uppercase text-80">Elvia</h1>
             <span>Le nouveau poumon de la Terre</span>
           </div>
-          <p class="max-w-xl">
+          <p class="text max-w-xl">
             Grâce à une technologie de pointe et un design innovant, Elvia réconcilie automobile et nature. Elvia
             fusionne avec son environnement en purifiant l’air qui l’entoure et en s’intégrant parfaitement aux paysages
             qu’elle traverse.
@@ -39,7 +39,7 @@
       </section>
       <section class="section">
         <div class="section__content grid grid-cols-3 gap-10 px-16">
-          <ul class="col-span-1 text-right flex flex-col gap-10 justify-center items-end">
+          <ul class="col-span-1 text-right flex flex-col gap-10 justify-center items-end pointer-events-auto">
             <li class="group flex gap-4 items-center">
               <span class="transition-opacity opacity-0 group-hover:opacity-100">Créez votre configuration de plantes parmi une sélection des plus diversifiée</span>
               <Button type="round">
@@ -59,7 +59,7 @@
               </Button>
             </li>
           </ul>
-          <div class="col-span-1 col-start-2 flex justify-center items-end">
+          <div class="button col-span-1 col-start-2 flex justify-center items-end pointer-events-auto">
             <router-link to="/configurator" class="mb-10 lg:mb-20">
               <Button type="round">
                 Configurer ma voiture
@@ -70,14 +70,14 @@
       </section>
       <section class="section">
         <div class="section__content">
-          <div class="absolute top-[20%] right-[7%]">
+          <div class="focus1 absolute top-[20%] right-[7%]">
             <div class="relative max-w-sm">
               <Thread class="absolute -left-7 -bottom-1/2 -translate-x-full w-40"/>
               <p class="w-60">Un système d’irriguation récupérant les eaux de pluie pour offrir à vos plantes une eau
                 des plus naturelle.</p>
             </div>
           </div>
-          <div class="absolute top-1/2 left-[2%]">
+          <div class="focus2 absolute top-1/2 left-[2%]">
             <div class="relative">
               <Thread class="absolute -right-7 -top-1/2 translate-x-full w-40 rotate-180"/>
               <p class="w-60 text-right ml-auto">Un terreau biologique naturel qui apportera tous les nutriments et
@@ -85,7 +85,7 @@
                 indispensables à une bonne pousse.</p>
             </div>
           </div>
-          <div class="absolute flex gap-7 max-w-sm bottom-[10%] left-1/3 -translate-x-1/2
+          <div class="text absolute flex gap-7 max-w-sm bottom-[10%] left-1/3 -translate-x-1/2
               before:content-[''] before:block before:w-[2px] before:bg-white before:my-[5%]">
             <p> Toute notre technologie est concentrée en une seule voiture et veille au bien-être de vos plantes, vous
               rendant ainsi complétement autonome. Elvia est conçue pour durer.</p>
@@ -112,14 +112,14 @@
       </section>
       <section class="section">
         <div class="section__content flex justify-center items-center">
-          <div class="absolute flex gap-7 max-w-xs top-1/3 left-1/4 -translate-x-1/2
+          <div class="text absolute flex gap-7 max-w-xs top-1/3 left-1/4 -translate-x-1/2
               before:content-[''] before:block before:w-[2px] before:bg-white before:my-[5%]">
             <p>N’en faites qu’à votre tête !
               Entièrement personnalisable, Elvia vous ressemble et vous accompagne avec style en toute sobriété
               écologique. </p>
           </div>
-          <span class="font-title font-bold uppercase text-80">Elvia</span>
-          <div class="absolute bottom-[10%] right-60 flex gap-7 items-center justify-center">
+          <span class="elvia font-title font-bold uppercase text-80">Elvia</span>
+          <div class="text absolute bottom-[10%] right-60 flex gap-7 items-center justify-center">
             <div class="btn-round btn-border">
               <Leaf class="w-5 h-5"/>
             </div>
@@ -190,41 +190,122 @@ export default {
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
 
+    let timeline = gsap.timeline()
+
     let sections = document.querySelectorAll('.section')
-    sections.forEach(s => {
+    sections.forEach((s, index) => {
       gsap.set(s, {opacity: 0})
-      let texts = s.querySelectorAll(".text")
       let content = s.querySelectorAll(".section__content")
 
-      //ScrollTrigger.create({
-      //  trigger: s,
-      //  start: "top top",
-      //  //end: "+=50%",
-      //  markers: {startColor: "blue", endColor: "purple"},
-      //  pin: true,
-      //  invalidateOnRefresh: true,
-      //})
-
-      let tl = gsap.timeline({
+      let stl = gsap.timeline({
         scrollTrigger: {
           trigger: s,
-          start: "top center",
+          start: "top bottom",
           end: "bottom top",
           //toggleActions: "restart, pause, reverse, pause",
-          // markers: true,
           scrub: true,
           invalidateOnRefresh: true
         }
       })
-      tl.set(s, {opacity: 1})
-      tl.set(content, {
+      stl.set(s, {
+        opacity: 1
+      }).fromTo(content, {
         opacity: 0
-      }).to(content, {
-        opacity: 1, duration: 2, delay: 3
-      }).to(content, {
-        opacity: 0,
-        duration: 1
+      }, {
+        opacity: 1,
       })
+
+      switch (index) {
+        case 0:
+          // TODO : pin title for 2 or 3 height screen
+          //ScrollTrigger.create({
+          //  trigger: s,
+          //  start: "top top",
+          //  //end: "+=50%",
+          //  markers: {startColor: "blue", endColor: "purple"},
+          //  pin: true,
+          //  invalidateOnRefresh: true,
+          //})
+
+          stl.fromTo(s.querySelector('.title'), {
+            y: "120%",
+            opacity: 0
+          }, {
+            y: 0,
+            opacity: 1,
+            delay: 2,
+            duration: 3
+          }).fromTo(s.querySelector('.text'), {
+            opacity: 0
+          }, {
+            opacity: 1
+          })
+
+          break
+        case 1:
+          stl.fromTo(s.querySelectorAll('li'), {
+            x: -100,
+            opacity: 0
+          }, {
+            x: 0,
+            opacity: 1,
+            stagger: 0.2,
+          }).fromTo(s.querySelectorAll('.button'), {
+            opacity: 0
+          }, {
+            opacity: 1,
+            delay: 1
+          })
+          break
+        case 2:
+          stl.fromTo(s.querySelector('.focus1'), {
+            x: 100,
+            opacity: 0
+          }, {
+            x: 0,
+            opacity: 1
+          }).fromTo(s.querySelector('.focus2'), {
+            x: -100,
+            opacity: 0
+          }, {
+            x: 0,
+            opacity: 1
+          }).fromTo(s.querySelector('.text'), {
+            opacity: 0
+          }, {
+            opacity: 1
+          })
+          break
+        case 3:
+          stl.fromTo(s.querySelectorAll('li'), {
+            opacity: 0
+          }, {
+            opacity: 1,
+            stagger: 0.2
+          })
+          break
+        case 4:
+          stl.fromTo(s.querySelectorAll('.text'), {
+            opacity: 0
+          }, {
+            opacity: 1,
+            stagger: 0.2
+          }).fromTo(s.querySelector('.elvia'), {
+            opacity: 0
+          }, {
+            opacity: 1,
+            delay: 2
+          })
+          break
+        default:
+          break
+      }
+      stl.to(content, {
+        opacity: 0,
+        duration: 1,
+        delay: 2
+      })
+      timeline.add(stl)
     })
 
     window.addEventListener('scroll', () => {

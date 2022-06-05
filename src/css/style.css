@@ -68,10 +68,10 @@ html, body {
 }
 
 .section {
-    @apply w-full h-screen border-4 border-red-500;
-    /*margin-top: 100vh;*/
+    @apply w-full h-screen;
+    margin-top: 100vh;
 }
 
 .section__content {
-    @apply fixed w-full h-full top-0 left-0;
+    @apply fixed w-full h-full top-0 left-0 pointer-events-none;
 }
