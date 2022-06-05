@@ -45,17 +45,17 @@ export default {
         case "Global":
           return "Vue globale"
           break
-        case "Home":
-          return "Accueil"
-          break
-        case "Configure":
-          return "Configurer"
+        case "Elvia":
+          return "Elvia"
           break
         case "Plants":
           return "Plantes"
           break
         case "Tools":
           return "Outils"
+          break
+        case "Packs":
+          return "Packs"
           break
         case "Services":
           return "Services"

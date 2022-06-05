@@ -188,7 +188,6 @@ export default {
       this.onClose()
     },
     onPlant(plant) {
-      console.log('plantSelected', plant)
       this.plantSelected = plant
       if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)

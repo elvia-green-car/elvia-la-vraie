@@ -15,8 +15,8 @@
         <Close class="w-6 h-6" v-if="store.isMenuOpen"/>
       </Button>
     </header>
-    <Breadcrumb class="fixed z-10 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12" :steps="store.landingSteps"
-                @step-selected="updateSteps"/>
+    <Breadcrumb class="fixed z-20 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12 pointer-events-auto"
+                :steps="store.landingSteps" @step-selected="updateSteps"/>
     <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12" :steps="store.landingSteps"/>
     <Scroll ref="scroll" class="fixed animate-spin-slow z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12"/>
     <div class="fixed flex justify-center items-center z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12">
@@ -24,7 +24,7 @@
     </div>
     <!-- Scrooooooll -->
     <main ref="main" class="main">
-      <section class="section text-center">
+      <section data-step="0" class="section text-center">
         <div class="section__content flex flex-col items-center justify-around">
           <div class="title max-w-xl">
             <h1 class="font-title font-bold uppercase text-80">Elvia</h1>
@@ -37,7 +37,7 @@
           </p>
         </div>
       </section>
-      <section class="section">
+      <section data-step="0" class="section">
         <div class="section__content grid grid-cols-3 gap-10 px-16">
           <ul class="col-span-1 text-right flex flex-col gap-10 justify-center items-end pointer-events-auto">
             <li class="group flex gap-4 items-center">
@@ -68,7 +68,7 @@
           </div>
         </div>
       </section>
-      <section class="section">
+      <section data-step="0" class="section">
         <div class="section__content">
           <div class="focus1 absolute top-[20%] right-[7%]">
             <div class="relative max-w-sm">
@@ -85,14 +85,13 @@
                 indispensables à une bonne pousse.</p>
             </div>
           </div>
-          <div class="text absolute flex gap-7 max-w-sm bottom-[10%] left-1/3 -translate-x-1/2
-              before:content-[''] before:block before:w-[2px] before:bg-white before:my-[5%]">
-            <p> Toute notre technologie est concentrée en une seule voiture et veille au bien-être de vos plantes, vous
-              rendant ainsi complétement autonome. Elvia est conçue pour durer.</p>
-          </div>
+          <Text class="absolute text bottom-[10%] left-1/3 -translate-x-1/2">
+            Toute notre technologie est concentrée en une seule voiture et veille au bien-être de
+            vos plantes, vous rendant ainsi complétement autonome. Elvia est conçue pour durer.
+          </Text>
         </div>
       </section>
-      <section class="section">
+      <section data-step="0" class="section">
         <div class="section__content grid grid-cols-3 gap-10 px-16">
           <ul class="col-span-1 flex flex-col gap-10 justify-center">
             <li class=" flex gap-9 items-center">
@@ -110,14 +109,12 @@
           </ul>
         </div>
       </section>
-      <section class="section">
+      <section data-step="0" class="section">
         <div class="section__content flex justify-center items-center">
-          <div class="text absolute flex gap-7 max-w-xs top-1/3 left-1/4 -translate-x-1/2
-              before:content-[''] before:block before:w-[2px] before:bg-white before:my-[5%]">
-            <p>N’en faites qu’à votre tête !
-              Entièrement personnalisable, Elvia vous ressemble et vous accompagne avec style en toute sobriété
-              écologique. </p>
-          </div>
+          <Text class="absolute text top-1/3 left-1/4 -translate-x-1/2">
+            N’en faites qu’à votre tête ! Entièrement personnalisable, Elvia vous ressemble et vous accompagne avec
+            style en toute sobriété écologique.
+          </Text>
           <span class="elvia font-title font-bold uppercase text-80">Elvia</span>
           <div class="text absolute bottom-[10%] right-60 flex gap-7 items-center justify-center">
             <div class="btn-round btn-border">
@@ -127,6 +124,62 @@
           </div>
         </div>
       </section>
+      <!-- Plants -->
+      <section data-step="1" ref="plants" class="section">
+        <div class="section__content grid grid-cols-5"> <!-- flex flex-col justify-center items-center -->
+          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+            Plantes</h3>
+          <div class="mt-[25vh] col-start-2">
+            <Text>
+              Toutes nos plantes sont issues de la production biologiques. Elles poussent dans un terreau constitué de
+              compost naturel et sans pesticides.
+            </Text>
+          </div>
+          <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto" @click="(e)=>e.preventDefault">
+            <Button>Voir toutes les plantes</Button>
+          </router-link>
+          <ul class="flex flex-col w-full gap-24 justify-center col-start-4">
+            <!--  :class="n === 2 ? 'self-end': ''" -->
+            <li v-for="n in 3" :class="n === 2 ? 'ml-16': ''"
+                class="pointer-events-none btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+              <img v-if="store.plantsData[n+1]" :src="'/images/png/'+store.plantsData[n+1].file"
+                   class="w-full h-full object-cover">
+            </li>
+          </ul>
+        </div>
+      </section>
+      <!-- Outils -->
+      <section data-step="2" class="section">
+        <div class="section__content">
+          <h3>Outils</h3>
+        </div>
+      </section>
+      <!-- Packs -->
+      <section data-step="3" class="section">
+        <div class="section__content">
+          <h3>Packs</h3>
+        </div>
+      </section>
+      <!-- Services -->
+      <!--section data-step="4" class="section">
+        <div class="section__content flex">
+          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+            Services</h3>
+          <div class="w-1/2 grid grid-cols-3">
+            <div v-for="n in 6" class="col-span-1 aspect-w-1 aspect-h-1">
+              <Button class="w-full h-full" type="square">
+                <Car class="w-full h-full"/>
+              </Button>
+            </div>
+          </div>
+          <div class="w-1/2">
+            <router-link to="/services" class="mt-auto mx-auto mb-20 pointer-events-auto"
+                         @click="(e)=>e.preventDefault">
+              <Button>Découvrir tous nos services</Button>
+            </router-link>
+          </div>
+        </div>
+      </section-->
     </main>
   </div>
 </template>
@@ -143,6 +196,7 @@ import Menu from "./landing/Menu.vue";
 import Button from "./Button.vue";
 import StepsIndicator from "./StepsIndicator.vue";
 import Breadcrumb from "./Breadcrumb.vue";
+import Text from "./Text.vue";
 
 // UI
 import Account from "/public/svg/account.svg?component";
@@ -162,6 +216,7 @@ import Leaf from '/public/svg/leaf.svg?component';
 export default {
   name: "Home",
   components: {
+    Text,
     Breadcrumb,
     StepsIndicator,
     Button,
@@ -204,7 +259,9 @@ export default {
           end: "bottom top",
           //toggleActions: "restart, pause, reverse, pause",
           scrub: true,
-          invalidateOnRefresh: true
+          invalidateOnRefresh: true,
+          onEnter: () => this.updateSteps(parseInt(s.dataset.step)),
+          onEnterBack: () => this.updateSteps(parseInt(s.dataset.step))
         }
       })
       stl.set(s, {
@@ -296,6 +353,18 @@ export default {
             opacity: 1,
             delay: 2
           })
+          break
+        case 5:
+
+          break
+        case 6:
+
+          break
+        case 7:
+
+          break
+        case 8:
+
           break
         default:
           break
