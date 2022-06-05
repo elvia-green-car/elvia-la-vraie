@@ -9,13 +9,13 @@ import {
   MeshStandardMaterial,
   EquirectangularReflectionMapping,
   Clock,
-  AnimationMixer, 
-  LoopOnce
+  AnimationMixer
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Plants} from "./Plants";
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 
 import {useStore} from "./stores/global";
 import {pinia} from "../main";
@@ -28,9 +28,6 @@ export class AppWebGL {
     this.scene = null
     this.camera = null
     this.renderer = null
-    this.mixerCar = null
-    this.target = null
-    this.clock = null
 
     this.load = false
     this.car = null
@@ -59,13 +56,18 @@ export class AppWebGL {
     this.renderer.shadowMap.enabled = true
 
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
-    this.target = new Vector3();
-    this.clock = new Clock();
 
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enabled = false;
+    this.controls.enablePan = false;
+    //this.controls.enableZoom = false;
+    this.controls.maxPolarAngle = (Math.PI /7) * 3
+    this.controls.minPolarAngle = (Math.PI /8) * 2
+    this.controls.maxDistance = 700
+    this.controls.minDistance = 400
 
     this.dirLight1 = new DirectionalLight(0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
@@ -201,7 +203,11 @@ export class AppWebGL {
               this.intersectClone = null
             }
           }
-          if (intersects[indexTemp].object.name.startsWith("Slot_")) {
+          //if (intersects[indexTemp].object.name.startsWith("Slot_")) {
+            const name = intersects[indexTemp].object.name
+            if ((name.startsWith("Slot_"))
+            && ((name.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && name.includes("BackRocker")))
+            ) {
             //Create a clone object to save the original 
             this.intersectClone = intersects[indexTemp].object.clone()
             //Remove all childs on the slot clone (like plants)
@@ -255,22 +261,15 @@ export class AppWebGL {
   }
 
   animate() {
-    const delta = this.clock.getDelta();
     window.requestAnimationFrame(this.animate.bind(this))
-
+    TWEEN.update()
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
       const gl = this.renderer.getContext()
       this.camera.aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
       this.camera.updateProjectionMatrix()
     }
-    if (this.mixerCar && this.store.activeStepIndex < 4) {
-      this.mixerCar.update(delta);
-      const pos = this.mixerCar.getRoot().children[6].position      //getWorldPosition(this.target)
-      //this.camera.position.lerp(this.mixerCar.getRoot().children[6].position, 0.01);
-      this.camera.position.set(pos.x, pos.y, pos.z)
-      this.camera.lookAt(150, 0, 0)
-    } 
+    this.camera.lookAt(0, 0, 0)
     
     // Render ...
     this.render()
@@ -284,9 +283,9 @@ export class AppWebGL {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.mixerCar = new AnimationMixer( this.car.model );
-          //this.car.model.position.x -= 150 
-          this.car.model.add(this.camera)
+          this.car.model.position.x -= 100
           this.scene.add(this.car.model)
+          this.updateSteps(0)            //to animate camera on start
         }
 
         if ((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length)
@@ -313,32 +312,45 @@ export class AppWebGL {
   }
 
   updateSteps(index) {
-    console.log("index : " + index)
-    console.log(this.car.model.animations)
-    let animation = null;
+    let pos = null;
+    console.log(this.car.model.children)
     switch (index) {
       case 0 :
-        //animation = this.car.model.animations[5]
-        animation = this.car.model.animations[2]
+        pos = this.car.model.children[4].position
       break;
       case 1 :
-        //animation = this.car.model.animations[2]
-        animation = this.car.model.animations[3]
+        pos = this.car.model.children[2].position
       break;
       case 2 :
-        //animation = this.car.model.animations[4]
-        animation = this.car.model.animations[4]
+        pos = this.car.model.children[3].position
       break;
       case 3 :
-        //animation = this.car.model.animations[3]
-        animation = this.car.model.animations[5]
+        pos = this.car.model.children[1].position
+      break;
+      case 4 :
+        pos = this.car.model.children[5].position
       break;
     }
-    if(animation != null) {
-      const action = this.mixerCar.clipAction(animation);
-      action.setLoop(LoopOnce, 1)
-      action.clampWhenFinished = true
-		  action.play();
+    if(pos != null) {
+      let coords = this.camera.position
+      this.controls.enabled = false;
+      new TWEEN.Tween(coords)
+             .to({
+                 x: pos.x,
+                 y: pos.y,
+                 z: pos.z
+                },
+                 3000)
+              .easing(TWEEN.Easing.Quartic.InOut)
+              .onComplete(() => {
+                if(index == 4) {
+                  this.controls.enabled = true;
+                }
+              })
+              .onUpdate(() => {
+                  this.camera.position.set(coords.x, coords.y, coords.z)
+              })
+             .start()
     }
     
   }
@@ -372,9 +384,6 @@ export class AppWebGL {
     this.camera = null
     this.renderer = null
     this.canvas = null
-    this.mixerCar = null
-    this.target = null
-    this.clock = null
     this.load = false
     this.pointer = null
     this.raycaster = null
