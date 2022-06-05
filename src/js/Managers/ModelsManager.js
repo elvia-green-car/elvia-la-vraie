@@ -52,14 +52,16 @@ export class ModelsManager {
    */
   load(dictionaryPathType, dictionaryPathHDRi) {
     for (var key in dictionaryPathType) {
-      if (dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
-        this.loadGltf(dictionaryPathType[key][0], (gltf, index) => {
-          this.models[index] = new Model(gltf, MODEL_TYPE.GLTF);
-        }, key)
-      } else if (dictionaryPathType[key][1] == MODEL_TYPE.FBX) {
-        this.loadFbx(dictionaryPathType[key][0], (fbx, index) => {
-          this.models[index] = new Model(fbx, MODEL_TYPE.FBX);
-        }, key)
+      if(dictionaryPathType[key][0] != "") {
+        if (dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
+          this.loadGltf(dictionaryPathType[key][0], (gltf, index) => {
+            this.models[index] = new Model(gltf, MODEL_TYPE.GLTF);
+          }, key)
+        } else if (dictionaryPathType[key][1] == MODEL_TYPE.FBX) {
+          this.loadFbx(dictionaryPathType[key][0], (fbx, index) => {
+            this.models[index] = new Model(fbx, MODEL_TYPE.FBX);
+          }, key)
+        }
       }
     }
     for (var key in dictionaryPathHDRi) {
