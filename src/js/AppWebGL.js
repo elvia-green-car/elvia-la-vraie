@@ -29,6 +29,7 @@ export class AppWebGL {
     this.camera = null
     this.renderer = null
     this.mixerCar = null
+    this.target = null
     this.clock = null
 
     this.load = false
@@ -58,7 +59,7 @@ export class AppWebGL {
     this.renderer.shadowMap.enabled = true
 
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
-
+    this.target = new Vector3();
     this.clock = new Clock();
 
     const gl = this.renderer.getContext()
@@ -118,10 +119,12 @@ export class AppWebGL {
             this.car.plants[slotName].model
 
             if (this.store.activeStepIndex == 2) {
+              this.car.plants[slotName].model.rotation.x = (2*Math.PI) / 3
               slotNameTemp = slotName.replace("Right", "Left")
               this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotNameTemp)
               this.car.model.traverse((child) => {
                 if (child.name == slotNameTemp) {
+                  this.car.plants[slotNameTemp].model.rotation.x = Math.PI / 4
                   child.attach(this.car.plants[slotNameTemp].model)
                   return
                 }
@@ -263,8 +266,9 @@ export class AppWebGL {
     }
     if (this.mixerCar && this.store.activeStepIndex < 4) {
       this.mixerCar.update(delta);
-      const target = new Vector3();
-      this.camera.position.lerp(this.mixerCar.getRoot().children[6].getWorldPosition(target), 0.01);
+      const pos = this.mixerCar.getRoot().children[6].position      //getWorldPosition(this.target)
+      //this.camera.position.lerp(this.mixerCar.getRoot().children[6].position, 0.01);
+      this.camera.position.set(pos.x, pos.y, pos.z)
       this.camera.lookAt(150, 0, 0)
     } 
     
@@ -314,20 +318,20 @@ export class AppWebGL {
     let animation = null;
     switch (index) {
       case 0 :
-        animation = this.car.model.animations[5]
-        //animation = this.car.model.animations[2]
+        //animation = this.car.model.animations[5]
+        animation = this.car.model.animations[2]
       break;
       case 1 :
-        animation = this.car.model.animations[2]
-        //animation = this.car.model.animations[3]
+        //animation = this.car.model.animations[2]
+        animation = this.car.model.animations[3]
       break;
       case 2 :
-        animation = this.car.model.animations[4]
         //animation = this.car.model.animations[4]
+        animation = this.car.model.animations[4]
       break;
       case 3 :
-        animation = this.car.model.animations[3]
-        //animation = this.car.model.animations[5]
+        //animation = this.car.model.animations[3]
+        animation = this.car.model.animations[5]
       break;
     }
     if(animation != null) {
@@ -369,6 +373,7 @@ export class AppWebGL {
     this.renderer = null
     this.canvas = null
     this.mixerCar = null
+    this.target = null
     this.clock = null
     this.load = false
     this.pointer = null
