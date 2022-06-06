@@ -65,12 +65,12 @@ export class AppWebGL {
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
-    /*this.controls.enablePan = false;
+    this.controls.enablePan = false;
     //this.controls.enableZoom = false;
     this.controls.maxPolarAngle = (Math.PI /7) * 3
     this.controls.minPolarAngle = (Math.PI /8) * 2
     this.controls.maxDistance = 700
-    this.controls.minDistance = 400*/
+    this.controls.minDistance = 400
 
     
     this.dirLight1 = new DirectionalLight(0xffffff, 0.5)
