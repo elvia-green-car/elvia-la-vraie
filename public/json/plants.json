@@ -64,7 +64,7 @@
     "name": "chlorophytum",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Chlorophytum_V03.gltf",
+      "models/Plants/gltf/Configurator_Chlorophytum_V04.gltf",
       "models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf"
     ],
     "file": "chlorophytum.png",
@@ -98,7 +98,7 @@
     "name": "ficus roberta",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_FicusRoberta_V02.gltf"
+      "models/Plants/gltf/Configurator_FicusRoberta_V04.gltf"
     ],
     "file": "ficus.png",
     "description": "Ce petit arbre d'apparence commune fait partie des espèces les plus dépolluantes. Il se portera divinement bien sous une grande luminosité et n'aura besoin que d'un arrosage modéré. Sa croissance rapide vous permettra de rapidement bénéficier de tous ses avantages et ainsi absorber tous gaz toxiques émis par la voiture. ",
@@ -115,7 +115,7 @@
     "name": "gerbera",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Gerbera_V02.gltf"
+      "models/Plants/gltf/Configurator_Gerbera_V04.gltf"
     ],
     "file": "gerbera.png",
     "description": "Disponible en plusieurs teintes, la gerbera illuminera votre voiture grâce à ses couleurs éclatantes.\nSous un soleil intense, elle éclatera en vitalité et sera des plus performantes. Elle peut effectivement absorber\ndirectement le benzène présent dans la fumée des cigarettes. Vous pourrez ainsi fumer librement au volant sans aucune crainte de polluer.",
