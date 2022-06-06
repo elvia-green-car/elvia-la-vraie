@@ -8,8 +8,8 @@ import {
   Vector3,
   MeshStandardMaterial,
   EquirectangularReflectionMapping,
-  Clock,
-  AnimationMixer
+  AnimationMixer,
+  sRGBEncoding
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
@@ -54,6 +54,9 @@ export class AppWebGL {
     })
     this.renderer.autoClear = false
     this.renderer.shadowMap.enabled = true
+    //this.renderer.toneMapping = ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1;
+    this.renderer.outputEncoding = sRGBEncoding;
 
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
 
@@ -69,13 +72,18 @@ export class AppWebGL {
     this.controls.maxDistance = 700
     this.controls.minDistance = 400
 
-    this.dirLight1 = new DirectionalLight(0xffffff, 1)
+    
+    this.dirLight1 = new DirectionalLight(0xffffff, 0.5)
+    this.dirLight1.color.setHSL( 0.1, 1, 0.95 );
     this.dirLight1.position.set(-600, 300, 200)
-    this.dirLight2 = new DirectionalLight(0xffffff, 1)
+    this.dirLight2 = new DirectionalLight(0xffffff, 0.5)
+    this.dirLight2.color.setHSL( 0.1, 1, 0.95 );
     this.dirLight2.position.set(-600, 300, -200)
-    this.dirLight3 = new DirectionalLight(0xffffff, 1)
+    this.dirLight3 = new DirectionalLight(0xffffff, 0.5)
+    this.dirLight3.color.setHSL( 0.1, 1, 0.95 );
     this.dirLight3.position.set(600, 300, 200)
-    this.dirLight4 = new DirectionalLight(0xffffff, 1)
+    this.dirLight4 = new DirectionalLight(0xffffff, 0.5)
+    this.dirLight4.color.setHSL( 0.1, 1, 0.95 );
     this.dirLight4.position.set(600, 300, -200)
     this.scene.add(this.dirLight1)
     this.scene.add(this.dirLight2)
@@ -105,8 +113,11 @@ export class AppWebGL {
 
       for (let i = 0; i < this.intersects.length; i++) {
         slotName = this.intersects[i].object.name
-        if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
+        //if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
           //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
+        if ((slotName.startsWith("Slot_"))
+        && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
+        ) {
           if (this.plantSelected != null) {
             if (this.car.plants[slotName] != null) {
               if (this.car.plants[slotName].model != null) {
@@ -119,7 +130,7 @@ export class AppWebGL {
             this.intersects[i].object.attach(this.car.plants[slotName].model)
             this.car.plants[slotName].model.position.set(0, 0, 0)
             this.car.plants[slotName].model
-
+            console.log(this.car.plants[slotName].model)
             if (this.store.activeStepIndex == 2) {
               this.car.plants[slotName].model.rotation.x = (2*Math.PI) / 3
               slotNameTemp = slotName.replace("Right", "Left")
@@ -157,7 +168,10 @@ export class AppWebGL {
 
       for (let i = 0; i < this.intersects.length; i++) {
         slotName = this.intersects[i].object.name
-        if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
+        //if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
+        if ((slotName.startsWith("Slot_"))
+        && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
+        ) {
           if (this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.intersects[i].object.remove(this.car.plants[slotName].model)
             this.car.removePlant(slotName)
@@ -287,6 +301,7 @@ export class AppWebGL {
           this.car.model.position.x -= 100
           this.scene.add(this.car.model)
           this.updateSteps(0)            //to animate camera on start
+          console.log(ModelsSingelton.getInstance().getModelManager().models)
         }
 
         if ((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length)
@@ -300,8 +315,9 @@ export class AppWebGL {
       this.hdri = ModelsSingelton.getInstance().getModelManager().hdri[HDRI.Studio].clone()
       this.hdri.mapping = EquirectangularReflectionMapping;
       this.scene.background = this.hdri.renderTarget;           //.renderTarget use to hide hdri in background
+      //this.scene.background = this.hdri;
       this.scene.environment = this.hdri;
-      //render();
+      //this.render();
     }
 
     //if the load is not finished, we recheck 10ms later
@@ -314,7 +330,6 @@ export class AppWebGL {
 
   updateSteps(index) {
     let pos = null;
-    console.log(this.car.model.children)
     switch (index) {
       case 0 :
         pos = this.car.model.children[4].position
