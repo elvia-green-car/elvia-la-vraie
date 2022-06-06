@@ -8,7 +8,6 @@ import {
   Vector3,
   MeshStandardMaterial,
   EquirectangularReflectionMapping,
-  AnimationMixer,
   sRGBEncoding
 } from "three";
 import {Car} from "./Car";
@@ -304,7 +303,6 @@ export class AppWebGL {
         if ((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
-          this.mixerCar = new AnimationMixer( this.car.model );
           this.car.model.position.x -= 100
           this.scene.add(this.car.model)
           this.updateSteps(0)            //to animate camera on start
