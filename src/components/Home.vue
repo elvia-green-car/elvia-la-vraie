@@ -127,20 +127,20 @@
       <!-- Plants -->
       <section data-step="1" ref="plants" class="section">
         <div class="section__content"> <!-- flex flex-col justify-center items-center -->
-          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+          <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Plantes</h3>
           <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div :ref="store.plantsData[4].name"
                  :class="plantClass(store.plantsData[4].name)"/>
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
-            <div class=" mt-[20vh]">
+            <div class="text mt-[20vh]">
               <Text>
                 Toutes nos plantes sont issues de la production biologiques. Elles poussent dans un terreau constitué de
                 compost naturel et sans pesticides.
               </Text>
             </div>
-            <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/plants" class="button mt-auto mx-auto mb-20 pointer-events-auto"
                          @click="(e)=>e.preventDefault">
               <Button>Voir toutes les plantes</Button>
             </router-link>
@@ -160,7 +160,7 @@
       <!-- Outils -->
       <section data-step="2" ref="tools" class="section">
         <div class="section__content"> <!-- flex flex-col justify-center items-center -->
-          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+          <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Outils</h3>
           <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <!-- main image -->
@@ -173,11 +173,11 @@
                 <!-- tool's bubble -->
               </li>
             </ul>
-            <router-link to="/tools" class="mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/tools" class="button mt-auto mx-auto mb-20 pointer-events-auto"
                          @click="(e)=>e.preventDefault">
               <Button>Voir tous les accessoires</Button>
             </router-link>
-            <div class="ml-auto mt-[20vh]">
+            <div class="text ml-auto mt-[20vh]">
               <Text>
                 Nos outils et accessoires sont fabriqués à partir de matériaux recyclés récupérés dans les usines qui
                 produisent nos voitures afin d’exploiter tous les déchets produits.
@@ -189,19 +189,19 @@
       <!-- Packs -->
       <section data-step="3" ref="packs" class="section">
         <div class="section__content"> <!-- flex flex-col justify-center items-center -->
-          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+          <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Packs</h3>
           <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <!-- main image -->
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
-            <div class=" mt-[20vh]">
+            <div class="text mt-[20vh]">
               <Text>
                 Pas le temps ? Nos packs pré-configurés vous permettent de choisir une sélection complète de plantes
                 selon le thème qui vous plaira le plus.
               </Text>
             </div>
-            <router-link to="/packs" class="mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/packs" class="button mt-auto mx-auto mb-20 pointer-events-auto"
                          @click="(e)=>e.preventDefault">
               <Button>Voir tous les packs</Button>
             </router-link>
@@ -218,11 +218,11 @@
       <!-- Services -->
       <section data-step="4" class="section">
         <div class="section__content">
-          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+          <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Services</h3>
           <div class="flex items-end mt-[50%] -translate-y-full gap-48 max-w-6xl mx-auto">
-            <div class="w-1/2 grid grid-cols-3 gap-10 my-auto">
-              <div v-for="n in 6" :class="n%3 === 2 ? '': '-mt-16'" class="col-span-1">
+            <ul class="w-1/2 grid grid-cols-3 gap-10 my-auto">
+              <li v-for="n in 6" :class="n%3 === 2 ? '': '-mt-8'" class="pointer-events-auto col-span-1">
                 <div class="aspect-w-1 aspect-h-1">
                   <div>
                     <Button type="square">
@@ -230,10 +230,10 @@
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="w-1/2">
-              <router-link to="/services" class="mt-auto mx-auto mb-20 pointer-events-auto"
+              </li>
+            </ul>
+            <div class="button w-1/2 mb-8">
+              <router-link to="/services" class="pointer-events-auto"
                            @click="(e)=>e.preventDefault">
                 <Button>Découvrir tous nos services</Button>
               </router-link>
@@ -318,13 +318,18 @@ export default {
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       this.toAnimate.push(this.store.plantsData[i].name)
     }
 
-    console.log(this.toAnimate)
-
-    let timeline = gsap.timeline()
+    let timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.$refs.main,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: self => console.log("progress:", self.progress)
+      }
+    })
 
     let sections = document.querySelectorAll('.section')
     sections.forEach((s, index) => {
@@ -345,10 +350,6 @@ export default {
       })
       stl.set(s, {
         opacity: 1
-      }).fromTo(content, {
-        opacity: 0
-      }, {
-        opacity: 1,
       })
 
       switch (index) {
@@ -434,21 +435,59 @@ export default {
           })
           break
         case 5:
-
-          break
         case 6:
-
-          break
         case 7:
-
+          stl.fromTo(s.querySelector('.title'), {
+            opacity: 0,
+            scale: 0.9
+          }, {
+            opacity: 0.25,
+            scale: 1
+          }).fromTo(s.querySelector('.text'), {
+            y: 100,
+            opacity: 0,
+          }, {
+            y: 0,
+            opacity: 1,
+          }).fromTo(s.querySelectorAll('li'), {
+            x: -100,
+            opacity: 0
+          }, {
+            x: 0,
+            opacity: 1,
+            stagger: 0.2
+          }).fromTo(s.querySelector('.button'), {
+            opacity: 0,
+          }, {
+            opacity: 1,
+            delay: 1
+          })
           break
         case 8:
-
+          stl.fromTo(s.querySelector('.title'), {
+            opacity: 0,
+            scale: 0.9
+          }, {
+            opacity: 0.25,
+            scale: 1
+          }).fromTo(s.querySelectorAll('li'), {
+            y: 100,
+            opacity: 0,
+          }, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.2
+          }).fromTo(s.querySelector('.button'), {
+            opacity: 0,
+          }, {
+            opacity: 1,
+            delay: 1
+          })
           break
         default:
           break
       }
-      stl.to(content, {
+      stl.to(s, {
         opacity: 0,
         duration: 1,
         delay: 2

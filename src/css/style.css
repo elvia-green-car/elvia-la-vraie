@@ -67,10 +67,6 @@ html, body {
     /*overflow-x: hidden;*/
 }
 
-.Btn:hover .Btn__bg {
-    @apply w-24 h-24;
-}
-
 .main {
     @apply relative z-10;
     /*padding-bottom: 100vh;*/
