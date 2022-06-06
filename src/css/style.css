@@ -1,4 +1,13 @@
 @import url('./panchang.css');
+@import url('/public/images/png/aglaoneme.css');
+@import url('/public/images/png/bambou.css');
+@import url('/public/images/png/chlorophytum.css');
+@import url('/public/images/png/eucalyptus.css');
+@import url('/public/images/png/ficus.css');
+@import url('/public/images/png/gerbera.css');
+@import url('/public/images/png/monstera.css');
+@import url('/public/images/png/paquerette.css');
+@import url('/public/images/png/sansevieria.css');
 
 @tailwind base;
 @tailwind components;

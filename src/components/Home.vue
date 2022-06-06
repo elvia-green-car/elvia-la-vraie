@@ -126,38 +126,91 @@
       </section>
       <!-- Plants -->
       <section data-step="1" ref="plants" class="section">
-        <div class="section__content grid grid-cols-5"> <!-- flex flex-col justify-center items-center -->
+        <div class="section__content"> <!-- flex flex-col justify-center items-center -->
           <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Plantes</h3>
-          <div class="mt-[25vh] col-start-2">
-            <Text>
-              Toutes nos plantes sont issues de la production biologiques. Elles poussent dans un terreau constitué de
-              compost naturel et sans pesticides.
-            </Text>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div :ref="store.plantsData[4].name"
+               :class="plantClass(store.plantsData[4].name)"/>
           </div>
-          <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto" @click="(e)=>e.preventDefault">
-            <Button>Voir toutes les plantes</Button>
-          </router-link>
-          <ul class="flex flex-col w-full gap-24 justify-center col-start-4">
-            <!--  :class="n === 2 ? 'self-end': ''" -->
-            <li v-for="n in 3" :class="n === 2 ? 'ml-16': ''"
-                class="pointer-events-none btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
-              <img v-if="store.plantsData[n+1]" :src="'/images/png/'+store.plantsData[n+1].file"
-                   class="w-full h-full object-cover">
-            </li>
-          </ul>
+          <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
+            <div class=" mt-[20vh]">
+              <Text>
+                Toutes nos plantes sont issues de la production biologiques. Elles poussent dans un terreau constitué de
+                compost naturel et sans pesticides.
+              </Text>
+            </div>
+            <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto"
+                         @click="(e)=>e.preventDefault">
+              <Button>Voir toutes les plantes</Button>
+            </router-link>
+            <ul class="flex flex-col gap-24 justify-center items-end pointer-events-auto">
+              <!--  :class="n === 2 ? 'self-end': ''" -->
+              <li v-for="n in 3" :class="n%2 === 1 ? 'mr-16': ''"
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+                <div :ref="store.plantsData[n].name" v-show="store.plantsData[n+1]"
+                     :class="plantClass(store.plantsData[n].name)" class="w-full h-full object-cover"
+                     @mouseover="onMouseOver(store.plantsData[n].name)"
+                     @mouseleave="onMouseLeave(store.plantsData[n].name)"/>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
       <!-- Outils -->
-      <section data-step="2" class="section">
-        <div class="section__content">
-          <h3>Outils</h3>
+      <section data-step="2" ref="tools" class="section">
+        <div class="section__content"> <!-- flex flex-col justify-center items-center -->
+          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+            Outils</h3>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <!-- main image -->
+          </div>
+          <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
+            <ul class="flex flex-col gap-24 justify-center pointer-events-auto">
+              <!--  :class="n === 2 ? 'self-end': ''" -->
+              <li v-for="n in 3" :class="n%2 === 1 ? 'ml-16': ''"
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+                <!-- tool's bubble -->
+              </li>
+            </ul>
+            <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto"
+                         @click="(e)=>e.preventDefault">
+              <Button>Voir tous les accessoires</Button>
+            </router-link>
+            <div class="ml-auto mt-[20vh]">
+              <Text>
+                Nos outils et accessoires sont fabriqués à partir de matériaux recyclés récupérés dans les usines qui produisent nos voitures afin d’exploiter tous les déchets produits.
+              </Text>
+            </div>
+          </div>
         </div>
       </section>
       <!-- Packs -->
-      <section data-step="3" class="section">
-        <div class="section__content">
-          <h3>Packs</h3>
+      <section data-step="3" ref="packs" class="section">
+        <div class="section__content"> <!-- flex flex-col justify-center items-center -->
+          <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
+            Packs</h3>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <!-- main image -->
+          </div>
+          <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
+            <div class=" mt-[20vh]">
+              <Text>
+                Pas le temps ? Nos packs pré-configurés vous permettent de choisir une sélection complète de plantes selon le thème qui vous plaira le plus.
+              </Text>
+            </div>
+            <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto"
+                         @click="(e)=>e.preventDefault">
+              <Button>Voir tous les packs</Button>
+            </router-link>
+            <ul class="flex flex-col gap-24 justify-center items-end pointer-events-auto">
+              <!--  :class="n === 2 ? 'self-end': ''" -->
+              <li v-for="n in 3" :class="n%2 === 1 ? 'mr-16': ''"
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+                <!-- pack's bubble-->
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
       <!-- Services -->
@@ -241,9 +294,25 @@ export default {
       store
     }
   },
+  data() {
+    return {
+      frame: 0,
+      totalFrames: 60,
+      timeWhenLastUpdate: null,
+      timeFromLastUpdate: null,
+      animationDuration: 4000,
+      toAnimate: []
+    }
+  },
   mounted() {
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
+
+    for (let i = 0; i < 5; i++) {
+      this.toAnimate.push(this.store.plantsData[i].name)
+    }
+
+    console.log(this.toAnimate)
 
     let timeline = gsap.timeline()
 
@@ -377,16 +446,52 @@ export default {
       timeline.add(stl)
     })
 
-    window.addEventListener('scroll', () => {
-      if (this.$refs.home) {
-        //console.log('landing progress', (window.scrollY - window.innerHeight) / this.$refs.home.clientHeight * 100)
-      }
-    })
+    window.addEventListener('load', () => this.step())
+  },
+  beforeUnmount() {
+    window.removeEventListener('load', () => this.step)
   },
   methods: {
+    plantClass(name) {
+      return name + '0000'
+    },
     updateSteps(index) {
       this.store.activeStepIndex = index
       this.store.activeStep = this.store.landingSteps[index]
+    },
+    addLeadingZeros(num, totalLength) {
+      return String(num).padStart(totalLength, '0');
+    },
+    step(startTime) {
+      if (!this.timeWhenLastUpdate) this.timeWhenLastUpdate = startTime;
+
+      this.timeFromLastUpdate = startTime - this.timeWhenLastUpdate;
+      let frame = this.addLeadingZeros(this.frame, 2)
+
+      if (this.timeFromLastUpdate > this.animationDuration / this.totalFrames) {
+        this.timeWhenLastUpdate = startTime;
+
+        this.toAnimate.forEach(name => {
+          if (this.$refs[name] && this.$refs[name][0]) {
+            this.$refs[name][0].setAttribute('class', name + '00' + frame)
+          } else if (this.$refs[name]) {
+            this.$refs[name].setAttribute('class', name + '00' + frame)
+          }
+        })
+
+        if (this.frame <= 0) {
+          this.frame = this.totalFrames;
+        } else {
+          this.frame--
+        }
+      }
+      requestAnimationFrame(this.step)
+    },
+    onMouseOver(name) {
+      this.toAnimate.push(name)
+    },
+    onMouseLeave(name) {
+      this.toAnimate = this.toAnimate.filter(n => n !== name)
     },
   }
 }
