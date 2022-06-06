@@ -1,7 +1,7 @@
 <template>
   <div ref="home" class="relative w-full">
-    <div class="fixed top-0 left-0 w-full h-screen pointer-events-none bg-gradient-yellow"/>
-    <canvas ref="canvas" id="app-canvas" class="fixed top-0 left-0 w-full h-screen pointer-events-none"/>
+    <div class="fixed top-0 left-0 w-full h-screen  bg-gradient-yellow"/>
+    <canvas ref="canvas" id="app-canvas" class="fixed top-0 left-0 w-full h-screen "/>
     <Menu/>
     <header class="fixed flex gap-8 top-0 right-0 p-10 xl:p-12 z-30">
       <Button type="round" :pin="store.cart.length > 0">
@@ -15,7 +15,7 @@
         <Close class="w-6 h-6" v-if="store.isMenuOpen"/>
       </Button>
     </header>
-    <Breadcrumb class="fixed z-20 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12 pointer-events-auto"
+    <Breadcrumb class="fixed z-20 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12 "
                 :steps="store.landingSteps" @step-selected="updateSteps"/>
     <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12" :steps="store.landingSteps"/>
     <Scroll ref="scroll" class="fixed animate-spin-slow z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12"/>
@@ -39,28 +39,28 @@
       </section>
       <section data-step="0" class="section">
         <div class="section__content grid grid-cols-3 gap-10 px-16">
-          <ul class="col-span-1 text-right flex flex-col gap-10 justify-center items-end pointer-events-auto">
+          <ul class="col-span-1 text-right flex flex-col gap-10 justify-center items-end">
             <li class="group flex gap-4 items-center">
               <span class="transition-opacity opacity-0 group-hover:opacity-100">Créez votre configuration de plantes parmi une sélection des plus diversifiée</span>
-              <Button type="round">
+              <Button type="round" class="">
                 <Flower class="w-12 h-12"/>
               </Button>
             </li>
             <li class="group flex gap-4 items-center mr-16">
               <span class="transition-opacity opacity-0 group-hover:opacity-100">Absorbez 95% du C02 que vous émettez pour rejeter 100% d’oxygène</span>
-              <Button type="round">
+              <Button type="round" class="">
                 <Wind class="w-12 h-12"/>
               </Button>
             </li>
             <li class="group flex gap-4 items-center">
               <span class="transition-opacity opacity-0 group-hover:opacity-100">Partout où vous voyagez, rafraîchissez l’environnement</span>
-              <Button type="round">
+              <Button type="round" class="">
                 <Snow class="w-12 h-12"/>
               </Button>
             </li>
           </ul>
-          <div class="button col-span-1 col-start-2 flex justify-center items-end pointer-events-auto">
-            <router-link to="/configurator" class="mb-10 lg:mb-20">
+          <div class="button col-span-1 col-start-2 flex justify-center items-end">
+            <router-link to="/configurator" class="mb-10 lg:mb-20 ">
               <Button type="round">
                 Configurer ma voiture
               </Button>
@@ -140,14 +140,14 @@
                 compost naturel et sans pesticides.
               </Text>
             </div>
-            <router-link to="/plants" class="button mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/plants" class="button mt-auto mx-auto mb-20 "
                          @click="(e)=>e.preventDefault">
               <Button>Voir toutes les plantes</Button>
             </router-link>
-            <ul class="flex flex-col gap-24 justify-center items-end pointer-events-auto">
+            <ul class="flex flex-col gap-24 justify-center items-end">
               <!--  :class="n === 2 ? 'self-end': ''" -->
               <li v-for="n in 3" :class="n%2 === 1 ? 'mr-16': ''"
-                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden ">
                 <div :ref="store.plantsData[n].name" v-show="store.plantsData[n+1]"
                      :class="plantClass(store.plantsData[n].name)" class="w-full h-full object-cover"
                      @mouseover="onMouseOver(store.plantsData[n].name)"
@@ -166,14 +166,14 @@
             <!-- main image -->
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
-            <ul class="flex flex-col gap-24 justify-center pointer-events-auto">
+            <ul class="flex flex-col gap-24 justify-center">
               <!--  :class="n === 2 ? 'self-end': ''" -->
               <li v-for="n in 3" :class="n%2 === 1 ? 'ml-16': ''"
-                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden ">
                 <!-- tool's bubble -->
               </li>
             </ul>
-            <router-link to="/tools" class="button mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/tools" class="button mt-auto mx-auto mb-20 "
                          @click="(e)=>e.preventDefault">
               <Button>Voir tous les accessoires</Button>
             </router-link>
@@ -201,14 +201,13 @@
                 selon le thème qui vous plaira le plus.
               </Text>
             </div>
-            <router-link to="/packs" class="button mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/packs" class="button mt-auto mx-auto mb-20 "
                          @click="(e)=>e.preventDefault">
               <Button>Voir tous les packs</Button>
             </router-link>
-            <ul class="flex flex-col gap-24 justify-center items-end pointer-events-auto">
-              <!--  :class="n === 2 ? 'self-end': ''" -->
+            <ul class="flex flex-col gap-24 justify-center items-end">
               <li v-for="n in 3" :class="n%2 === 1 ? 'mr-16': ''"
-                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden">
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden ">
                 <!-- pack's bubble-->
               </li>
             </ul>
@@ -222,7 +221,7 @@
             Services</h3>
           <div class="flex items-end mt-[50%] -translate-y-full gap-48 max-w-6xl mx-auto">
             <ul class="w-1/2 grid grid-cols-3 gap-10 my-auto">
-              <li v-for="n in 6" :class="n%3 === 2 ? '': '-mt-8'" class="pointer-events-auto col-span-1">
+              <li v-for="n in 6" :class="n%3 === 2 ? '': '-mt-8'" class=" col-span-1">
                 <div class="aspect-w-1 aspect-h-1">
                   <div>
                     <Button type="square">
@@ -233,7 +232,7 @@
               </li>
             </ul>
             <div class="button w-1/2 mb-8">
-              <router-link to="/services" class="pointer-events-auto"
+              <router-link to="/services" class=""
                            @click="(e)=>e.preventDefault">
                 <Button>Découvrir tous nos services</Button>
               </router-link>
@@ -333,8 +332,9 @@ export default {
 
     let sections = document.querySelectorAll('.section')
     sections.forEach((s, index) => {
-      gsap.set(s, {opacity: 0})
       let content = s.querySelectorAll(".section__content")
+      gsap.set(s, {opacity: 0})
+      gsap.set(content, {pointerEvents: "none"})
 
       let stl = gsap.timeline({
         scrollTrigger: {
@@ -349,7 +349,9 @@ export default {
         }
       })
       stl.set(s, {
-        opacity: 1
+        opacity: 1,
+      }).set(content, {
+        pointerEvents: "auto"
       })
 
       switch (index) {
@@ -490,7 +492,9 @@ export default {
       stl.to(s, {
         opacity: 0,
         duration: 1,
-        delay: 2
+        delay: 2,
+      }).to(content, {
+        pointerEvents: "none"
       })
       timeline.add(stl)
     })
