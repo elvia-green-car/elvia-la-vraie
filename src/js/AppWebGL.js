@@ -7,9 +7,16 @@ import {
   Vector2,
   Vector3,
   MeshStandardMaterial,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneGeometry,
+  DoubleSide,
   EquirectangularReflectionMapping,
   AnimationMixer,
-  sRGBEncoding
+  sRGBEncoding,
+  Box3,
+  PlaneBufferGeometry,
+  ShadowMaterial
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
@@ -65,12 +72,12 @@ export class AppWebGL {
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
-    this.controls.enablePan = false;
+    /*this.controls.enablePan = false;
     //this.controls.enableZoom = false;
     this.controls.maxPolarAngle = (Math.PI /7) * 3
     this.controls.minPolarAngle = (Math.PI /8) * 2
     this.controls.maxDistance = 700
-    this.controls.minDistance = 400
+    this.controls.minDistance = 400*/
 
     
     this.dirLight1 = new DirectionalLight(0xffffff, 0.5)
@@ -88,7 +95,7 @@ export class AppWebGL {
     this.scene.add(this.dirLight1)
     this.scene.add(this.dirLight2)
     this.scene.add(this.dirLight3)
-    this.scene.add(this.dirLight4)*/
+    this.scene.add(this.dirLight4)
 
     this.shadowLight = new DirectionalLight(0xd0d0d0, 1)
     this.shadowLight.position.set(-600, 300, 200)
@@ -113,6 +120,7 @@ export class AppWebGL {
 
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
+
   }
 
   //Left click to add a plant
@@ -317,6 +325,19 @@ export class AppWebGL {
           this.mixerCar = new AnimationMixer( this.car.model );
           this.car.model.position.x -= 100
           this.scene.add(this.car.model)
+          const s = new Box3().setFromObject(this.car.model).getSize(new Vector3(0, 0, 0));
+          const geometry = new PlaneGeometry( s.x, s.y );
+          const material = new MeshBasicMaterial( {color: 0x0e0e0e, opacity: 0.5, transparent: true} );
+          const plane = new Mesh( geometry, material );
+          plane.rotateX(-(Math.PI / 2))
+          this.scene.add( plane );
+          
+          this.car.model.traverse(child => {
+            /*if(child.isMesh) {
+              child.castShadow = true
+              child.receiveShadow = true
+            }*/
+          })
           this.updateSteps(0)            //to animate camera on start
           console.log(ModelsSingelton.getInstance().getModelManager().models)
         }
