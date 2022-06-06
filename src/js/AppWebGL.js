@@ -65,12 +65,12 @@ export class AppWebGL {
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
-    this.controls.enablePan = false;
+    /*this.controls.enablePan = false;
     //this.controls.enableZoom = false;
     this.controls.maxPolarAngle = (Math.PI /7) * 3
     this.controls.minPolarAngle = (Math.PI /8) * 2
     this.controls.maxDistance = 700
-    this.controls.minDistance = 400
+    this.controls.minDistance = 400*/
 
     
     this.dirLight1 = new DirectionalLight(0xffffff, 0.5)
@@ -126,7 +126,13 @@ export class AppWebGL {
               }
 
             }
-            this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotName)
+            let model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone()
+            if ((this.store.activeStepIndex == 2) 
+            && (ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel.length > 0)) {
+              model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel[0].clone()
+            }
+
+            this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotName)
             this.intersects[i].object.attach(this.car.plants[slotName].model)
             this.car.plants[slotName].model.position.set(0, 0, 0)
             this.car.plants[slotName].model
@@ -134,10 +140,11 @@ export class AppWebGL {
             if (this.store.activeStepIndex == 2) {
               this.car.plants[slotName].model.rotation.x = (2*Math.PI) / 3
               slotNameTemp = slotName.replace("Right", "Left")
-              this.car.addPlant(new Plants(ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone(), this.plantSelected), slotNameTemp)
+              this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotNameTemp)
               this.car.model.traverse((child) => {
                 if (child.name == slotNameTemp) {
                   this.car.plants[slotNameTemp].model.rotation.x = Math.PI / 4
+                  this.car.plants[slotNameTemp].model.rotation.y = Math.PI
                   child.attach(this.car.plants[slotNameTemp].model)
                   return
                 }
