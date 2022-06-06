@@ -1,14 +1,11 @@
 <template>
   <!-- TODO : resolve mix-blend-mode problem : mix-blend-difference-->
-  <button class="relative">
-    <span v-if="pin"
-          class="absolute right-0 top-0 -translate-x-1/5 translate-y-1/5 w-3 xl:w-4 h-3 xl:h-4 rounded-full bg-white"/>
-    <div :ref="ref" class="Btn relative flex items-center justify-center gap-4 btn-border overflow-hidden transition-all"
-         :class="{'btn-bg': background, 'btn-round': round, 'btn-oval': !round}">
-      <slot></slot>
-      <span
-          class="Btn__bg origin-center transition-all ease-in-out -left-5 -bottom-10 absolute bg-white rounded-full w-1 h-1 z-0"/>
-    </div>
+  <button :ref="ref" class="Btn relative flex items-center justify-center gap-4 btn-border overflow-hidden"
+          :class="{'btn-bg': background, 'btn-round': round, 'btn-oval': !round}">
+    <component :is="icon" class="w-6 h-6 z-10" :class="{'rotate-180': rotate}"/>
+    <span v-if="text" class=" z-10">{{ text }}</span>
+    <span
+        class="Btn__bg origin-center transition-all ease-in-out -left-5 -bottom-10 absolute bg-white rounded-full w-1 h-1 z-0"/>
   </button>
 </template>
 
@@ -20,9 +17,16 @@ import Close from '/public/svg/cross.svg?component'
 
 export default {
   name: "Button",
-  components: {},
+  components: {
+    Arrow,
+    Download,
+    Close,
+    ArrowSlider
+  },
   props: {
     ref: String,
+    text: String,
+    icon: String,
     round: {
       default: false,
       type: Boolean
@@ -31,7 +35,7 @@ export default {
       default: true,
       type: Boolean
     },
-    pin: {
+    rotate: {
       default: false,
       type: Boolean
     }

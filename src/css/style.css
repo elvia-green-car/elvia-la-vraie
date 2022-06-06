@@ -20,26 +20,40 @@
     .btn-border {
         @apply rounded-full border border-white;
     }
+
     .btn-bg {
         @apply bg-white bg-opacity-20;
     }
+
     .btn-round {
-        @apply  p-2 lg:p-4;
+        @apply p-2 xl:p-3;
     }
+
     .btn-oval {
-        @apply p-4 py-2 lg:px-8 lg:py-4
+        @apply p-4 py-2 xl:px-7 xl:py-3
+    }
+
+    .bg-layered::before {
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white;
+        opacity: 30%;
+    }
+
+    .bg-layered::after {
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal;
+        opacity: 20%;
+    }
+    .bg-gradient-green {
+        background: radial-gradient(var(--green-light), var(--green-normal));
+    }
+    .bg-gradient-yellow {
+        background: radial-gradient(var(--yellow-light), var(--yellow-normal));
     }
 }
 
 html, body {
-    @apply h-full m-0 text-white text-14 lg:text-16 font-body;
-    background: radial-gradient(var(--green-light), var(--green-normal));
+    @apply h-full m-0 text-white text-14 xl:text-16 font-body leading-tight;
 }
 
-.Plant__help {
-    @apply hidden;
-}
-
-.Plant:hover .Plant__help {
-    @apply flex;
+.Btn:hover .Btn__bg {
+    @apply w-24 h-24;
 }

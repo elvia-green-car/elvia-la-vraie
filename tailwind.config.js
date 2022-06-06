@@ -14,6 +14,8 @@ module.exports = {
         'title': ['Panchang', 'sans-serif']
       },
       fontSize: {
+        '80': '80px',
+        '60': '60px',
         '40': '40px',
         '30': '30px',
         '22': '22px',
@@ -35,6 +37,9 @@ module.exports = {
       },
       blur: {
         xs: '2px',
+      },
+      animation: {
+        'spin-slow': 'spin 7s linear infinite',
       }
     },
   },

@@ -16,6 +16,8 @@ public/models
 public/textures
 public/assets/models
 public/assets/textures
+src/assets/models
+src/assets/textures
 
 # Editor directories and files
 .vscode/*

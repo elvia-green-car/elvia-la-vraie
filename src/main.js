@@ -1,11 +1,13 @@
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router'
+import {createPinia} from 'pinia'
 
 import App from './App.vue'
 import Home from './components/Home.vue'
 import Configurator from './components/Configurator.vue'
 
 import './css/style.css'
+import {useStore} from "./js/stores/global";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,11 +18,14 @@ const router = createRouter({
   ]
 })
 
-createApp(App).use(router).mount('#app')
+export const pinia = createPinia()
 
-//import {AppWebGL} from "./js/AppWebGL";
+createApp(App)
+  .use(router)
+  .use(pinia)
+  .mount('#app')
+
+//router.beforeEach((to) => {
+//  const store = useStore(pinia)
 //
-//const canvas = document.getElementById('app-canvas')
-//const app = new AppWebGL(canvas)
-//app.init()
-//app.run()
+//})
