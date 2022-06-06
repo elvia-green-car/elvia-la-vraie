@@ -8,13 +8,13 @@ import {
   Vector3,
   MeshStandardMaterial,
   EquirectangularReflectionMapping,
-  sRGBEncoding
+  sRGBEncoding, FogExp2, TextureLoader, PlaneBufferGeometry, MeshLambertMaterial, Mesh, SpriteMaterial, Sprite
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Plants} from "./Plants";
-import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
+import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
 
 import {useStore} from "./stores/global";
 import {pinia} from "../main";
@@ -66,23 +66,22 @@ export class AppWebGL {
     this.controls.enabled = false;
     this.controls.enablePan = false;
     //this.controls.enableZoom = false;
-    this.controls.maxPolarAngle = (Math.PI /7) * 3
-    this.controls.minPolarAngle = (Math.PI /8) * 2
+    this.controls.maxPolarAngle = (Math.PI / 7) * 3
+    this.controls.minPolarAngle = (Math.PI / 8) * 2
     this.controls.maxDistance = 700
     this.controls.minDistance = 400
 
-    
     this.dirLight1 = new DirectionalLight(0xffffff, 0.5)
-    this.dirLight1.color.setHSL( 0.1, 1, 0.95 );
+    this.dirLight1.color.setHSL(0.1, 1, 0.95);
     this.dirLight1.position.set(-600, 300, 200)
     this.dirLight2 = new DirectionalLight(0xffffff, 0.5)
-    this.dirLight2.color.setHSL( 0.1, 1, 0.95 );
+    this.dirLight2.color.setHSL(0.1, 1, 0.95);
     this.dirLight2.position.set(-600, 300, -200)
     this.dirLight3 = new DirectionalLight(0xffffff, 0.5)
-    this.dirLight3.color.setHSL( 0.1, 1, 0.95 );
+    this.dirLight3.color.setHSL(0.1, 1, 0.95);
     this.dirLight3.position.set(600, 300, 200)
     this.dirLight4 = new DirectionalLight(0xffffff, 0.5)
-    this.dirLight4.color.setHSL( 0.1, 1, 0.95 );
+    this.dirLight4.color.setHSL(0.1, 1, 0.95);
     this.dirLight4.position.set(600, 300, -200)
     this.scene.add(this.dirLight1)
     this.scene.add(this.dirLight2)
@@ -92,6 +91,8 @@ export class AppWebGL {
     this.camera.position.set(-470, 190, 502)
     this.camera.rotation.set(0, 0.03, 0.06)
     this.camera.lookAt(0, 0, 0)
+
+    this.smog()
 
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
@@ -113,9 +114,9 @@ export class AppWebGL {
       for (let i = 0; i < this.intersects.length; i++) {
         slotName = this.intersects[i].object.name
         //if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
-          //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
+        //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
         if ((slotName.startsWith("Slot_"))
-        && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
+          && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
         ) {
           if (this.plantSelected != null) {
             if (this.car.plants[slotName] != null) {
@@ -126,8 +127,8 @@ export class AppWebGL {
 
             }
             let model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone()
-            if ((this.store.activeStepIndex == 2) 
-            && (ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel.length > 0)) {
+            if ((this.store.activeStepIndex == 2)
+              && (ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel.length > 0)) {
               model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel[0].clone()
             }
 
@@ -137,7 +138,7 @@ export class AppWebGL {
             this.car.plants[slotName].model
             console.log(this.car.plants[slotName].model)
             if (this.store.activeStepIndex == 2) {
-              this.car.plants[slotName].model.rotation.x = (2*Math.PI) / 3
+              this.car.plants[slotName].model.rotation.x = (2 * Math.PI) / 3
               slotNameTemp = slotName.replace("Right", "Left")
               this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotNameTemp)
               this.car.model.traverse((child) => {
@@ -176,7 +177,7 @@ export class AppWebGL {
         slotName = this.intersects[i].object.name
         //if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
         if ((slotName.startsWith("Slot_"))
-        && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
+          && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
         ) {
           if (this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.intersects[i].object.remove(this.car.plants[slotName].model)
@@ -211,7 +212,7 @@ export class AppWebGL {
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
     if (intersects.length > 0) {
-      for(let i = 0; i < intersects.length; i++) {
+      for (let i = 0; i < intersects.length; i++) {
         if (intersects[i].object.name.startsWith("Slot_")) {
           indexTemp = i;
         }
@@ -225,28 +226,27 @@ export class AppWebGL {
             }
           }
           //if (intersects[indexTemp].object.name.startsWith("Slot_")) {
-            const name = intersects[indexTemp].object.name
-            if ((name.startsWith("Slot_"))
+          const name = intersects[indexTemp].object.name
+          if ((name.startsWith("Slot_"))
             && ((name.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && name.includes("BackRocker")))
-            ) {
+          ) {
             //Create a clone object to save the original 
             this.intersectClone = intersects[indexTemp].object.clone()
             //Remove all childs on the slot clone (like plants)
-            if(this.intersectClone.children.length > 0){
+            if (this.intersectClone.children.length > 0) {
               for (var i = this.intersectClone.children.length - 1; i >= 0; i--) {
                 this.intersectClone.remove(this.intersectClone.children[i]);
               }
             }
             this.intersectClone.name = "Clone_" + this.intersectClone.name
-            if(this.intersectClone.name.includes("BackRockerPanel")) {
+            if (this.intersectClone.name.includes("BackRockerPanel")) {
               this.intersectClone.position.set(0.02, 0, 0)
-              this.intersectClone.rotation.set(0,0,0)
-            }
-            else {
+              this.intersectClone.rotation.set(0, 0, 0)
+            } else {
               this.intersectClone.position.set(0, 0, 0.02)
-              this.intersectClone.rotation.set(0,0,0)
+              this.intersectClone.rotation.set(0, 0, 0)
             }
-            
+
             this.intersectClone.material = new MeshStandardMaterial({color: 0x00ff00, opacity: 0.5, transparent: true});
             intersects[indexTemp].object.add(this.intersectClone)
           }
@@ -265,6 +265,32 @@ export class AppWebGL {
     }
 
   }
+
+  // fog
+  smog() {
+    this.cloudParticles = []
+    this.scene.fog = new FogExp2(0x03544e, 0.001)
+    this.renderer.setClearColor(this.scene.fog.color)
+    let tLoader = new TextureLoader();
+    tLoader.load("/images/png/mixed-fog.png", (texture) => {
+      //let cloudGeo = new PlaneBufferGeometry(500, 500)
+      /*let cloudMaterial = new MeshLambertMaterial({
+        map: texture,
+        transparent: true
+      })*/
+      let material = new SpriteMaterial({map: texture});
+      for (let p = 0; p < 50; p++) {
+        //let cloud = new Mesh(cloudGeo, cloudMaterial)
+        let cloud = new Sprite(material)
+        cloud.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+        cloud.scale.set(200, 200, 200)
+        console.log(cloud)
+        this.cloudParticles.push(cloud)
+        this.scene.add(cloud)
+      }
+    })
+  }
+
 
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;
@@ -291,7 +317,7 @@ export class AppWebGL {
       this.camera.updateProjectionMatrix()
     }
     this.camera.lookAt(0, 0, 0)
-    
+
     // Render ...
     this.render()
   }
@@ -338,42 +364,42 @@ export class AppWebGL {
     switch (index) {
       case 0 :
         pos = this.car.model.children[4].position
-      break;
+        break;
       case 1 :
         pos = this.car.model.children[2].position
-      break;
+        break;
       case 2 :
         pos = this.car.model.children[3].position
-      break;
+        break;
       case 3 :
         pos = this.car.model.children[1].position
-      break;
+        break;
       case 4 :
         pos = this.car.model.children[5].position
-      break;
+        break;
     }
-    if(pos != null) {
+    if (pos != null) {
       let coords = this.camera.position
       this.controls.enabled = false;
       new TWEEN.Tween(coords)
-             .to({
-                 x: pos.x,
-                 y: pos.y,
-                 z: pos.z
-                },
-                 3000)
-              .easing(TWEEN.Easing.Quartic.InOut)
-              .onComplete(() => {
-                if(index == 4) {
-                  this.controls.enabled = true;
-                }
-              })
-              .onUpdate(() => {
-                  this.camera.position.set(coords.x, coords.y, coords.z)
-              })
-             .start()
+        .to({
+            x: pos.x,
+            y: pos.y,
+            z: pos.z
+          },
+          3000)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onComplete(() => {
+          if (index == 4) {
+            this.controls.enabled = true;
+          }
+        })
+        .onUpdate(() => {
+          this.camera.position.set(coords.x, coords.y, coords.z)
+        })
+        .start()
     }
-    
+
   }
 
   updatePlantSelected(plant) {
@@ -392,8 +418,12 @@ export class AppWebGL {
     this.canvas.addEventListener('contextmenu', (event) => this.onPointerClickRight(event));
     this.canvas.addEventListener('mousemove', (event) => this.onPointerMove(event));
 
-    window.onselectstart = function(){ return false };        //disbale selection text for drag and drop
-    window.onmousedown = function(){ return false };          //disbale selection text for drag and drop
+    window.onselectstart = function () {
+      return false
+    };        //disbale selection text for drag and drop
+    window.onmousedown = function () {
+      return false
+    };          //disbale selection text for drag and drop
   }
 
   // Memory management
