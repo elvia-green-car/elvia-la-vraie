@@ -130,8 +130,8 @@
           <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Plantes</h3>
           <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div :ref="store.plantsData[4].name"
-               :class="plantClass(store.plantsData[4].name)"/>
+            <div :ref="store.plantsData[4].name"
+                 :class="plantClass(store.plantsData[4].name)"/>
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
             <div class=" mt-[20vh]">
@@ -173,13 +173,14 @@
                 <!-- tool's bubble -->
               </li>
             </ul>
-            <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/tools" class="mt-auto mx-auto mb-20 pointer-events-auto"
                          @click="(e)=>e.preventDefault">
               <Button>Voir tous les accessoires</Button>
             </router-link>
             <div class="ml-auto mt-[20vh]">
               <Text>
-                Nos outils et accessoires sont fabriqués à partir de matériaux recyclés récupérés dans les usines qui produisent nos voitures afin d’exploiter tous les déchets produits.
+                Nos outils et accessoires sont fabriqués à partir de matériaux recyclés récupérés dans les usines qui
+                produisent nos voitures afin d’exploiter tous les déchets produits.
               </Text>
             </div>
           </div>
@@ -196,10 +197,11 @@
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
             <div class=" mt-[20vh]">
               <Text>
-                Pas le temps ? Nos packs pré-configurés vous permettent de choisir une sélection complète de plantes selon le thème qui vous plaira le plus.
+                Pas le temps ? Nos packs pré-configurés vous permettent de choisir une sélection complète de plantes
+                selon le thème qui vous plaira le plus.
               </Text>
             </div>
-            <router-link to="/plants" class="mt-auto mx-auto mb-20 pointer-events-auto"
+            <router-link to="/packs" class="mt-auto mx-auto mb-20 pointer-events-auto"
                          @click="(e)=>e.preventDefault">
               <Button>Voir tous les packs</Button>
             </router-link>
@@ -214,25 +216,31 @@
         </div>
       </section>
       <!-- Services -->
-      <!--section data-step="4" class="section">
-        <div class="section__content flex">
+      <section data-step="4" class="section">
+        <div class="section__content">
           <h3 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Services</h3>
-          <div class="w-1/2 grid grid-cols-3">
-            <div v-for="n in 6" class="col-span-1 aspect-w-1 aspect-h-1">
-              <Button class="w-full h-full" type="square">
-                <Car class="w-full h-full"/>
-              </Button>
+          <div class="flex items-end mt-[50%] -translate-y-full gap-48 max-w-6xl mx-auto">
+            <div class="w-1/2 grid grid-cols-3 gap-10 my-auto">
+              <div v-for="n in 6" :class="n%3 === 2 ? '': '-mt-16'" class="col-span-1">
+                <div class="aspect-w-1 aspect-h-1">
+                  <div>
+                    <Button type="square">
+                      <Car class="w-28 h-28"/>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-1/2">
+              <router-link to="/services" class="mt-auto mx-auto mb-20 pointer-events-auto"
+                           @click="(e)=>e.preventDefault">
+                <Button>Découvrir tous nos services</Button>
+              </router-link>
             </div>
           </div>
-          <div class="w-1/2">
-            <router-link to="/services" class="mt-auto mx-auto mb-20 pointer-events-auto"
-                         @click="(e)=>e.preventDefault">
-              <Button>Découvrir tous nos services</Button>
-            </router-link>
-          </div>
         </div>
-      </section-->
+      </section>
     </main>
   </div>
 </template>
@@ -265,6 +273,7 @@ import Thread from '/public/svg/thread.svg?component';
 import Water from '/public/svg/water.svg?component';
 import Engine from '/public/svg/engine.svg?component';
 import Leaf from '/public/svg/leaf.svg?component';
+import Car from '/public/svg/car.svg?component';
 
 export default {
   name: "Home",
@@ -285,7 +294,8 @@ export default {
     Thread,
     Water,
     Engine,
-    Leaf
+    Leaf,
+    Car
   },
   setup() {
     const store = useStore()
