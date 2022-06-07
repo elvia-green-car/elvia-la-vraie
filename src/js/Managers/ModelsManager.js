@@ -52,14 +52,32 @@ export class ModelsManager {
    */
   load(dictionaryPathType, dictionaryPathHDRi) {
     for (var key in dictionaryPathType) {
-      if (dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
-        this.loadGltf(dictionaryPathType[key][0], (gltf, index) => {
-          this.models[index] = new Model(gltf, MODEL_TYPE.GLTF);
-        }, key)
-      } else if (dictionaryPathType[key][1] == MODEL_TYPE.FBX) {
-        this.loadFbx(dictionaryPathType[key][0], (fbx, index) => {
-          this.models[index] = new Model(fbx, MODEL_TYPE.FBX);
-        }, key)
+      for(let i = 0; i < dictionaryPathType[key][0].length; i++) {
+        if(dictionaryPathType[key][0][i] != "") {
+          if (dictionaryPathType[key][1] == MODEL_TYPE.GLTF) {
+            this.loadGltf(dictionaryPathType[key][0][i], (gltf, index) => {
+              if(this.models[index] == null) {
+                this.models[index] = new Model(MODEL_TYPE.GLTF)
+              }
+              if(i == 0) { 
+                this.models[index].setModel(gltf)
+              } else {
+                this.models[index].addAltModel(gltf)
+              }
+            }, key)
+          } else if (dictionaryPathType[key][1] == MODEL_TYPE.FBX) {
+            this.loadFbx(dictionaryPathType[key][0][i], (fbx, index) => {
+              if(this.models[index] == null) {
+                this.models[index] = new Model(MODEL_TYPE.FBX)
+              }
+              if(i == 0) { 
+                this.models[index].setModel(fbx)
+              } else {
+                this.models[index].addAltModel(fbx)
+              }
+            }, key)
+          }
+        }
       }
     }
     for (var key in dictionaryPathHDRi) {

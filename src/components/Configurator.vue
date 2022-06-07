@@ -133,6 +133,8 @@ export default {
   },
   mounted() {
     this.store.activeStep = this.store.configSteps[0]
+    document.body.classList.add('cursor-none')
+
     this.app = new AppWebGL(this.$refs.canvas) //document.getElementById('app-canvas')
     this.app.init()
     this.app.run()
@@ -185,7 +187,12 @@ export default {
     updateSteps(index) {
       this.store.activeStepIndex = index
       this.store.activeStep = this.store.configSteps[index]
+      this.plantSelected = null
       this.onClose()
+      if (this.app) {
+        this.app.updateSteps(index)
+        this.app.updatePlantSelected(null)
+      }
     },
     onPlant(plant) {
       this.plantSelected = plant
@@ -211,8 +218,8 @@ export default {
           this.$refs.cursor.classList.remove('hidden')
         }
 
-        this.$refs.cursor.style.left = $event.clientX - this.$refs.cursor.offsetWidth * 3 / 4 + 'px'
-        this.$refs.cursor.style.top = $event.clientY - this.$refs.cursor.offsetHeight * 3 / 4 + 'px'
+        this.$refs.cursor.style.left = $event.clientX - this.$refs.cursor.offsetWidth * 2 / 4 + 'px'
+        this.$refs.cursor.style.top = $event.clientY - this.$refs.cursor.offsetHeight * 2 / 4 + 'px'
       }
     },
     animate() {

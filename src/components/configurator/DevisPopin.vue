@@ -2,42 +2,46 @@
   <!-- TODO : -->
   <section :class="isOpen ? 'w-[45%]': 'w-0'"
            class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out btn-bg border-r border-white pt-24 xl:pt-[140px]">
-    <div class="flex flex-col px-12 xl:px-16 overflow-y">
+    <div class="flex flex-col px-12 xl:px-16 overflow-y-auto">
       <h2 class="font-title font-bold text-22 xl:text-30 mb-8">Votre configuration</h2>
-      <p>Loreum ipsum</p>
-      <h3 class="font-bold uppercase mt-8">Plantes</h3>
-      <div v-for="(value, key) in store.carPlants" :key="key"
-           class="flex capitalize justify-between border-b border-white py-4">
-        <span>{{ key }}<span class="ml-3">x{{ value }}</span></span>
-        <span>{{ getPrice(key, value) }}€</span>
-      </div>
-      <h3 class="font-bold uppercase mt-8">Options</h3>
-      <fieldset :class="options.length > 0 ? 'border-b border-white' : ''" class="flex items-center py-4 gap-7 mb-3">
-        <input class="hidden" ref="without" type="radio" id="without" :value="false" v-model="withCar"/>
-        <label class="flex items-center gap-4" for="without" @click="$refs.with.click()">
+      <div class="overflow-y-auto">
+        <p>Votre Grenault Evia est prête à arpenter toutes les routes et chemins. Vous pouvez encore affiner votre
+          sélection de plantes et choisir les options qui vous conviennent avant de valider votre configuration. Il est
+          possible d’ajouter diectement la voiture (en plus de la configuration) à votre panier.</p>
+        <h3 class="font-bold uppercase mt-8">Plantes</h3>
+        <div v-for="(value, key) in store.carPlants" :key="key"
+             class="flex capitalize justify-between border-b border-white py-4">
+          <span>{{ key }}<span class="ml-3">x{{ value }}</span></span>
+          <span>{{ getPrice(key, value) }}€</span>
+        </div>
+        <h3 class="font-bold uppercase mt-8">Options</h3>
+        <fieldset :class="options.length > 0 ? 'border-b border-white' : ''" class="flex items-center py-4 gap-7 mb-3">
+          <input class="hidden" ref="without" type="radio" id="without" :value="false" v-model="withCar"/>
+          <label class="flex items-center gap-4" for="without" @click="$refs.with.click()">
           <span class="flex items-center justify-center w-4 h-4 border border-white">
             <Check v-if="!withCar" class="w-4 h-4"/>
           </span>
-          Je possède une Renault Elvia*
-        </label>
-        <input class="hidden" ref="without" type="radio" id="with" :value="true" v-model="withCar"/>
-        <label class="flex items-center gap-4" for="with" @click="$refs.without.click()">
+            Je possède une Renault Elvia*
+          </label>
+          <input class="hidden" ref="without" type="radio" id="with" :value="true" v-model="withCar"/>
+          <label class="flex items-center gap-4" for="with" @click="$refs.without.click()">
           <span class="flex items-center justify-center w-4 h-4 border border-white">
             <Check v-if="withCar" class="w-4 h-4"/>
           </span>
-          Je veux une Renault Elvia*
-        </label>
-      </fieldset>
-      <fieldset v-for="(option, index) in options" :key="index" class="flex justify-between items-center gap-7 py-2">
-        <input class="hidden" :ref="'option'+index" type="checkbox" :name="option.name" v-model="option.checked"/>
-        <label class="flex items-center gap-4" @click="clickOption(index)">
+            Je veux une Renault Elvia*
+          </label>
+        </fieldset>
+        <fieldset v-for="(option, index) in options" :key="index" class="flex justify-between items-center gap-7 py-2 mb-5">
+          <input class="hidden" :ref="'option'+index" type="checkbox" :name="option.name" v-model="option.checked"/>
+          <label class="flex items-center gap-4" @click="clickOption(index)">
           <span class="flex items-center justify-center w-4 h-4 border border-white">
             <Check v-if="option.checked" class="w-4 h-4"/>
           </span>
-          {{ option.name }}
-        </label>
-        <span>{{ option.price }}€</span>
-      </fieldset>
+            {{ option.name }}
+          </label>
+          <span>{{ option.price }}€</span>
+        </fieldset>
+      </div>
     </div>
     <div
         class="flex justify-between items-center mt-auto font-title font-bold text-16 xl:text-20 border-t border-white px-12 xl:px-16 py-10">
@@ -93,7 +97,7 @@ export default {
         }
       })
       totalPrice += this.withCar ? this.carPrice : 0
-      totalPrice = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(totalPrice)
+      totalPrice = new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR'}).format(totalPrice)
       return totalPrice
     }
   },

@@ -34,7 +34,7 @@
     "name": "bambou",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Bambou_V02.gltf"
+      "models/Plants/gltf/Configurator_Bambou_V03.gltf"
     ],
     "file": "bambou.png",
     "description": "Le bambou est polyvalent. Sa résistance est inégalée. A la fois flexible et solide, il peut faire face à tout environnement et s'adapte à l'allure de la voiture. Simple d'entretien, il aime la chaleur mais résiste très bien au froid, un arrosage modéré lui suffira. \nGrâce à son absorption cinq fois supérieure à celle d'un arbre lambda, il saura absorber efficacement toutes vos émissions carbonnées.",
@@ -51,7 +51,7 @@
     "name": "chlorophytum",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Chlorophytum_V02.gltf",
+      "models/Plants/gltf/Configurator_Chlorophytum_V04.gltf",
       "models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf"
     ],
     "file": "chlorophytum.png",
@@ -85,7 +85,7 @@
     "name": "ficus",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_FicusRoberta_V02.gltf"
+      "models/Plants/gltf/Configurator_FicusRoberta_V04.gltf"
     ],
     "file": "ficus.png",
     "description": "Ce petit arbre d'apparence commune fait partie des espèces les plus dépolluantes. Il se portera divinement bien sous une grande luminosité et n'aura besoin que d'un arrosage modéré. Sa croissance rapide vous permettra de rapidement bénéficier de tous ses avantages et ainsi absorber tous gaz toxiques émis par la voiture. ",
@@ -102,11 +102,11 @@
     "name": "gerbera",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Gerbera_V02.gltf"
+      "models/Plants/gltf/Configurator_Gerbera_V04.gltf"
     ],
     "file": "gerbera.png",
     "description": "Disponible en plusieurs teintes, la gerbera illuminera votre voiture grâce à ses couleurs éclatantes.\nSous un soleil intense, elle éclatera en vitalité et sera des plus performantes. Elle peut effectivement absorber\ndirectement le benzène présent dans la fumée des cigarettes. Vous pourrez ainsi fumer librement au volant sans aucune crainte de polluer.",
-    "price": 0,
+    "price": 9.99,
     "arrosage": 3,
     "co2": 3,
     "pollinisation": 3,
@@ -121,7 +121,7 @@
     "name": "monstera",
     "type": "gltf",
     "models": [
-      "models/Plants/gltf/Configurator_Monstera_V02.gltf",
+      "models/Plants/gltf/Configurator_Monstera_V04.gltf",
       "models/Plants/gltf/Configurator_Monstera02_V02.gltf"
     ],
     "file": "monstera.png",

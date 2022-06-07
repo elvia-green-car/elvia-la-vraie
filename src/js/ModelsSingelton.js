@@ -38,7 +38,7 @@ export var ModelsSingelton = (function () {
     hdriPath[HDRI.Studio] = ['textures/Background/hdri/', 'studio_small_08_1k.hdr']
     //modelManager.loadHdr('textures/Background/hdri/', 'studio_small_08_1k.hdr', HDRI.Studio)
 
-    modelsPathType[MODELS.Car] = ['models/Car/fbx/Configurateur_VoitureExterieur_v10.fbx', MODEL_TYPE.FBX]
+    modelsPathType[MODELS.Car] = [['models/Car/fbx/Configurateur_VoitureExterieur_v16.fbx'], MODEL_TYPE.FBX]
 
     const url = 'json/plants.json'
     var loader = new FileLoader(this.manager);
@@ -49,7 +49,11 @@ export var ModelsSingelton = (function () {
       //console.log(json)
       json.forEach((element) => {
         if (element.index != null && element.models.length > 0 && element.type != null) {
-          modelsPathType[MODELS_OFFSET_PLANT + element.index] = [element.models[0], element.type]
+          let modelsPath = new Array()
+          for(let i = 0; i < element.models.length; i++) {
+            modelsPath.push(element.models[i])
+          }
+          modelsPathType[MODELS_OFFSET_PLANT + element.index] = [modelsPath, element.type]
         }
       });
       //console.log(modelsPathType)
