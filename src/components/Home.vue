@@ -566,6 +566,7 @@ export default {
     onEnterTL(s, index, content) {
       this.updateSteps(parseInt(s.dataset.step))
       this.store.sectionIndex = index
+      this.app.updateSection(index)
       gsap.set(content, {pointerEvents: "auto"})
     },
     onLeaveTL(s, content) {

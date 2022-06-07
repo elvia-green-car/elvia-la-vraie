@@ -171,7 +171,7 @@ export class Landing {
     }
   }
 
-  updateSteps(index) {
+  updateSection(index) {
     console.log("updateSteps : " + index)
   }
 
