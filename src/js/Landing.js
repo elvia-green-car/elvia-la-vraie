@@ -34,6 +34,13 @@ export class Landing {
     this.carMixer = null
     this.carAction = null
     this.hdri = null
+
+    //use for animation tween in scrool
+    this.carPositions = null
+    this.carRotation = null
+    this.cameraPositions = null
+    this.cameraRotation = null
+
     console.log("New App created")
   }
 
@@ -76,6 +83,43 @@ export class Landing {
     //this.camera.rotateY(-(2*Math.PI/2))
     //this.camera.rotateX(-(Math.PI/12))
     this.camera.lookAt(0, 70, 0)
+
+    this.carPositions = new Array()
+    this.carPositions.push(null)    //new Vector3(0, 0, 0)
+    this.carPositions.push(null)
+    this.carPositions.push(null)
+    this.carPositions.push(null)
+    this.carPositions.push(null)
+    this.carPositions.push(null)
+    this.carPositions.push(null)
+    this.carPositions.push(null)
+    this.carRotation = new Array()
+    this.carRotation.push(null)    //new Vector3(0, 0, 0)
+    this.carRotation.push(null)
+    this.carRotation.push(null)
+    this.carRotation.push(null)
+    this.carRotation.push(null)
+    this.carRotation.push(null)
+    this.carRotation.push(null)
+    this.carRotation.push(null)
+    this.cameraPositions = new Array()
+    this.cameraPositions.push(null)    //new Vector3(0, 0, 0)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraRotation = new Array()
+    this.cameraPositions.push(null)    //new Vector3(0, 0, 0)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
+    this.cameraPositions.push(null)
 
   }
 
@@ -173,7 +217,65 @@ export class Landing {
 
   updateSection(index) {
     console.log("updateSteps : " + index)
+    const carPos = this.carPositions[index]
+    const carRot = this.carRotation[index]
+    const camPos = this.cameraPositions[index]
+    const camRot = this.cameraRotation[index]
+    let carCoords = this.car.model.position
+    let carRotation = this.car.model.rotation
+    let camCoords = this.camera.position
+    let camRotation = this.camera.rotation
+
+    if(carPos) this.animationPosition(carCoords, carPos, 3000, TWEEN.Easing.Quintic.InOut, this.car.model)
+    if(carRot) this.animationPosition(carRotation, carRotation, 3000, TWEEN.Easing.Quintic.InOut, this.car.model)
+    if(camPos) this.animationPosition(camCoords, camCoords, 3000, TWEEN.Easing.Quintic.InOut, this.camera)
+    if(camRot) this.animationPosition(camRotation, camRotation, 3000, TWEEN.Easing.Quintic.InOut, this.camera)
+
+    /*new TWEEN.Tween(coords)
+            .to({
+                x: pos.x,
+                y: pos.y,
+                z: pos.z
+              },
+                3000)
+            .easing(TWEEN.Easing.Quintic.Out)
+            .onUpdate(() => {
+              this.car.model.position.set(coords.x, coords.y, coords.z)
+            })
+            .start()*/
   }
+
+  animationPosition(coords, pos, time, easing, model) {
+    new TWEEN.Tween(coords)
+      .to({
+          x: pos.x,
+          y: pos.y,
+          z: pos.z
+        },
+        time)
+      .easing(easing)
+      .onUpdate(() => {
+        model.position.set(coords.x, coords.y, coords.z)
+      })
+      .start()
+  }
+
+  animationRotation(coords, pos, time, easing, model) {
+    new TWEEN.Tween(coords)
+      .to({
+          x: pos.x,
+          y: pos.y,
+          z: pos.z
+        },
+        time)
+      .easing(easing)
+      .onUpdate(() => {
+        model.rotation.set(coords.x, coords.y, coords.z)
+      })
+      .start()
+  }
+
+  
 
   // Run app, load things, add listeners, ...
   run() {
@@ -198,5 +300,9 @@ export class Landing {
     this.carAction = null
     this.hdri.dispose()
     this.hdri = null
+    this.carPositions = null
+    this.carRotation = null
+    this.cameraPositions = null
+    this.cameraRotation = null
   }
 }
