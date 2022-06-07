@@ -48,7 +48,7 @@ export class Landing {
 
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
-    this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
+    this.camera = new PerspectiveCamera(50, aspect, 0.01, 2000)
 
     this.dirLight1 = new DirectionalLight(0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
@@ -90,8 +90,8 @@ export class Landing {
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
     if(this.car != null) {
-      this.car.model.position.z += 1
-      this.car.model.rotation.y -= Math.PI / 200
+      //this.car.model.position.z += 1
+      //this.car.model.rotation.y -= Math.PI / 200
     }
 
     // Update ...
@@ -115,7 +115,8 @@ export class Landing {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.car.model.rotation.y = Math.PI / 4
-          //this.car.model.position.set(-200, -200, 0)
+          //this.car.model.position.set(800, 0, -1800)
+          this.car.model.position.set(40, -60, 80)
           this.scene.add(this.car.model)
         }
 
