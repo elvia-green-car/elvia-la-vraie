@@ -6,14 +6,16 @@ import {
   Raycaster,
   Vector2,
   Vector3,
-  MeshStandardMaterial,
-  AxesHelper,
+  Box3,
+  Clock,
+  AnimationMixer,
   EquirectangularReflectionMapping
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Plants} from "./Plants";
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 
 import {useStore} from "./stores/global";
 import {pinia} from "../main";
@@ -27,6 +29,10 @@ export class Landing {
 
     this.load = false
     this.car = null
+    this.clock = null
+    this.wheelsAnimation = null
+    this.carMixer = null
+    this.carAction = null
     this.hdri = null
     console.log("New App created")
   }
@@ -46,6 +52,8 @@ export class Landing {
 
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
 
+    this.clock = new Clock()
+
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
     this.camera = new PerspectiveCamera(50, aspect, 0.01, 2000)
@@ -63,13 +71,11 @@ export class Landing {
     this.scene.add(this.dirLight3)
     this.scene.add(this.dirLight4)
 
-    this.camera.position.set(-600, 200, 0)
-    this.camera.rotateY(-(Math.PI/2))
-    this.camera.rotateX(-(Math.PI/12))
-    //this.camera.lookAt(0, 50, 0)
-
-    const axesHelper = new AxesHelper( 50 );
-    this.scene.add( axesHelper );
+    //this.camera.position.set(-600, 200, 0)
+    this.camera.position.set(-500, 200, -500)
+    //this.camera.rotateY(-(2*Math.PI/2))
+    //this.camera.rotateX(-(Math.PI/12))
+    this.camera.lookAt(0, 70, 0)
 
   }
 
@@ -89,6 +95,7 @@ export class Landing {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    TWEEN.update()
     if(this.car != null) {
       //this.car.model.position.z += 1
       //this.car.model.rotation.y -= Math.PI / 200
@@ -100,8 +107,8 @@ export class Landing {
       this.camera.aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
       this.camera.updateProjectionMatrix()
     }
-
-    if (this.mixer) this.mixer.update(delta);
+    const delta = this.clock.getDelta();
+    if ( this.carMixer ) this.carMixer.update( delta );
 
     // Render ...
     this.render()
@@ -114,9 +121,30 @@ export class Landing {
         if ((i == MODELS.Car) && (this.car == null)) {
           this.car = new Car(ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.clone())
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
-          this.car.model.rotation.y = Math.PI / 4
-          //this.car.model.position.set(800, 0, -1800)
-          this.car.model.position.set(40, -60, 80)
+          this.carMixer = new AnimationMixer( this.car.model );
+          this.wheelsAnimation = this.car.model.animations[1]
+          this.carAction = this.carMixer.clipAction(this.wheelsAnimation)
+          //this.car.model.rotation.y = Math.PI / 4
+          this.car.model.position.set(1200, 0, 0)
+          //this.car.model.position.set(400, -60, 0)
+          const pos = new Vector3(-130, 0, 0)
+          let coords = this.car.model.position
+          this.carAction.play()
+          new TWEEN.Tween(coords)
+                  .to({
+                      x: pos.x,
+                      y: pos.y,
+                      z: pos.z
+                    },
+                      3000)
+                  .easing(TWEEN.Easing.Quintic.Out)
+                  .onComplete(() => {
+                    this.carAction.stop()
+                  })
+                  .onUpdate(() => {
+                    this.car.model.position.set(coords.x, coords.y, coords.z)
+                  })
+                  .start()
           this.scene.add(this.car.model)
         }
 
@@ -160,6 +188,10 @@ export class Landing {
     this.load = false
     this.car.dispose()
     this.car = null
+    this.clock = null
+    this.wheelsAnimation = null
+    this.carMixer = null
+    this.carAction = null
     this.hdri.dispose()
     this.hdri = null
   }
