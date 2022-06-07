@@ -334,7 +334,6 @@ export default {
     sections.forEach((s, index) => {
       let content = s.querySelectorAll(".section__content")
       gsap.set(s, {opacity: 0})
-      gsap.set(content, {pointerEvents: "none"})
 
       let stl = gsap.timeline({
         scrollTrigger: {
@@ -344,8 +343,10 @@ export default {
           //toggleActions: "restart, pause, reverse, pause",
           scrub: true,
           invalidateOnRefresh: true,
-          onEnter: () => this.updateSteps(parseInt(s.dataset.step)),
-          onEnterBack: () => this.updateSteps(parseInt(s.dataset.step))
+          onEnter: () => this.onEnterTL(s, content),
+          onEnterBack: () => this.onEnterTL(s, content),
+          onLeave: () => this.onLeaveTL(s, content),
+          onLeaveBack: () => this.onLeaveTL(s, content),
         }
       })
       stl.set(s, {
@@ -546,6 +547,14 @@ export default {
     onMouseLeave(name) {
       this.toAnimate = this.toAnimate.filter(n => n !== name)
     },
+    onEnterTL(s, content) {
+      console.log(s)
+      this.updateSteps(parseInt(s.dataset.step))
+      gsap.set(content, {pointerEvents: "auto"})
+    },
+    onLeaveTL(s, content) {
+      gsap.set(content, {pointerEvents: "none"})
+    }
   }
 }
 </script>
