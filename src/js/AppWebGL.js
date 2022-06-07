@@ -5,16 +5,21 @@ import {
   DirectionalLight,
   Raycaster,
   Vector2,
-  Vector3,
   MeshStandardMaterial,
   EquirectangularReflectionMapping,
-  sRGBEncoding, FogExp2, TextureLoader, PlaneBufferGeometry, MeshLambertMaterial, Mesh, SpriteMaterial, Sprite
+  sRGBEncoding,
+  Mesh,
+  Color,
+  DoubleSide,
+  SphereGeometry, ShaderMaterial, MeshBasicMaterial
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Plants} from "./Plants";
 import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
+import p_fragment from "../assets/shaders/pollution_fragment.glsl?raw"
+import p_vertex from "../assets/shaders/pollution_vertex.glsl?raw"
 
 import {useStore} from "./stores/global";
 import {pinia} from "../main";
@@ -268,27 +273,53 @@ export class AppWebGL {
 
   // fog
   smog() {
-    this.cloudParticles = []
-    this.scene.fog = new FogExp2(0x03544e, 0.001)
-    this.renderer.setClearColor(this.scene.fog.color)
-    let tLoader = new TextureLoader();
-    tLoader.load("/images/png/mixed-fog.png", (texture) => {
+    //this.cloudParticles = []
+    //this.scene.fog = new FogExp2(0x03544e, 0.001)
+    //this.renderer.setClearColor(this.scene.fog.color)
+    //let tLoader = new TextureLoader();
+    /*tLoader.load("/images/png/mixed-fog.png", (texture) => {
       //let cloudGeo = new PlaneBufferGeometry(500, 500)
-      /*let cloudMaterial = new MeshLambertMaterial({
+      let cloudMaterial = new MeshLambertMaterial({
         map: texture,
         transparent: true
-      })*/
+      })
       let material = new SpriteMaterial({map: texture});
-      for (let p = 0; p < 50; p++) {
-        //let cloud = new Mesh(cloudGeo, cloudMaterial)
-        let cloud = new Sprite(material)
-        cloud.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-        cloud.scale.set(200, 200, 200)
-        console.log(cloud)
-        this.cloudParticles.push(cloud)
-        this.scene.add(cloud)
-      }
-    })
+
+    })*/
+
+    const vertexShader = p_vertex
+    const fragmentShader = p_fragment
+
+    const geometry = new SphereGeometry(100, 80, 80)
+    const material = new ShaderMaterial({
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      uniforms: {
+        anglePower: {
+          value: 6
+        },
+        lightColor: {
+          value: new Color(0x96916D) // 0x155AAA (bleu marin de gazoduc) // 0x96916D (gris moche de maelys) // 0xCAC92B (vert chicane)
+        },
+        attenuation: {
+          value: 1.5
+        }
+      },
+      side: DoubleSide,
+      // Sympa pour donner un effet clair au milieu
+      // blending    : AdditiveBlending,
+      transparent: true,
+      depthWrite: false,
+    });
+
+    for (let p = 0; p < 50; p++) {
+      //let cloud = new Mesh(cloudGeo, cloudMaterial)
+      let cloud = new Mesh(geometry, material);
+      cloud.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      console.log(cloud)
+      //this.cloudParticles.push(cloud)
+      this.scene.add(cloud)
+    }
   }
 
 
