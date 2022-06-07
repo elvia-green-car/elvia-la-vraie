@@ -171,6 +171,10 @@ export class Landing {
     }
   }
 
+  updateSteps(index) {
+    console.log("updateSteps : " + index)
+  }
+
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
