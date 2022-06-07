@@ -34,12 +34,12 @@
     }
 
     .bg-layered::before {
-        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white;
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white z-0;
         opacity: 30%;
     }
 
     .bg-layered::after {
-        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal;
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal z-0;
         opacity: 20%;
     }
     .bg-gradient-green {
@@ -51,7 +51,7 @@
 }
 
 html, body {
-    @apply h-full m-0 text-white text-14 xl:text-16 font-body leading-tight;
+    @apply h-full m-0 text-beige text-14 xl:text-16 font-body leading-tight;
 }
 
 .Btn:hover .Btn__bg {

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Transplantoir",
+    "price": "9.70",
+    "type": "accessory"
+  },
+  {
+    "name": "Sécateur",
+    "price": "17.90",
+    "type": "accessory"
+  },
+  {
+    "name": "Pelle à terreau",
+    "price": "10.50",
+    "type": "accessory"
+  },
+  {
+    "name": "Terreau 70L",
+    "price": "16.90",
+    "type": "accessory"
+  },
+  {
+    "name": "Arrosoir",
+    "price": "20.90",
+    "type": "accessory"
+  }
+]

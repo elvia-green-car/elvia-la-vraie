@@ -25,9 +25,11 @@ export const useStore = defineStore('main', {
       sliderActiveIndex: 0,
 
       // Popin
-      isPlantPopinOpen: false,
-      isRewardPopinOpen: false,
       isMenuOpen: false,
+      isPlantPopinOpen: false,
+      isRewardPopinOpen: true,
+      rewardType: null,
+      level: 0,
 
       // Loader
       isLoading: true,
