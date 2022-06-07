@@ -299,6 +299,29 @@ export default {
   setup() {
     const store = useStore()
 
+    store.$subscribe((mutation, state) => {
+      if(mutation.events.key === "isLoading" && mutation.events.newValue === false) {
+        let tl = new gsap.timeline()
+        let s = document.querySelector('.section')
+        tl.set(s, {opacity: 1})
+        tl.fromTo(s.querySelector('.title'), {
+          y: "120%",
+          opacity: 0
+        }, {
+          y: 0,
+          opacity: 1,
+          delay: 2,
+          duration: 3
+        })
+        tl.fromTo(s.querySelector('.text'), {
+          opacity: 0
+        }, {
+          opacity: 1
+        })
+        tl.play()
+      }
+    })
+
     return {
       store
     }
@@ -332,6 +355,7 @@ export default {
     })
 
     let sections = document.querySelectorAll('.section')
+
     sections.forEach((s, index) => {
       let content = s.querySelectorAll(".section__content")
       gsap.set(s, {opacity: 0})
@@ -352,8 +376,6 @@ export default {
       })
       stl.set(s, {
         opacity: 1,
-      }).set(content, {
-        pointerEvents: "auto"
       })
 
       switch (index) {
@@ -367,21 +389,6 @@ export default {
           //  pin: true,
           //  invalidateOnRefresh: true,
           //})
-
-          stl.fromTo(s.querySelector('.title'), {
-            y: "120%",
-            opacity: 0
-          }, {
-            y: 0,
-            opacity: 1,
-            delay: 2,
-            duration: 3
-          }).fromTo(s.querySelector('.text'), {
-            opacity: 0
-          }, {
-            opacity: 1
-          })
-
           break
         case 1:
           stl.fromTo(s.querySelectorAll('li'), {
@@ -498,6 +505,26 @@ export default {
       })
       this.timeline.add(stl)
     })
+
+    // TODO : remove when loading is set up
+    let tl = new gsap.timeline()
+    let s = document.querySelector('.section')
+    tl.set(s, {opacity: 1})
+    tl.fromTo(s.querySelector('.title'), {
+      y: "120%",
+      opacity: 0
+    }, {
+      y: 0,
+      opacity: 1,
+      delay: 2,
+      duration: 3
+    })
+    tl.fromTo(s.querySelector('.text'), {
+      opacity: 0
+    }, {
+      opacity: 1
+    })
+    tl.play()
 
     window.addEventListener('load', () => this.step())
   },
