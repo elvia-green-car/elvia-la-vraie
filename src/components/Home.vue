@@ -16,7 +16,7 @@
       </Button>
     </header>
     <Breadcrumb class="fixed z-20 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12 "
-                :steps="store.landingSteps" @step-selected="updateSteps"/>
+                :steps="store.landingSteps" @step-selected="scrollTo"/>
     <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12" :steps="store.landingSteps"/>
     <Scroll ref="scroll" class="fixed animate-spin-slow z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12"/>
     <div class="fixed flex justify-center items-center z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12">
@@ -321,12 +321,13 @@ export default {
       this.toAnimate.push(this.store.plantsData[i].name)
     }
 
-    let timeline = gsap.timeline({
+    // Main timeline
+    this.timeline = gsap.timeline({
       scrollTrigger: {
         trigger: this.$refs.main,
         start: "top top",
         end: "bottom bottom",
-        onUpdate: self => console.log("progress:", self.progress)
+        //onUpdate: self => console.log("progress:", self.progress)
       }
     })
 
@@ -494,10 +495,8 @@ export default {
         opacity: 0,
         duration: 1,
         delay: 2,
-      }).to(content, {
-        pointerEvents: "none"
       })
-      timeline.add(stl)
+      this.timeline.add(stl)
     })
 
     window.addEventListener('load', () => this.step())
@@ -508,6 +507,12 @@ export default {
   methods: {
     plantClass(name) {
       return name + '0000'
+    },
+    scrollTo(index) {
+      this.store.activeStepIndex = index
+      this.store.activeStep = this.store.landingSteps[index]
+      const sections = document.querySelectorAll('.section')
+      Array.from(sections).filter(s => parseInt(s.dataset.step) === index)[0].scrollIntoView()
     },
     updateSteps(index) {
       this.store.activeStepIndex = index
@@ -548,7 +553,6 @@ export default {
       this.toAnimate = this.toAnimate.filter(n => n !== name)
     },
     onEnterTL(s, content) {
-      console.log(s)
       this.updateSteps(parseInt(s.dataset.step))
       gsap.set(content, {pointerEvents: "auto"})
     },
