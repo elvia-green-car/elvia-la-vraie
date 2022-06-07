@@ -10,6 +10,8 @@ export const useStore = defineStore('main', {
       landingSteps: ["Elvia", "Plants", "Tools", "Packs", "Services"],
       activeStepIndex: 0,
       activeStep: null,
+      // Landing
+      sectionIndex: 0,
 
       // Cursor
       drag: false,

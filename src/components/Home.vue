@@ -301,7 +301,7 @@ export default {
     const store = useStore()
 
     store.$subscribe((mutation, state) => {
-      if(mutation.events.key === "isLoading" && mutation.events.newValue === false) {
+      if (mutation.events.key === "isLoading" && mutation.events.newValue === false) {
         let tl = new gsap.timeline()
         let s = document.querySelector('.section')
         tl.set(s, {opacity: 1})
@@ -344,7 +344,6 @@ export default {
     this.app.init()
     this.app.run()
 
-
     for (let i = 0; i < 4; i++) {
       this.toAnimate.push(this.store.plantsData[i].name)
     }
@@ -373,8 +372,8 @@ export default {
           //toggleActions: "restart, pause, reverse, pause",
           scrub: true,
           invalidateOnRefresh: true,
-          onEnter: () => this.onEnterTL(s, content),
-          onEnterBack: () => this.onEnterTL(s, content),
+          onEnter: () => this.onEnterTL(s, index, content),
+          onEnterBack: () => this.onEnterTL(s, index, content),
           onLeave: () => this.onLeaveTL(s, content),
           onLeaveBack: () => this.onLeaveTL(s, content),
         }
@@ -511,26 +510,6 @@ export default {
       this.timeline.add(stl)
     })
 
-    // TODO : remove when loading is set up
-    let tl = new gsap.timeline()
-    let s = document.querySelector('.section')
-    tl.set(s, {opacity: 1})
-    tl.fromTo(s.querySelector('.title'), {
-      y: "120%",
-      opacity: 0
-    }, {
-      y: 0,
-      opacity: 1,
-      delay: 2,
-      duration: 3
-    })
-    tl.fromTo(s.querySelector('.text'), {
-      opacity: 0
-    }, {
-      opacity: 1
-    })
-    tl.play()
-
     window.addEventListener('load', () => this.step())
   },
   beforeUnmount() {
@@ -584,8 +563,9 @@ export default {
     onMouseLeave(name) {
       this.toAnimate = this.toAnimate.filter(n => n !== name)
     },
-    onEnterTL(s, content) {
+    onEnterTL(s, index, content) {
       this.updateSteps(parseInt(s.dataset.step))
+      this.store.sectionIndex = index
       gsap.set(content, {pointerEvents: "auto"})
     },
     onLeaveTL(s, content) {
