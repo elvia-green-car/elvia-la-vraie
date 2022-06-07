@@ -246,6 +246,7 @@
 
 <script>
 import {useStore} from "../js/stores/global";
+import {Landing} from "../js/Landing";
 
 import {gsap} from "gsap";
 import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
@@ -339,6 +340,10 @@ export default {
   mounted() {
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
+    this.app = new Landing(this.$refs.canvas) //document.getElementById('app-canvas')
+    this.app.init()
+    this.app.run()
+
 
     for (let i = 0; i < 4; i++) {
       this.toAnimate.push(this.store.plantsData[i].name)
