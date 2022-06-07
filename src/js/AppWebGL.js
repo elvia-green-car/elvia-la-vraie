@@ -11,7 +11,7 @@ import {
   Mesh,
   Color,
   DoubleSide,
-  SphereGeometry, ShaderMaterial, MeshBasicMaterial
+  SphereGeometry, ShaderMaterial, MeshBasicMaterial, InstancedMesh, Matrix4, Vector3
 } from "three";
 import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
@@ -273,20 +273,6 @@ export class AppWebGL {
 
   // fog
   smog() {
-    //this.cloudParticles = []
-    //this.scene.fog = new FogExp2(0x03544e, 0.001)
-    //this.renderer.setClearColor(this.scene.fog.color)
-    //let tLoader = new TextureLoader();
-    /*tLoader.load("/images/png/mixed-fog.png", (texture) => {
-      //let cloudGeo = new PlaneBufferGeometry(500, 500)
-      let cloudMaterial = new MeshLambertMaterial({
-        map: texture,
-        transparent: true
-      })
-      let material = new SpriteMaterial({map: texture});
-
-    })*/
-
     const vertexShader = p_vertex
     const fragmentShader = p_fragment
 
@@ -311,15 +297,28 @@ export class AppWebGL {
       transparent: true,
       depthWrite: false,
     });
-
+    let count = 50
+    let clouds = new InstancedMesh(geometry, material, count);
+    console.log(clouds)
     for (let p = 0; p < 50; p++) {
-      //let cloud = new Mesh(cloudGeo, cloudMaterial)
-      let cloud = new Mesh(geometry, material);
-      cloud.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-      console.log(cloud)
-      //this.cloudParticles.push(cloud)
-      this.scene.add(cloud)
+      let matrix = new Matrix4();
+      let position = new Vector3();
+
+      clouds.getMatrixAt(p, matrix);
+
+      position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
+      let newPos = new Vector3(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      console.log(position, newPos, Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      matrix.setPosition(newPos); // write new positon back
+
+      clouds.setMatrixAt(p, matrix);
+
+      clouds.instanceMatrix.needsUpdate = true;
+      //let cloud = new Mesh(geometry, material);
+      //cloud.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      //this.scene.add(cloud)
     }
+    this.scene.add(clouds)
   }
 
 
