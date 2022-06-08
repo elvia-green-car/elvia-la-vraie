@@ -47,7 +47,7 @@ export class Landing {
     this.carPositions.push(new Vector3(-130, -60, 0))
     this.carPositions.push(new Vector3(-250, -60, 0))
     this.carPositions.push(new Vector3(-100, -60, 0))
-    this.carPositions.push(null)
+    this.carPositions.push(new Vector3(-800, -60, 0))
     this.carPositions.push(null)
     this.carPositions.push(null)
     this.carRotation = new Array()
@@ -102,13 +102,13 @@ export class Landing {
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
     this.camera = new PerspectiveCamera(50, aspect, 10, 2000)
 
-    this.dirLight1 = new DirectionalLight(0xffffff, 0.5)
+    this.dirLight1 = new DirectionalLight(0xffffff, 0.6)
     this.dirLight1.position.set(-600, 300, 200)
-    this.dirLight2 = new DirectionalLight(0xffffff, 0.5)
+    this.dirLight2 = new DirectionalLight(0xffffff, 0.8)
     this.dirLight2.position.set(-600, 300, -200)
-    this.dirLight3 = new DirectionalLight(0x4d79ff, 1)
+    this.dirLight3 = new DirectionalLight(0x4d79ff, 0.9)
     this.dirLight3.position.set(600, 300, 200)
-    this.dirLight4 = new DirectionalLight(0x4d79ff, 0.8)
+    this.dirLight4 = new DirectionalLight(0x4d79ff, 0.9)
     this.dirLight4.position.set(600, 300, -200)
     this.scene.add(this.dirLight1)
     this.scene.add(this.dirLight2)
@@ -177,15 +177,24 @@ export class Landing {
                       y: pos.y,
                       z: pos.z
                     },
-                      3000)
+                      4000)
                   .easing(TWEEN.Easing.Quintic.Out)
-                  .onComplete(() => {
-                    this.carAction.stop()
-                  })
                   .onUpdate(() => {
                     this.car.model.position.set(coords.x, coords.y, coords.z)
                   })
                   .start()
+
+            const v = {value: 2}
+            new TWEEN.Tween(v)
+                .to({ value: 0}, 6000)
+                .easing(TWEEN.Easing.Quintic.Out)
+                .onComplete(() => {
+                  this.carAction.stop()
+                })
+                .onUpdate(() => {
+                  this.carAction.timeScale = v.value
+                })
+                .start();
           this.scene.add(this.car.model)
         }
 
