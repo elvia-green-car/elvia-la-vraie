@@ -22,6 +22,7 @@ import rewardsData from "/public/json/rewards.json";
 import Arrow from "/public/svg/arrow.svg?component";
 import Button from "../Button.vue";
 import Flower from "/public/svg/flower.svg?component";
+import {Rewards} from "../../js/constants";
 
 export default {
   name: "RewardPopin",
@@ -38,10 +39,35 @@ export default {
       store
     }
   },
+  mounted() {
+    this.store.$subscribe((mutation) => this.onStoreMutation())
+  },
   computed: {
     reward() {
       return this.store.rewardType ? rewardsData.find(r => r.type === this.store.rewardType).text : ''
     }
+  },
+  methods: {
+    onStoreMutation() {
+      let carPlants = Object.entries(this.store.carPlants)
+      let rewardsGiven = Object.values(this.store.rewardGiven)
+
+      if (carPlants.length === 1 && rewardsGiven.find(r => r === Rewards.FIRST_PLANT) === undefined) {
+        this.store.isRewardPopinOpen = true
+        this.store.rewardType = Rewards.FIRST_PLANT
+        this.store.rewardGiven.push(Rewards.FIRST_PLANT)
+      }
+      if (carPlants.length === 5 && this.store.rewardGiven.find(r => r === Rewards.GREEN_HAND) === undefined) {
+        this.store.isRewardPopinOpen = true
+        this.store.rewardType = Rewards.GREEN_HAND
+        this.store.rewardGiven.push(Rewards.GREEN_HAND)
+      }
+      if (carPlants.length === this.store.slotsCount && this.store.rewardGiven.find(r => r === Rewards.FULLFILL) === undefined) {
+        this.store.isRewardPopinOpen = true
+        this.store.rewardType = Rewards.FULLFILL
+        this.store.rewardGiven.push(Rewards.FULLFILL)
+      }
+    },
   }
 }
 </script>

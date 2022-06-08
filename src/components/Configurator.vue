@@ -144,7 +144,6 @@ export default {
     this.app.run()
 
     window.addEventListener('mousemove', this.onMouseMove)
-    this.store.$subscribe((mutation) => this.onStoreMutation())
   },
   beforeUnmount() {
     window.addEventListener('mousemove', this.onMouseMove)
@@ -186,6 +185,11 @@ export default {
         this.store.isRewardPopinOpen = true
         this.store.rewardType = Rewards.PERCENT
         this.store.rewardGiven.push(Rewards.PERCENT)
+      }
+      if (co2 * 100 / maxTotalValue >= 80 && this.store.rewardGiven.find(r => r === Rewards.CO2_LESS) === undefined) {
+        this.store.isRewardPopinOpen = true
+        this.store.rewardType = Rewards.CO2_LESS
+        this.store.rewardGiven.push(Rewards.CO2_LESS)
       }
       return [
         {name: 'Absorption CO2', rate: co2 * 100 / maxTotalValue},
@@ -231,21 +235,6 @@ export default {
 
         this.$refs.cursor.style.left = $event.clientX - this.$refs.cursor.offsetWidth * 2 / 4 + 'px'
         this.$refs.cursor.style.top = $event.clientY - this.$refs.cursor.offsetHeight * 2 / 4 + 'px'
-      }
-    },
-    onStoreMutation() {
-      let carPlants = Object.entries(this.store.carPlants)
-      let rewardsGiven = Object.values(this.store.rewardGiven)
-
-      if (carPlants.length === 1 && rewardsGiven.find(r => r === Rewards.FIRST_PLANT) === undefined) {
-        this.store.isRewardPopinOpen = true
-        this.store.rewardType = Rewards.FIRST_PLANT
-        this.store.rewardGiven.push(Rewards.FIRST_PLANT)
-      }
-      if (carPlants.length === 5 && this.store.rewardGiven.find(r => r === Rewards.GREEN_HAND) === undefined) {
-        this.store.isRewardPopinOpen = true
-        this.store.rewardType = Rewards.GREEN_HAND
-        this.store.rewardGiven.push(Rewards.GREEN_HAND)
       }
     },
     animate() {
