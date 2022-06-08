@@ -44,6 +44,9 @@ export class AppWebGL {
     this.intersect_Z1 = null              //Last intersect object
     this.intersectClone = null
 
+    this.clouds = null
+    this.cloudsCount = 50
+
     console.log("New App created")
   }
 
@@ -298,27 +301,53 @@ export class AppWebGL {
       transparent: true,
       depthWrite: false,
     });
-    let count = 50
-    let clouds = new InstancedMesh(geometry, material, count);
-    this.scene.add(clouds)
 
-    for (let p = 0; p < count; p++) {
-      let matrix = new Matrix4();
-      let position = new Vector3();
-      //clouds.getMatrixAt(p, matrix);
-      //position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
-      //let newPos = new Vector3(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-      //matrix.setPosition(newPos); // write new positon back
-      //clouds.setMatrixAt(p, matrix)
+    this.clouds = new InstancedMesh(geometry, material, this.cloudsCount);
+    this.scene.add(this.clouds)
 
-      let dummy = new Object3D();
+    let dummy = new Object3D();
+    let matrix = new Matrix4();
+    let position = new Vector3();
+
+    for (let p = 0; p < this.cloudsCount; p++) {
+
+      // METHOD 1
+      // clouds.getMatrixAt(p, matrix);
+      // position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
+      // position.x = Math.random() * 800 - 400
+      // position.y = Math.random() * 300
+      // position.z = Math.random() * 800 - 400
+      // matrix.setPosition(position); // write new positon back
+      // clouds.setMatrixAt(p, matrix)
+
+      // METHOD 2
+      // clouds.getMatrixAt(p, matrix);
+      // let newPos = new Vector3(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      // matrix.setPosition(newPos); // write new positon back
+      // clouds.setMatrixAt(p, matrix)
+
+      // METHOD 3 (same as Elise)
       dummy.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
       dummy.updateMatrix()
-      clouds.setMatrixAt(p, dummy.matrix);
-      if (p === count - 1) {
-        clouds.instanceMatrix.needsUpdate = true;
-        clouds.frustumCulled = false
+      this.clouds.setMatrixAt(p, dummy.matrix)
+
+      // METHOD 4 (new given by Elise)
+      //const mat42 = new Matrix4().makeTranslation(0, 300, 0)
+      //let currentmatrix = new Matrix4()
+      //this.clouds.getMatrixAt(p, currentmatrix)
+      //this.clouds.setMatrixAt(p, currentmatrix.multiply(mat42));
+
+      if (p === this.cloudsCount - 1) {
+        this.clouds.instanceMatrix.needsUpdate = true; // --> Seems to NOT work
+        this.clouds.frustumCulled = false
       }
+      this.clouds.instanceMatrix.needsUpdate = true; // --> Seems to NOT work
+
+    }
+    for (let p = 0; p < this.cloudsCount; p++) {
+      let matrix = new Matrix4()
+      this.clouds.getMatrixAt(p, matrix)
+      console.log(matrix) // --> si je commente tout le reste du code, les matrices sont vides
     }
   }
 
