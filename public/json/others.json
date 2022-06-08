@@ -1,5 +1,10 @@
 [
   {
+    "name": "Rateau",
+    "price": "8.90",
+    "type": "accessory"
+  },
+  {
     "name": "Transplantoir",
     "price": "9.70",
     "type": "accessory"

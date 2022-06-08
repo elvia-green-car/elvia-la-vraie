@@ -122,7 +122,6 @@ export class AppWebGL {
             if (this.car.plants[slotName] != null) {
               if (this.car.plants[slotName].model != null) {
                 previousPlant = this.car.plants[slotName].data.name
-                console.log('remove', this.car.plants[slotName].data.name)
                 this.intersects[i].object.remove(this.car.plants[slotName].model)
                 this.car.plants[slotName].dispose()
               }
