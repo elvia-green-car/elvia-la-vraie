@@ -26,7 +26,15 @@ export const useStore = defineStore('main', {
       thumbs: {},
       sliderActiveIndex: 0,
 
-      slotsCount: 0,
+      // Total slots count car
+      slotsCount: null,
+
+      // Rates
+      rates: {
+        co2: 0,
+        arrosage: 0,
+        pollinisation: 0
+      },
 
       // Popin
       isMenuOpen: false,

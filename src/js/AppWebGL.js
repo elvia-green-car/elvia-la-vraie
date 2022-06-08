@@ -311,25 +311,12 @@ export class AppWebGL {
     this.scene.add(this.clouds)
 
     let dummy = new Object3D();
-    let matrix = new Matrix4();
-    let position = new Vector3();
 
     for (let p = 0; p < this.cloudsCount; p++) {
       dummy.position.set(Math.random() * 600 - 300, Math.random() * 300, Math.random() * 600 - 300)
       dummy.updateMatrix()
       this.clouds.setMatrixAt(p, dummy.matrix)
-
-      if (p === this.cloudsCount - 1) {
-        this.clouds.instanceMatrix.needsUpdate = true; // --> Seems to NOT work
-        this.clouds.frustumCulled = false
-      }
-      this.clouds.instanceMatrix.needsUpdate = true; // --> Seems to NOT work
-
-    }
-    for (let p = 0; p < this.cloudsCount; p++) {
-      let matrix = new Matrix4()
-      this.clouds.getMatrixAt(p, matrix)
-      console.log(matrix) // --> si je commente tout le reste du code, les matrices sont vides
+      this.clouds.instanceMatrix.needsUpdate = true;
     }
   }
 
@@ -359,8 +346,24 @@ export class AppWebGL {
     }
     this.camera.lookAt(0, 0, 0)
 
+    // Remove fog
+    for (let i = 0; i <= this.cloudsCount; i++) {
+      if (this.store.rates.co2 > i * (80 % this.cloudsCount)) {
+        this.updateMatrix(i)
+      }
+    }
+
     // Render ...
     this.render()
+  }
+
+  updateMatrix(p) {
+    let scale = new Vector3()
+    let matrix = new Matrix4()
+    this.clouds.getMatrixAt(p, matrix);
+    matrix.makeScale(0, 0, 0)
+    this.clouds.setMatrixAt(p, matrix)
+    this.clouds.instanceMatrix.needsUpdate = true;
   }
 
   // this function execute while all model isn't load

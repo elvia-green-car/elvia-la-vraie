@@ -181,20 +181,24 @@ export default {
           total += value
         })
       }
-      if (co2 * 100 / maxTotalValue >= 20 && this.store.rewardGiven.find(r => r === Rewards.PERCENT) === undefined) {
+      this.store.rates.co2 = co2 * 100 / maxTotalValue
+      this.store.rates.arrosage = arrosage * 100 / maxTotalValue
+      this.store.rates.pollinisation = pollinisation * 100 / maxTotalValue
+
+      if (this.store.rates.co2 >= 20 && this.store.rewardGiven.find(r => r === Rewards.PERCENT) === undefined) {
         this.store.isRewardPopinOpen = true
         this.store.rewardType = Rewards.PERCENT
         this.store.rewardGiven.push(Rewards.PERCENT)
       }
-      if (co2 * 100 / maxTotalValue >= 80 && this.store.rewardGiven.find(r => r === Rewards.CO2_LESS) === undefined) {
+      if (this.store.rates.co2 >= 80 && this.store.rewardGiven.find(r => r === Rewards.CO2_LESS) === undefined) {
         this.store.isRewardPopinOpen = true
         this.store.rewardType = Rewards.CO2_LESS
         this.store.rewardGiven.push(Rewards.CO2_LESS)
       }
       return [
-        {name: 'Absorption CO2', rate: co2 * 100 / maxTotalValue},
-        {name: 'Besoin en eau', rate: arrosage * 100 / maxTotalValue},
-        {name: 'Pollinisation', rate: pollinisation * 100 / maxTotalValue}
+        {name: 'Absorption CO2', rate: this.store.rates.co2},
+        {name: 'Besoin en eau', rate: this.store.rates.arrosage},
+        {name: 'Pollinisation', rate: this.store.rates.pollinisation}
       ]
     },
   },

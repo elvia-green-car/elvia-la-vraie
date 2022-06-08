@@ -27,11 +27,6 @@ import {Rewards} from "../../js/constants";
 export default {
   name: "RewardPopin",
   components: {Button, Arrow, Flower},
-  props: {
-    data: Object,
-    isOpen: Boolean,
-    plants: Array,
-  },
   setup() {
     const store = useStore()
 
