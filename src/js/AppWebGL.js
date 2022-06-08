@@ -46,7 +46,7 @@ export class AppWebGL {
     this.intersectClone = null
 
     this.clouds = null
-    this.cloudsCount = 15
+    this.cloudsCount = 20
 
     console.log("New App created")
   }
@@ -317,6 +317,8 @@ export class AppWebGL {
       dummy.updateMatrix()
       this.clouds.setMatrixAt(p, dummy.matrix)
       this.clouds.instanceMatrix.needsUpdate = true;
+      this.clouds.frustumCulled = false
+      this.clouds.castShadow = false;
     }
   }
 
@@ -348,7 +350,7 @@ export class AppWebGL {
 
     // Remove fog
     for (let i = 0; i <= this.cloudsCount; i++) {
-      if (this.store.rates.co2 > i * (80 % this.cloudsCount)) {
+      if (this.store.rates.co2 > i * (80 / this.cloudsCount)) {
         this.updateMatrix(i)
       }
     }
