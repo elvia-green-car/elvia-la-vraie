@@ -1,18 +1,5 @@
 [
   {
-    "index": null,
-    "name": "",
-    "type": "",
-    "models": [],
-    "file": "",
-    "description": "",
-    "arrosage": 0,
-    "price": 0,
-    "co2": 0,
-    "pollinisation": 0,
-    "zone": []
-  },
-  {
     "index": 0,
     "name": "aloe vera",
     "type": "gltf",
@@ -95,7 +82,7 @@
   },
   {
     "index": 5,
-    "name": "ficus roberta",
+    "name": "ficus",
     "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_FicusRoberta_V04.gltf"

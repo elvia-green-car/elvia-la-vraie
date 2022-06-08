@@ -57,7 +57,7 @@ import {useStore} from "../../js/stores/global";
 import Check from '/public/svg/cross.svg?component'
 
 export default {
-  name: "DevisPopin",
+  name: "EstimatePopin",
   components: {Check},
   setup() {
     const store = useStore()
@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      carPrice: 12500,
+      carPrice: 34999,
       withCar: false,
       options: [
         {name: "Lot d'outils", price: 49.99, checked: false},

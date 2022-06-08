@@ -26,6 +26,7 @@ module.exports = {
         '11': '11px'
       },
       colors: {
+        'beige': "#FFFAFA",
         'green': {
           'normal': 'var(--green-normal)',
           'light': 'var(--green-light)',
@@ -43,5 +44,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }

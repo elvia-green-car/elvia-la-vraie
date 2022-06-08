@@ -49,7 +49,7 @@ import Rates from "./Rates.vue";
 import Arrow from "/public/svg/slider-arrow.svg";
 
 export default {
-  name: "Plant",
+  name: "PlantPopin",
   components: {Rates, Button, Arrow},
   props: {
     data: Object,
