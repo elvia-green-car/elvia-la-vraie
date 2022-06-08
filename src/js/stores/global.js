@@ -24,12 +24,14 @@ export const useStore = defineStore('main', {
       thumbs: {},
       sliderActiveIndex: 0,
 
+      slotsCount: 0,
+
       // Popin
       isMenuOpen: false,
       isPlantPopinOpen: false,
-      isRewardPopinOpen: true,
+      isRewardPopinOpen: false,
       rewardType: null,
-      level: 0,
+      rewardLevel: 0,
 
       // Loader
       isLoading: true,

@@ -178,6 +178,10 @@ export default {
           total += value
         })
       }
+      if(co2 / total * 100 >= 20) {
+        this.store.isRewardPopinOpen = true
+        this.store.rewardType = "level"
+      }
       return [
         {name: 'Absorption CO2', rate: co2 / total * 100 / this.maxRate},
         {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},
