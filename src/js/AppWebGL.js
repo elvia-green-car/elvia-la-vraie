@@ -11,13 +11,14 @@ import {
   Mesh,
   Color,
   DoubleSide,
-  SphereGeometry, ShaderMaterial, MeshBasicMaterial, InstancedMesh, Matrix4, Vector3
+  SphereGeometry, ShaderMaterial, InstancedMesh, Matrix4, Vector3, Object3D
 } from "three";
-import {Car} from "./Car";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {Plants} from "./Plants";
 import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
+import {Car} from "./Car";
+import {Plants} from "./Plants";
+
 import p_fragment from "../assets/shaders/pollution_fragment.glsl?raw"
 import p_vertex from "../assets/shaders/pollution_vertex.glsl?raw"
 
@@ -285,7 +286,7 @@ export class AppWebGL {
           value: 6
         },
         lightColor: {
-          value: new Color(0x96916D) // 0x155AAA (bleu marin de gazoduc) // 0x96916D (gris moche de maelys) // 0xCAC92B (vert chicane)
+          value: new Color(0x96916D)
         },
         attenuation: {
           value: 1.5
@@ -299,26 +300,26 @@ export class AppWebGL {
     });
     let count = 50
     let clouds = new InstancedMesh(geometry, material, count);
-    console.log(clouds)
-    for (let p = 0; p < 50; p++) {
+    this.scene.add(clouds)
+
+    for (let p = 0; p < count; p++) {
       let matrix = new Matrix4();
       let position = new Vector3();
+      //clouds.getMatrixAt(p, matrix);
+      //position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
+      //let newPos = new Vector3(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      //matrix.setPosition(newPos); // write new positon back
+      //clouds.setMatrixAt(p, matrix)
 
-      clouds.getMatrixAt(p, matrix);
-
-      position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
-      let newPos = new Vector3(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-      console.log(position, newPos, Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-      matrix.setPosition(newPos); // write new positon back
-
-      clouds.setMatrixAt(p, matrix);
-
-      clouds.instanceMatrix.needsUpdate = true;
-      //let cloud = new Mesh(geometry, material);
-      //cloud.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-      //this.scene.add(cloud)
+      let dummy = new Object3D();
+      dummy.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      dummy.updateMatrix()
+      clouds.setMatrixAt(p, dummy.matrix);
+      if (p === count - 1) {
+        clouds.instanceMatrix.needsUpdate = true;
+        clouds.frustumCulled = false
+      }
     }
-    this.scene.add(clouds)
   }
 
 
