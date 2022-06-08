@@ -57,7 +57,7 @@ import {useStore} from "../../js/stores/global";
 import Check from '/public/svg/cross.svg?component'
 
 export default {
-  name: "DevisPopin",
+  name: "EstimatePopin",
   components: {Check},
   setup() {
     const store = useStore()

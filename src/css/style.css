@@ -42,12 +42,12 @@
     }
 
     .bg-layered::before {
-        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white;
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white z-0;
         opacity: 30%;
     }
 
     .bg-layered::after {
-        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal;
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal z-0;
         opacity: 20%;
     }
 
@@ -61,20 +61,7 @@
 }
 
 html, body {
-    @apply relative h-full font-body text-white text-14 xl:text-16 leading-tight m-0;
-    max-width: 100vw;
-    min-height: 100vh;
-    /*overflow-x: hidden;*/
-}
-
-.main {
-    @apply relative z-10;
-    /*padding-bottom: 100vh;*/
-}
-
-.section {
-    @apply w-full h-screen;
-    margin-top: 100vh;
+    @apply h-full m-0 text-beige text-14 xl:text-16 font-body leading-tight;
 }
 
 .section__content {

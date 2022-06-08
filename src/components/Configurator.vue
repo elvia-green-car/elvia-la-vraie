@@ -14,7 +14,8 @@
     <canvas ref="canvas" class="absolute top-0 left-0 z-0 w-full h-full" id="app-canvas"></canvas>
     <PlantPopin :is-open="isPopinOpen" @plant-selected="onPlant" @close-popin="onClose"
                 :plants="plantsToShow" :plant="openDetail"/>
-    <DevisPopin :is-open="store.activeStep === 'Estimate'"/>
+    <EstimatePopin :is-open="store.activeStep === 'Estimate'"/>
+    <RewardPopin/>
     <div ref="fakePopin" class="pointer-events-none transition-transform ease-in-out z-10"/>
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
@@ -84,7 +85,8 @@ import StepsIndicator from "./StepsIndicator.vue";
 import Socials from "./configurator/Socials.vue";
 import Scroll from "./configurator/Scroll.vue";
 import PlantPopin from "./configurator/PlantPopin.vue";
-import DevisPopin from "./configurator/DevisPopin.vue";
+import EstimatePopin from "./configurator/EstimatePopin.vue";
+import RewardPopin from "./configurator/RewardPopin.vue";
 
 import Arrow from "/public/svg/slider-arrow.svg?component";
 import Switch from "/public/svg/switchview.svg?component";
@@ -92,15 +94,16 @@ import Switch from "/public/svg/switchview.svg?component";
 export default {
   name: "Configurator",
   components: {
-    StepsIndicator,
-    Button,
+    PlantPopin,
+    EstimatePopin,
+    RewardPopin,
     PlantsBar,
-    Rates,
     Breadcrumb,
+    StepsIndicator,
+    Rates,
+    Button,
     Socials,
     Scroll,
-    PlantPopin,
-    DevisPopin,
     Arrow,
     Switch
   },
@@ -167,6 +170,7 @@ export default {
       let co2 = 0, arrosage = 0, pollinisation = 0, total = 0
       if (this.store.carPlants) {
         Object.entries(this.store.carPlants).forEach(([key, value]) => {
+          //console.log(key, value)
           const found = this.store.plantsData.find(el => {
             return el.name === key
           })
@@ -176,6 +180,10 @@ export default {
           total += value
         })
       }
+      //if(co2 / total * 100 >= 20) {
+      //  this.store.isRewardPopinOpen = true
+      //  this.store.rewardType = "level"
+      //}
       return [
         {name: 'Absorption CO2', rate: co2 / total * 100 / this.maxRate},
         {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},

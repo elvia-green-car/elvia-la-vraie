@@ -6,7 +6,13 @@ export class Car {
   constructor(model) {
     this.model = model
     this.store = useStore(pinia)
-    this.plants = new Array()
+    this.plants = {}
+
+    this.init()
+  }
+
+  init() {
+    this.getSlot()
   }
 
   /**
@@ -14,7 +20,11 @@ export class Car {
    * @param {Object3D} model
    * @param {String} keySlot
    */
-  addPlant(model, keySlot) {
+  addPlant(model, keySlot, previousPlantName) {
+    if (previousPlantName) {
+      this.store.carPlants[previousPlantName] -= 1
+    }
+
     this.plants[keySlot] = model
 
     let found = Object.keys(this.store.carPlants).find(key => key === model.data.name)
@@ -24,16 +34,36 @@ export class Car {
     } else {
       this.store.carPlants[model.data.name] = 1
     }
+    console.log(this.store.carPlants)
   }
 
   removePlant(slotName) {
     let model = this.plants[slotName]
-    if(this.store.carPlants[model.data.name] > 1) {
+    if (this.store.carPlants[model.data.name] > 1) {
       this.store.carPlants[model.data.name] -= 1
     } else {
       delete this.store.carPlants[model.data.name]
     }
     this.plants[slotName].dispose()
+  }
+
+  getSlot() {
+    this.model.traverse(c => {
+      if (c.name.startsWith("Slot_")) {
+        switch (c.name) {
+          case "Slot_Hood":
+          case "Slot_Roof":
+          case "Slot_LeftDoor":
+          case "Slot_RightDoor":
+          case "Slot_Upertrunk":
+          case "Slot_BackRockerPanel":
+            break
+          default:
+            this.store.slotsCount++
+            break
+        }
+      }
+    })
   }
 
   dispose() {

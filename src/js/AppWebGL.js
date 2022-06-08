@@ -118,8 +118,11 @@ export class AppWebGL {
         && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
         ) {
           if (this.plantSelected != null) {
+            let previousPlant = null
             if (this.car.plants[slotName] != null) {
               if (this.car.plants[slotName].model != null) {
+                previousPlant = this.car.plants[slotName].data.name
+                console.log('remove', this.car.plants[slotName].data.name)
                 this.intersects[i].object.remove(this.car.plants[slotName].model)
                 this.car.plants[slotName].dispose()
               }
@@ -131,11 +134,11 @@ export class AppWebGL {
               model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel[0].clone()
             }
 
-            this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotName)
+            this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotName, previousPlant)
             this.intersects[i].object.attach(this.car.plants[slotName].model)
             this.car.plants[slotName].model.position.set(0, 0, 0)
             this.car.plants[slotName].model
-            console.log(this.car.plants[slotName].model)
+            //console.log(this.car.plants[slotName].model)
             if (this.store.activeStepIndex == 2) {
               this.car.plants[slotName].model.rotation.x = (2*Math.PI) / 3
               slotNameTemp = slotName.replace("Right", "Left")
@@ -387,9 +390,9 @@ export class AppWebGL {
     this.animate()
     this.updateModelsLoad()
 
+    // TODO: clickRight remove, not clear
     this.canvas.addEventListener('mouseup', (event) => this.onPointerClickLeft(event))
-    this.canvas.addEventListener('click', (event) => this.onPointerClickLeft(event));
-    this.canvas.addEventListener('contextmenu', (event) => this.onPointerClickRight(event));
+    //this.canvas.addEventListener('contextmenu', (event) => this.onPointerClickRight(event));
     this.canvas.addEventListener('mousemove', (event) => this.onPointerMove(event));
 
     window.onselectstart = function(){ return false };        //disbale selection text for drag and drop
@@ -399,8 +402,7 @@ export class AppWebGL {
   // Memory management
   destroy() {
     this.canvas.removeEventListener('mouseup', (event) => this.onPointerClickLeft(event))
-    this.canvas.removeEventListener('click', (event) => this.onPointerClickLeft(event));
-    this.canvas.removeEventListener('contextmenu', (event) => this.onPointerClickRight(event));
+    //this.canvas.removeEventListener('contextmenu', (event) => this.onPointerClickRight(event));
     this.canvas.removeEventListener('mousemove', (event) => this.onPointerMove(event));
 
 
