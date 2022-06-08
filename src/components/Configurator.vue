@@ -20,15 +20,16 @@
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
              class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-12 pb-0 xl:pb-0 z-10">
-        <a class="pointer-events-auto" href="/">
+        <router-link to="/" class="pointer-events-auto">
           <Button text="Quitter"/>
-        </a>
+        </router-link>
         <p class="w-32 xl:w-48" :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''">
           Une voiture fournie en plantes pour un impact décarbonisant plus grand
         </p>
         <Rates v-if="rates" :data="rates"/>
         <!--ici: {{ rates }}-->
-        <Breadcrumb :steps="store.configSteps" :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+        <Breadcrumb :steps="store.configSteps"
+                    :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     @step-selected="updateSteps"/>
         <Switch class="w-32 h-32 animate-spin-slow"
                 :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>

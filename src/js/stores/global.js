@@ -7,9 +7,11 @@ export const useStore = defineStore('main', {
     return {
       // Global steps
       configSteps: ["Hood", "Roof", "Door", "Trunk", "Global", "Estimate"],
-      landingSteps: ["Home", "Configure", "Plants", "Tools", "Global", "Services"],
+      landingSteps: ["Elvia", "Plants", "Tools", "Packs", "Services"],
       activeStepIndex: 0,
       activeStep: null,
+      // Landing
+      sectionIndex: 0,
 
       // Cursor
       drag: false,
