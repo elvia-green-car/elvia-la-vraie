@@ -46,7 +46,7 @@ export class AppWebGL {
     this.intersectClone = null
 
     this.clouds = null
-    this.cloudsCount = 50
+    this.cloudsCount = 15
 
     console.log("New App created")
   }
@@ -71,7 +71,7 @@ export class AppWebGL {
 
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
-    this.camera = new PerspectiveCamera(50, aspect, 0.01, 1000)
+    this.camera = new PerspectiveCamera(50, aspect, 0.1, 2000)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = false;
     this.controls.enablePan = false;
@@ -281,7 +281,7 @@ export class AppWebGL {
     const vertexShader = p_vertex
     const fragmentShader = p_fragment
 
-    const geometry = new SphereGeometry(100, 80, 80)
+    const geometry = new SphereGeometry(150, 80, 80)
     const material = new ShaderMaterial({
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
@@ -290,10 +290,10 @@ export class AppWebGL {
           value: 6
         },
         lightColor: {
-          value: new Color(0x96916D)
+          value: new Color(0x333333)
         },
         attenuation: {
-          value: 1.5
+          value: 3
         }
       },
       side: DoubleSide,
@@ -302,8 +302,8 @@ export class AppWebGL {
       transparent: true,
       depthWrite: false,
     });
-    console.log("Material : ")
-    console.log(material)
+    //console.log("Material : ")
+    //console.log(material)
 
     this.clouds = new InstancedMesh(geometry, material, this.cloudsCount);
     this.scene.add(this.clouds)
@@ -313,32 +313,9 @@ export class AppWebGL {
     let position = new Vector3();
 
     for (let p = 0; p < this.cloudsCount; p++) {
-
-      // METHOD 1
-      // clouds.getMatrixAt(p, matrix);
-      // position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
-      // position.x = Math.random() * 800 - 400
-      // position.y = Math.random() * 300
-      // position.z = Math.random() * 800 - 400
-      // matrix.setPosition(position); // write new positon back
-      // clouds.setMatrixAt(p, matrix)
-
-      // METHOD 2
-      // clouds.getMatrixAt(p, matrix);
-      // let newPos = new Vector3(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
-      // matrix.setPosition(newPos); // write new positon back
-      // clouds.setMatrixAt(p, matrix)
-
-      // METHOD 3 (same as Elise)
-      dummy.position.set(Math.random() * 800 - 400, Math.random() * 300, Math.random() * 800 - 400)
+      dummy.position.set(Math.random() * 600 - 300, Math.random() * 300, Math.random() * 600 - 300)
       dummy.updateMatrix()
       this.clouds.setMatrixAt(p, dummy.matrix)
-
-      // METHOD 4 (new given by Elise)
-      //const mat42 = new Matrix4().makeTranslation(0, 300, 0)
-      //let currentmatrix = new Matrix4()
-      //this.clouds.getMatrixAt(p, currentmatrix)
-      //this.clouds.setMatrixAt(p, currentmatrix.multiply(mat42));
 
       if (p === this.cloudsCount - 1) {
         this.clouds.instanceMatrix.needsUpdate = true; // --> Seems to NOT work
@@ -353,7 +330,6 @@ export class AppWebGL {
       console.log(matrix) // --> si je commente tout le reste du code, les matrices sont vides
     }
   }
-
 
   resizeRendererToDisplaySize() {
     const width = this.canvas.clientWidth;

@@ -194,7 +194,6 @@ export default {
       }
     },
     onPlant(plant) {
-      console.log('plantSelected', plant)
       this.plantSelected = plant
       if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)
