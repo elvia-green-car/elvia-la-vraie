@@ -2,7 +2,7 @@
   <div class="absolute top-1/2 -translate-y-1/2 flex items-center text-16 gap-4">
     <div class="flex flex-col items-center gap-4">
       <In class="w-6 h-6"/>
-      <span class="btn-border p-4 btn-bg">
+      <span class="btn-border rounded-full p-4 btn-bg">
         <span class="block bg-white w-[1px] h-4"/>
       </span>
       <Out class="w-6 h-6"/>

@@ -5,9 +5,7 @@
       <div class="btn-border btn-round">
         <Flower class="w-12	h-12"/>
       </div>
-      <span class="font-title font-bold text-[35px]">
-        Certification&nbsp;{{ store.rewardLevel ? store.rewardLevel + 1 : '' }}
-      </span>
+      <span class="font-title font-bold text-[35px]">Certification</span>
       <span>{{ reward }}</span>
       <Button class="pointer-events-auto" @click.native="store.isRewardPopinOpen = false">
         <Arrow class="w-5"/>
@@ -42,8 +40,7 @@ export default {
   },
   computed: {
     reward() {
-      return rewardsData[0][this.store.rewardLevel].text
-      //return this.store.rewardType === "level" ? rewardsData[0][this.store.rewardLevel].text : rewardsData[this.store.rewardType].text
+      return this.store.rewardType ? rewardsData.find(r => r.type === this.store.rewardType).text : ''
     }
   }
 }

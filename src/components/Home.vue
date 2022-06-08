@@ -300,7 +300,7 @@ export default {
   setup() {
     const store = useStore()
 
-    store.$subscribe((mutation, state) => {
+    store.$subscribe((mutation) => {
       if (mutation.events.key === "isLoading" && mutation.events.newValue === false) {
         let tl = new gsap.timeline()
         let s = document.querySelector('.section')

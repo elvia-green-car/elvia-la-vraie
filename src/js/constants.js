@@ -1,3 +1,11 @@
+export const Rewards = {
+  FIRST_PLANT: "first_plant",
+  PERCENT: "20_percent",
+  GREEN_HAND: "green_hand",
+  CO2_LESS: "co2_less",
+  FULLFILL: "fullfill_car"
+}
+
 const ConfigSteps = {
   HOOD: "Hood", ROOF: "Roof", DOOR: "Door", TRUNK: "Trunk", GLOBAL: "Global", ESTIMATE: "Estimate"
 }

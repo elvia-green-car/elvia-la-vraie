@@ -33,7 +33,7 @@ export const useStore = defineStore('main', {
       isPlantPopinOpen: false,
       isRewardPopinOpen: false,
       rewardType: null,
-      rewardLevel: 0,
+      rewardGiven: [],
 
       // Loader
       isLoading: true,

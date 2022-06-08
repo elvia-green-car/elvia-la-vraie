@@ -3,7 +3,7 @@
     <button ref="prev">
       <Arrow class="w-4"/>
     </button>
-    <div class="btn-bg btn-border overflow-hidden" @mouseleave="onMouseLeave">
+    <div class="btn-bg btn-border rounded-full overflow-hidden" @mouseleave="onMouseLeave">
       <div ref="helper"
            class="pointer-events-auto absolute hidden flex flex-col items-center gap-2 -translate-y-full mt-4 -translate-x-1/2"
            @click="openPlantPopin($event)">

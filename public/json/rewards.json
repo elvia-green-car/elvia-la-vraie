@@ -1,21 +1,22 @@
 [
-  [
-    {
-      "text": "Bravo ! La certification 1 assure une dépollution de 20% de l’air autour de la voiture. Continuez à ajouter des plantes pour augmenter le pourcentage de dépollution."
-    },
-    {
-      "text": ""
-    },
-    {
-      "text": "Génial ! Vous avez atteint la certification 5. Un maximum de plantes pour un maximum d’effet ! Vous avez rempli entièrement toutes les zones disponibles. Votre voiture vous permet d’absorber jusqu’à XX% de CO2 !"
-    }
-  ],
+  {
+    "type": "first_plant",
+    "text": "Une petite plante pour l’homme, un nouveau poumon pour l’humanité ! Vous venez d’ajouter votre première plante, c’est le début d’une nouvelle ère."
+  },
+  {
+    "type": "20_percent",
+    "text": "Prenez un grand bol d'air, vous dépolluez maintenant à hauteur de 20% de l’air autour de la voiture. Continuez à ajouter des plantes pour augmenter dépolluer toujours plus."
+  },
   {
     "type": "green_hand",
     "text": "La main verte ! Vous avez posé plus de 5 espèces de plantes différentes."
   },
   {
-    "type": "",
-    "text": ""
+    "type": "co2_less",
+    "text": "Respirez, vous faites maintenant partie du pourcentage d'automobilistes dont les émissions en CO2 sont les plus faibles, quelle belle performance !"
+  },
+  {
+    "type": "fullfill_car",
+    "text": "Génial ! Un maximum de plantes pour un maximum d’effet ! Vous avez rempli entièrement toutes les zones disponibles. Votre voiture vous permet d’absorber jusqu’à XX% de CO2 !"
   }
 ]
