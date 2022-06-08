@@ -27,7 +27,10 @@
     "arrosage": 3,
     "co2": 3,
     "pollinisation": 1,
-    "zone": []
+    "zone": [
+      "Door",
+      "Roof"
+    ]
   },
   {
     "index": 2,
@@ -78,7 +81,9 @@
     "arrosage": 2,
     "co2": 2,
     "pollinisation": 3,
-    "zone": []
+    "zone": [
+      "Roof"
+    ]
   },
   {
     "index": 5,
@@ -150,7 +155,9 @@
     "pollinisation": 3,
     "zone": [
       "Hood",
-      "Roof"
+      "Roof",
+      "Door",
+      "Trunk"
     ]
   },
   {
