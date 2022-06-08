@@ -169,6 +169,7 @@ export default {
       let co2 = 0, arrosage = 0, pollinisation = 0, total = 0
       if (this.store.carPlants) {
         Object.entries(this.store.carPlants).forEach(([key, value]) => {
+          //console.log(key, value)
           const found = this.store.plantsData.find(el => {
             return el.name === key
           })
@@ -178,10 +179,10 @@ export default {
           total += value
         })
       }
-      if(co2 / total * 100 >= 20) {
-        this.store.isRewardPopinOpen = true
-        this.store.rewardType = "level"
-      }
+      //if(co2 / total * 100 >= 20) {
+      //  this.store.isRewardPopinOpen = true
+      //  this.store.rewardType = "level"
+      //}
       return [
         {name: 'Absorption CO2', rate: co2 / total * 100 / this.maxRate},
         {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},
@@ -201,7 +202,6 @@ export default {
       }
     },
     onPlant(plant) {
-      console.log('plantSelected', plant)
       this.plantSelected = plant
       if (this.app) {
         this.app.updatePlantSelected(this.plantSelected)

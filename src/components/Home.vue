@@ -53,11 +53,6 @@ export default {
   mounted() {
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
-    window.addEventListener('scroll', () => {
-      if (this.$refs.home) {
-        //console.log('landing progress', (window.scrollY - window.innerHeight) / this.$refs.home.clientHeight * 100)
-      }
-    })
   },
   methods: {
     updateSteps(index) {

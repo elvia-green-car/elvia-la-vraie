@@ -24,9 +24,6 @@ export default {
   props: {
     steps: Array,
   },
-  mounted() {
-    console.log(this.steps[this.store.activeStepIndex])
-  },
   methods: {
     stepClicked($e, step, index) {
       this.$emit('stepSelected', index, this.store.activeStepIndex)
