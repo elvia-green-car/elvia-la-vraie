@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      carPrice: 12500,
+      carPrice: 34999,
       withCar: false,
       options: [
         {name: "Lot d'outils", price: 49.99, checked: false},

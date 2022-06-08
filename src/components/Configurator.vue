@@ -28,7 +28,8 @@
         </p>
         <Rates v-if="rates" :data="rates"/>
         <!--ici: {{ rates }}-->
-        <Breadcrumb :steps="store.configSteps" :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
+        <Breadcrumb :steps="store.configSteps"
+                    :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':'pointer-events-auto'"
                     @step-selected="updateSteps"/>
         <Switch class="w-32 h-32 animate-spin-slow"
                 :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>
@@ -167,9 +168,9 @@ export default {
     },
     rates() {
       let co2 = 0, arrosage = 0, pollinisation = 0, total = 0
+      let maxTotalValue = this.maxRate * this.store.slotsCount
       if (this.store.carPlants) {
         Object.entries(this.store.carPlants).forEach(([key, value]) => {
-          //console.log(key, value)
           const found = this.store.plantsData.find(el => {
             return el.name === key
           })
@@ -179,14 +180,14 @@ export default {
           total += value
         })
       }
-      //if(co2 / total * 100 >= 20) {
-      //  this.store.isRewardPopinOpen = true
-      //  this.store.rewardType = "level"
-      //}
+      if (co2 * 100 / maxTotalValue >= 20) {
+        this.store.isRewardPopinOpen = true
+        this.store.rewardType = "level"
+      }
       return [
-        {name: 'Absorption CO2', rate: co2 / total * 100 / this.maxRate},
-        {name: 'Besoin en eau', rate: arrosage / total * 100 / this.maxRate},
-        {name: 'Pollinisation', rate: pollinisation / total * 100 / this.maxRate}
+        {name: 'Absorption CO2', rate: co2 * 100 / maxTotalValue},
+        {name: 'Besoin en eau', rate: arrosage * 100 / maxTotalValue},
+        {name: 'Pollinisation', rate: pollinisation * 100 / maxTotalValue}
       ]
     },
   },
