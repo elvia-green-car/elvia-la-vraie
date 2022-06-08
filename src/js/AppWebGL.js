@@ -12,7 +12,7 @@ import {
   Mesh,
   Color,
   DoubleSide,
-  SphereGeometry, ShaderMaterial, InstancedMesh, Matrix4, Vector3, Object3D
+  SphereGeometry, ShaderMaterial, InstancedMesh, Matrix4, Vector3, Object3D, Box3
 } from "three";
 import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
@@ -101,8 +101,6 @@ export class AppWebGL {
     this.camera.position.set(-470, 190, 502)
     this.camera.rotation.set(0, 0.03, 0.06)
     this.camera.lookAt(0, 0, 0)
-
-    this.smog()
 
     this.raycaster = new Raycaster()
     this.pointer = new Vector2()
@@ -280,6 +278,13 @@ export class AppWebGL {
 
   // fog
   smog() {
+    if (this.car) {
+      let box3 = new Box3().setFromObject(this.car.model);
+      let size = new Vector3();
+      box3.getSize(size);
+      console.log('size', size)
+    }
+
     const vertexShader = p_vertex
     const fragmentShader = p_fragment
 
@@ -313,7 +318,9 @@ export class AppWebGL {
     let dummy = new Object3D();
 
     for (let p = 0; p < this.cloudsCount; p++) {
-      dummy.position.set(Math.random() * 600 - 300, Math.random() * 300, Math.random() * 600 - 300)
+      dummy.position.set(Math.random() * 600 - 300, Math.random() * 300 + 50, Math.random() * 600 - 300)
+      let scale = Math.random() / 2 + 0.75
+      dummy.scale.set(scale, scale, scale)
       dummy.updateMatrix()
       this.clouds.setMatrixAt(p, dummy.matrix)
       this.clouds.instanceMatrix.needsUpdate = true;
@@ -377,6 +384,7 @@ export class AppWebGL {
           this.car.model.animations = ModelsSingelton.getInstance().getModelManager().models[MODELS.Car].model.animations
           this.car.model.position.x -= 100
           this.scene.add(this.car.model)
+          this.smog()
           this.updateSteps(0)            //to animate camera on start
           console.log(ModelsSingelton.getInstance().getModelManager().models)
         }
