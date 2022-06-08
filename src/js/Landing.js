@@ -63,7 +63,7 @@ export class Landing {
 
     const gl = this.renderer.getContext()
     const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight
-    this.camera = new PerspectiveCamera(50, aspect, 0.01, 2000)
+    this.camera = new PerspectiveCamera(50, aspect, 1, 2000)
 
     this.dirLight1 = new DirectionalLight(0xffffff, 1)
     this.dirLight1.position.set(-600, 300, 200)
@@ -79,7 +79,9 @@ export class Landing {
     this.scene.add(this.dirLight4)
 
     //this.camera.position.set(-600, 200, 0)
-    this.camera.position.set(-500, 200, -500)
+    this.camera.position.set(-500, 300, -500)
+    //this.camera.position.set(-300, 200, -300)
+    //this.camera.rotateY(-(Math.PI/2))
     //this.camera.rotateY(-(2*Math.PI/2))
     //this.camera.rotateX(-(Math.PI/12))
     this.camera.lookAt(0, 70, 0)
@@ -105,21 +107,21 @@ export class Landing {
     this.cameraPositions = new Array()
     this.cameraPositions.push(null)    //new Vector3(0, 0, 0)
     this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
+    this.cameraPositions.push(new Vector3(-300, 200, -300))
     this.cameraPositions.push(null)
     this.cameraPositions.push(null)
     this.cameraPositions.push(null)
     this.cameraPositions.push(null)
     this.cameraPositions.push(null)
     this.cameraRotation = new Array()
-    this.cameraPositions.push(null)    //new Vector3(0, 0, 0)
-    this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
-    this.cameraPositions.push(null)
+    this.cameraRotation.push(null)    //new Vector3(0, 0, 0)
+    this.cameraRotation.push(null)
+    this.cameraRotation.push(null)
+    this.cameraRotation.push(null)
+    this.cameraRotation.push(null)
+    this.cameraRotation.push(null)
+    this.cameraRotation.push(null)
+    this.cameraRotation.push(null)
 
   }
 
@@ -226,10 +228,12 @@ export class Landing {
     let camCoords = this.camera.position
     let camRotation = this.camera.rotation
 
+    console.log("Cam pos : " + camPos)
+
     if(carPos) this.animationPosition(carCoords, carPos, 3000, TWEEN.Easing.Quintic.InOut, this.car.model)
-    if(carRot) this.animationPosition(carRotation, carRotation, 3000, TWEEN.Easing.Quintic.InOut, this.car.model)
+    if(carRot) this.animationRotation(carRotation, carRotation, 3000, TWEEN.Easing.Quintic.InOut, this.car.model)
     if(camPos) this.animationPosition(camCoords, camCoords, 3000, TWEEN.Easing.Quintic.InOut, this.camera)
-    if(camRot) this.animationPosition(camRotation, camRotation, 3000, TWEEN.Easing.Quintic.InOut, this.camera)
+    if(camRot) this.animationRotation(camRotation, camRotation, 3000, TWEEN.Easing.Quintic.InOut, this.camera)
 
     /*new TWEEN.Tween(coords)
             .to({
@@ -246,6 +250,7 @@ export class Landing {
   }
 
   animationPosition(coords, pos, time, easing, model) {
+    console.log("animationPosition")
     new TWEEN.Tween(coords)
       .to({
           x: pos.x,
