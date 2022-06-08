@@ -9,7 +9,7 @@
         Certification&nbsp;{{ store.rewardLevel ? store.rewardLevel + 1 : '' }}
       </span>
       <span>{{ reward }}</span>
-      <Button class="pointer-events-auto" @click.native="store.isRewardOpen = false">
+      <Button class="pointer-events-auto" @click.native="store.isRewardPopinOpen = false">
         <Arrow class="w-5"/>
       </Button>
     </div>

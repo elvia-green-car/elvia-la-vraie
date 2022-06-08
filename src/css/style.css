@@ -42,12 +42,12 @@
     }
 
     .bg-layered::before {
-        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white;
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-white z-0;
         opacity: 30%;
     }
 
     .bg-layered::after {
-        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal;
+        @apply content-[''] absolute top-0 left-0 w-full h-full bg-green-normal z-0;
         opacity: 20%;
     }
 
