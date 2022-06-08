@@ -1,6 +1,6 @@
 <template>
   <div v-show="store.isRewardPopinOpen"
-       class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 btn-border bg-layered bg-opacity-30 backdrop-blur-sm py-16 px-32 rounded-lg">
+       class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 btn-border bg-layered bg-opacity-30 backdrop-blur-sm py-16 px-32 rounded-lg z-20">
     <div class="flex flex-col gap-10 text-center items-center justify-center z-20">
       <div class="btn-border btn-round">
         <Flower class="w-12	h-12"/>
