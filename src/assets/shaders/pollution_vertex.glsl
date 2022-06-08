@@ -3,11 +3,18 @@ varying vec3 vWorldPosition;
 
 void main(){
     // compute intensity
-    vNormal = normalize( normalMatrix * normal );
+    //vNormal = normalize( normalMatrix * normal );
 
-    vec4 worldPosition	= modelMatrix * vec4( position, 1.0 );
-    vWorldPosition	= worldPosition.xyz;
+    //vec4 worldPosition	= modelMatrix * vec4( position, 1.0 );
+    //vWorldPosition	= worldPosition.xyz;
 
     // set gl_Position
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    //gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    vec4 mvPosition = instanceMatrix * vec4( position, 1.0 );
+
+    vec4 modelViewPosition = modelViewMatrix * mvPosition;
+    gl_Position = projectionMatrix * modelViewPosition;
+
+    vNormal = (modelViewMatrix * instanceMatrix * vec4(normal,0.)).xyz;
+    vWorldPosition = mvPosition.xyz;
 }

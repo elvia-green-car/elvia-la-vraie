@@ -6,6 +6,7 @@ import {
   Raycaster,
   Vector2,
   MeshStandardMaterial,
+  MeshBasicMaterial,
   EquirectangularReflectionMapping,
   sRGBEncoding,
   Mesh,
@@ -301,6 +302,8 @@ export class AppWebGL {
       transparent: true,
       depthWrite: false,
     });
+    console.log("Material : ")
+    console.log(material)
 
     this.clouds = new InstancedMesh(geometry, material, this.cloudsCount);
     this.scene.add(this.clouds)
