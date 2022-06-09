@@ -109,61 +109,65 @@ export class AppWebGL {
   //Left click to add a plant
   onPointerClickLeft(event) {
     console.log('onPointerClickLeft canvas')
-    if (this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
-      let slotName = ""
-      let slotNameTemp = ""
+    console.log(event)
+    if(event.which == 1) {
+      if (this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
+        let slotName = ""
+        let slotNameTemp = ""
 
-      this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-      this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-      this.raycaster.setFromCamera(this.pointer, this.camera)
-      this.intersects = this.raycaster.intersectObjects(this.scene.children)
+        this.raycaster.setFromCamera(this.pointer, this.camera)
+        this.intersects = this.raycaster.intersectObjects(this.scene.children)
 
-      for (let i = 0; i < this.intersects.length; i++) {
-        slotName = this.intersects[i].object.name
-        //if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
-        //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
-        if ((slotName.startsWith("Slot_"))
-          && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
-        ) {
-          if (this.plantSelected != null) {
-            let previousPlant = null
-            if (this.car.plants[slotName] != null) {
-              if (this.car.plants[slotName].model != null) {
-                previousPlant = this.car.plants[slotName].data.name
-                this.intersects[i].object.remove(this.car.plants[slotName].model)
-                this.car.plants[slotName].dispose()
+        for (let i = 0; i < this.intersects.length; i++) {
+          slotName = this.intersects[i].object.name
+          //if (slotName.startsWith("Slot_") && slotName.includes(this.store.configSteps[this.store.activeStepIndex])) {
+          //if((this.car.plants[slotName] == null || this.car.plants[slotName].model == null) && this.plantSelected != null) {
+          if ((slotName.startsWith("Slot_"))
+            && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
+          ) {
+            if (this.plantSelected != null) {
+              let previousPlant = null
+              if (this.car.plants[slotName] != null) {
+                if (this.car.plants[slotName].model != null) {
+                  previousPlant = this.car.plants[slotName].data.name
+                  this.plantAnimationOut(this.car.plants[slotName].model, this.intersects[i], this.car.plants[slotName], this.car.plants[slotName].model.scale)
+                  //this.intersects[i].object.remove(this.car.plants[slotName].model)
+                  //this.car.plants[slotName].dispose()
+                }
+
+              }
+              let model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone()
+              if ((this.store.activeStepIndex == 2)
+                && (ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel.length > 0)) {
+                model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel[0].clone()
               }
 
+              this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotName, previousPlant)
+              this.intersects[i].object.attach(this.car.plants[slotName].model)
+              this.car.plants[slotName].model.position.set(0, 0, 0)
+              this.plantAnimationIn(this.car.plants[slotName].model, this.car.plants[slotName].model.scale)
+              //this.car.plants[slotName].model.scale.set(0,0,0)
+              if (this.store.activeStepIndex == 2) {
+                this.car.plants[slotName].model.rotation.x = (2 * Math.PI) / 3
+                slotNameTemp = slotName.replace("Right", "Left")
+                this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotNameTemp)
+                this.car.model.traverse((child) => {
+                  if (child.name == slotNameTemp) {
+                    this.car.plants[slotNameTemp].model.rotation.x = Math.PI / 4
+                    this.car.plants[slotNameTemp].model.rotation.y = Math.PI
+                    child.attach(this.car.plants[slotNameTemp].model)
+                    return
+                  }
+                })
+                this.car.plants[slotNameTemp].model.position.set(0, 0, 0)
+                this.car.plants[slotNameTemp].model
+              }
+            } else {
+              alert("Veuillez séléctionner une plante")
             }
-            let model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].model.clone()
-            if ((this.store.activeStepIndex == 2)
-              && (ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel.length > 0)) {
-              model = ModelsSingelton.getInstance().getModelManager().models[MODELS_OFFSET_PLANT + this.plantSelected.index].altModel[0].clone()
-            }
-
-            this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotName, previousPlant)
-            this.intersects[i].object.attach(this.car.plants[slotName].model)
-            this.car.plants[slotName].model.position.set(0, 0, 0)
-            this.car.plants[slotName].model
-            //console.log(this.car.plants[slotName].model)
-            if (this.store.activeStepIndex == 2) {
-              this.car.plants[slotName].model.rotation.x = (2 * Math.PI) / 3
-              slotNameTemp = slotName.replace("Right", "Left")
-              this.car.addPlant(new Plants(model.clone(), this.plantSelected), slotNameTemp)
-              this.car.model.traverse((child) => {
-                if (child.name == slotNameTemp) {
-                  this.car.plants[slotNameTemp].model.rotation.x = Math.PI / 4
-                  this.car.plants[slotNameTemp].model.rotation.y = Math.PI
-                  child.attach(this.car.plants[slotNameTemp].model)
-                  return
-                }
-              })
-              this.car.plants[slotNameTemp].model.position.set(0, 0, 0)
-              this.car.plants[slotNameTemp].model
-            }
-          } else {
-            alert("Veuillez séléctionner une plante")
           }
         }
       }
@@ -190,8 +194,9 @@ export class AppWebGL {
           && ((slotName.includes(this.store.activeStep)) || (this.store.activeStep == "Trunk" && slotName.includes("BackRocker")))
         ) {
           if (this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
-            this.intersects[i].object.remove(this.car.plants[slotName].model)
-            this.car.removePlant(slotName)
+            this.plantAnimationOut(this.car.plants[slotName].model, this.intersects[i], this.car.plants[slotName], this.car.plants[slotName].model.scale)
+            //this.intersects[i].object.remove(this.car.plants[slotName].model)
+            //this.car.removePlant(slotName)
             if (this.store.activeStepIndex == 2) {
               slotNameTemp = slotName.replace("Right", "Left")
               this.car.model.traverse((child) => {
@@ -366,6 +371,43 @@ export class AppWebGL {
     this.render()
   }
 
+  plantAnimationIn(model, scaleEnd) {
+    const scale = new Vector3(0, 0, 0)
+    new TWEEN.Tween(scale)
+        .to({ 
+          x: scaleEnd.x,
+          y: scaleEnd.y,
+          z: scaleEnd.z,
+        }, 1000)
+        .easing(TWEEN.Easing.Elastic.Out)
+        .onComplete(() => {
+          
+        })
+        .onUpdate(() => {
+          model.scale.set(scale.x, scale.y, scale.z)
+        })
+        .start();
+  }
+
+  plantAnimationOut(model, intersect, slot, scaleStart) {
+    //const scale = new Vector3(scaleStart, scaleStart, scaleStart)
+    new TWEEN.Tween(scaleStart)
+        .to({ 
+          x: 0,
+          y: 0,
+          z: 0,
+        }, 300)
+        .easing(TWEEN.Easing.Elastic.In)
+        .onComplete(() => {
+          intersect.object.remove(model)
+          slot.dispose()
+        })
+        .onUpdate(() => {
+          model.scale.set(scaleStart.x, scaleStart.y, scaleStart.z)
+        })
+        .start();
+  }
+
   updateMatrix(p) {
     let scale = new Vector3()
     let matrix = new Matrix4()
@@ -469,7 +511,7 @@ export class AppWebGL {
 
     // TODO: clickRight remove, not clear
     this.canvas.addEventListener('mouseup', (event) => this.onPointerClickLeft(event))
-    //this.canvas.addEventListener('contextmenu', (event) => this.onPointerClickRight(event));
+    this.canvas.addEventListener('contextmenu', (event) => this.onPointerClickRight(event));
     this.canvas.addEventListener('mousemove', (event) => this.onPointerMove(event));
 
     window.onselectstart = function () {
@@ -483,7 +525,7 @@ export class AppWebGL {
   // Memory management
   destroy() {
     this.canvas.removeEventListener('mouseup', (event) => this.onPointerClickLeft(event))
-    //this.canvas.removeEventListener('contextmenu', (event) => this.onPointerClickRight(event));
+    this.canvas.removeEventListener('contextmenu', (event) => this.onPointerClickRight(event));
     this.canvas.removeEventListener('mousemove', (event) => this.onPointerMove(event));
 
 
