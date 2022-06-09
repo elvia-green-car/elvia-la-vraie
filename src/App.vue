@@ -1,5 +1,9 @@
 <script setup>
 import Loader from "./components/Loader.vue";
+
+window.onbeforeunload = () => {
+  window.scrollTo(0, 0);
+}
 </script>
 
 <template>

@@ -4,15 +4,21 @@
     <div class="flex flex-col justify-center items-center w-full h-full btn-bg border border-white rounded-xl">
       <router-link to="/" @click.native="store.isMenuOpen = false">Home</router-link>
       <router-link to="/configurator" @click.native="store.isMenuOpen = false">Configurer</router-link>
-      <router-link @click.native.prevent="" to="/plants">Plantes</router-link>
-      <router-link @click.native.prevent="" to="/tools">Outils</router-link>
-      <router-link @click.native.prevent="" to="/services">Services</router-link>
+      <router-link custom v-slot="{ href, route, navigate, isActive, isExactActive }" to="/plants">
+        <span>Plantes</span>
+      </router-link>
+      <router-link custom v-slot="{ href, route, navigate, isActive, isExactActive }" to="/tools">
+        <span>Outils</span>
+      </router-link>
+      <router-link custom v-slot="{ href, route, navigate, isActive, isExactActive }" to="/services">
+        <span>Services</span>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import {useStore} from "../../js/stores/global";
+import {useStore} from "../js/stores/global";
 
 export default {
   name: "Menu",

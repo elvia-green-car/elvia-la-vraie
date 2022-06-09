@@ -253,7 +253,7 @@ import {ScrollTrigger} from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-import Menu from "./landing/Menu.vue";
+import Menu from "./Menu.vue";
 import Button from "./Button.vue";
 import StepsIndicator from "./StepsIndicator.vue";
 import Breadcrumb from "./Breadcrumb.vue";
