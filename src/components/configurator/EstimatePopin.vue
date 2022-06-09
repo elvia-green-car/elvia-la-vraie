@@ -21,14 +21,14 @@
           <span class="flex items-center justify-center w-4 h-4 border border-white">
             <Check v-if="!withCar" class="w-4 h-4"/>
           </span>
-            Je possède une Renault Elvia*
+            Je possède une Grenault Elvia*
           </label>
           <input class="hidden" ref="without" type="radio" id="with" :value="true" v-model="withCar"/>
           <label class="flex items-center gap-4" for="with" @click="$refs.without.click()">
           <span class="flex items-center justify-center w-4 h-4 border border-white">
             <Check v-if="withCar" class="w-4 h-4"/>
           </span>
-            Je veux une Renault Elvia*
+            Je veux une Grenault Elvia*
           </label>
         </fieldset>
         <fieldset v-for="(other, index) in store.othersData" :key="index" class="flex justify-between items-center gap-7 py-2 mb-5">

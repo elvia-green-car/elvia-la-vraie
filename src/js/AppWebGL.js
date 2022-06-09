@@ -375,7 +375,7 @@ export class AppWebGL {
 
     // Remove fog
     for (let i = 0; i <= this.cloudsCount; i++) {
-      if (this.store.rates.co2 > i * (80 / this.cloudsCount)) {
+      if (this.store.rates.co2 > i * (70 / this.cloudsCount)) {
         this.updateMatrix(i)
       }
     }
