@@ -47,6 +47,8 @@ export class AppWebGL {
 
     this.audioCity = null
     this.audioNature = null
+    this.audioStarting = null
+    this.audioCameraMove = null
 
     this.clouds = null
     this.cloudsCount = 20
@@ -441,7 +443,6 @@ export class AppWebGL {
           this.scene.add(this.car.model)
           this.smog()
           this.updateSteps(0)            //to animate camera on start
-          console.log(ModelsSingelton.getInstance().getModelManager().models)
         }
 
         if ((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length)
@@ -478,6 +479,11 @@ export class AppWebGL {
         this.audioNature.setVolume(0)
         this.audioNature.play()
       }
+      this.audioStarting = ModelsSingelton.getInstance().getAudios()[SOUNDS.Starting];
+      if(this.audioStarting) {
+        this.audioStarting.play()
+      }
+      this.audioCameraMove = ModelsSingelton.getInstance().getAudios()[SOUNDS.CameraMove];
     }
   }
 
@@ -501,6 +507,9 @@ export class AppWebGL {
         break;
     }
     if (pos != null) {
+      if(this.audioCameraMove) {
+        this.audioCameraMove.play(1)
+      }
       let coords = this.camera.position
       this.controls.enabled = false;
       new TWEEN.Tween(coords)
@@ -579,6 +588,8 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null
     this.intersectClone = null
+    this.audioCity.stop()
+    this.audioNature.stop()
     this.audioCity = null
     this.audioNature = null
     this.hdri.dispose()
