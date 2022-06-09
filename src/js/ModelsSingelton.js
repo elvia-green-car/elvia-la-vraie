@@ -23,8 +23,10 @@ export const HDRI = {
 export const SOUNDS = {
   LoopCity: 0,
   LoopNature: 1,
-  PopUp: 2,
-  PopDown: 3
+  Starting: 2,
+  CameraMove: 3,
+  PopUp: 4,
+  PopDown: 5
 }
 
 export const MODELS_OFFSET_PLANT = 1;         //offset of index plant
@@ -97,6 +99,20 @@ export var ModelsSingelton = (function () {
       audios[SOUNDS.LoopNature] = new Audio( listener );
       audios[SOUNDS.LoopNature].setBuffer( buffer );
       audios[SOUNDS.LoopNature].setLoop( true );
+    });
+
+    audioLoader.load( 'sounds/starting.mp3', function( buffer ) {
+      audios[SOUNDS.Starting] = new Audio( listener );
+      audios[SOUNDS.Starting].setBuffer( buffer );
+      audios[SOUNDS.Starting].setLoop( false );
+      audios[SOUNDS.Starting].setVolume( 2 );
+    });
+
+    audioLoader.load( 'sounds/camera_move.mp3', function( buffer ) {
+      audios[SOUNDS.CameraMove] = new Audio( listener );
+      audios[SOUNDS.CameraMove].setBuffer( buffer );
+      audios[SOUNDS.CameraMove].setLoop( false );
+      audios[SOUNDS.CameraMove].setVolume( 2 );
     });
 
     audioLoader.load( 'sounds/pop_up.mp3', function( buffer ) {
