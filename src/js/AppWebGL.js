@@ -114,8 +114,8 @@ export class AppWebGL {
 
   //Left click to add a plant
   onPointerClickLeft(event) {
-    console.log('onPointerClickLeft canvas')
-    console.log(event)
+    //console.log('onPointerClickLeft canvas')
+    //console.log(event)
     if(event.which == 1) {
       if (this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
         let slotName = ""
@@ -301,7 +301,7 @@ export class AppWebGL {
       let box3 = new Box3().setFromObject(this.car.model);
       let size = new Vector3();
       box3.getSize(size);
-      console.log('size', size)
+      //console.log('size', size)
     }
 
     const vertexShader = p_vertex

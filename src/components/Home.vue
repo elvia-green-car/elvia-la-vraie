@@ -517,10 +517,12 @@ export default {
       this.timeline.add(stl)
     })
 
-    window.addEventListener('load', () => this.step())
+    window.addEventListener('load', this.step)
   },
   beforeUnmount() {
-    window.removeEventListener('load', () => this.step)
+    window.removeEventListener('load', this.step)
+    this.timeline.getChildren().forEach(c => c.kill)
+    this.timeline.kill()
   },
   methods: {
     plantClass(name) {

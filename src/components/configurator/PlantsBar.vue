@@ -21,7 +21,7 @@
           <!-- Swiper-wrapper -->
           <div class="swiper-wrapper">
             <!-- Swiper-slide -->
-            <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plants" :key="index"
+            <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plantsToShow" :key="index"
                  @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)"
                  @click="onClick($event, plant, index)">
               <div class="Plant flex justify-center items-center pointer-events-none select-none">
@@ -46,6 +46,7 @@ import 'swiper/css';
 
 import Arrow from "/public/svg/slider-arrow.svg?component";
 import More from "/public/svg/more.svg?component";
+import {storeToRefs} from "pinia/dist/pinia";
 
 export default {
   name: "PlantsBar",
@@ -65,19 +66,20 @@ export default {
       plantSelectedIndex: null,
       plantOpenDetail: null,
       plantOpenDetailIndex: null,
-      slidesPerView: 'auto',
     }
   },
   setup() {
     const store = useStore()
+    const { plantsToShow } = storeToRefs(store)
 
     return {
       store,
+      plantsToShow
     }
   },
   mounted() {
     this.store.thumbs = new Swiper(this.$refs.slider, {
-      slidesPerView: this.isPopinOpen ? 1 : 'auto',
+      slidesPerView: this.isPopinOpen ? 1 : 5,
       spaceBetween: 45,
       threshold: 5,
       centeredSlides: true,
@@ -108,10 +110,6 @@ export default {
 
     window.addEventListener('mouseup', this.onMouseUp)
     window.addEventListener('mousemove', ($event) => this.onMouseMove($event))
-
-    this.store.$subscribe((mutation, state) => {
-      this.slidesPerView = state.isPlantPopinOpen ? 1 : 'auto'
-    })
   },
   beforeUnmount() {
     window.removeEventListener('mouseup', this.onMouseUp)

@@ -222,7 +222,7 @@ export class Landing {
   }
 
   updateSection(index) {
-    console.log("updateSteps : " + index)
+    //console.log("updateSteps : " + index)
     const carPos = this.carPositions[index]
     const carRot = this.carRotation[index]
     const camPos = this.cameraPositions[index]
@@ -232,7 +232,7 @@ export class Landing {
     let camCoords = this.camera.position
     let camRotation = this.camera.rotation
 
-    console.log("Cam pos : " + camPos)
+    //console.log("Cam pos : " + camPos)
 
     if(carPos) this.animationPosition(carCoords, carPos, 2000, TWEEN.Easing.Quintic.InOut, this.car.model)
     if(carRot) this.animationRotation(carRotation, carRot, 2000, TWEEN.Easing.Quintic.InOut, this.car.model)

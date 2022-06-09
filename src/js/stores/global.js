@@ -20,7 +20,7 @@ export const useStore = defineStore('main', {
 
       // Sliders content
       plantsData: plantsData,
-      plantsToShow: {},
+      plantsToShow: [],
       carPlants: {},
 
       // Swipers
