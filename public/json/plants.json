@@ -1,20 +1,5 @@
 [
   {
-    "index": 0,
-    "name": "aloe vera",
-    "type": "gltf",
-    "models": [
-      ""
-    ],
-    "file": "aloe.png",
-    "description": "Véritable bombe à oxygène, l'aloe vera absorbe les gaz les plus néfastes pour rejeter un air 100% purifié.\nFacile d'entretien, elle résistera à la chaleur et saura s'adapter à toutes les conditions météorologiques\nVous pourrez en plus bénéficier du gel produit par la plante, dont les bienfaits cutanés et capillaires ne sont plus à démontrer.",
-    "price": 14.99,
-    "arrosage": 1,
-    "co2": 4,
-    "pollinisation": 0,
-    "zone": []
-  },
-  {
     "index": 1,
     "name": "aglaoneme",
     "type": "gltf",

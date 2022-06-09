@@ -1,6 +1,7 @@
-import {defineStore} from 'pinia'
+import {defineStore} from 'pinia';
 
 import plantsData from "/public/json/plants.json";
+import othersData from "/public/json/others.json";
 
 export const useStore = defineStore('main', {
   state() {
@@ -10,6 +11,7 @@ export const useStore = defineStore('main', {
       landingSteps: ["Elvia", "Plants", "Tools", "Packs", "Services"],
       activeStepIndex: 0,
       activeStep: null,
+
       // Landing
       sectionIndex: 0,
 
@@ -43,6 +45,9 @@ export const useStore = defineStore('main', {
       isRewardPopinOpen: false,
       rewardType: null,
       rewardGiven: [],
+
+      // Estimate & Landing
+      othersData: othersData,
 
       // Loader
       isLoading: true,

@@ -15,7 +15,7 @@
           <span>{{ getPrice(key, value) }}€</span>
         </div>
         <h3 class="font-bold uppercase mt-8">Options</h3>
-        <fieldset :class="options.length > 0 ? 'border-b border-white' : ''" class="flex items-center py-4 gap-7 mb-3">
+        <fieldset class="flex items-center border-b border-white py-4 gap-7 mb-3">
           <input class="hidden" ref="without" type="radio" id="without" :value="false" v-model="withCar"/>
           <label class="flex items-center gap-4" for="without" @click="$refs.with.click()">
           <span class="flex items-center justify-center w-4 h-4 border border-white">
@@ -31,15 +31,15 @@
             Je veux une Renault Elvia*
           </label>
         </fieldset>
-        <fieldset v-for="(option, index) in options" :key="index" class="flex justify-between items-center gap-7 py-2 mb-5">
-          <input class="hidden" :ref="'option'+index" type="checkbox" :name="option.name" v-model="option.checked"/>
+        <fieldset v-for="(other, index) in store.othersData" :key="index" class="flex justify-between items-center gap-7 py-2 mb-5">
+          <input class="hidden" :ref="'option'+index" type="checkbox" :name="other.name" v-model="other.checked"/>
           <label class="flex items-center gap-4" @click="clickOption(index)">
           <span class="flex items-center justify-center w-4 h-4 border border-white">
-            <Check v-if="option.checked" class="w-4 h-4"/>
+            <Check v-if="other.checked" class="w-4 h-4"/>
           </span>
-            {{ option.name }}
+            {{ other.name }}
           </label>
-          <span>{{ option.price }}€</span>
+          <span>{{ other.price }}€</span>
         </fieldset>
       </div>
     </div>
@@ -53,7 +53,6 @@
 
 <script>
 import {useStore} from "../../js/stores/global";
-
 import Check from '/public/svg/cross.svg?component'
 
 export default {
@@ -74,10 +73,6 @@ export default {
     return {
       carPrice: 34999,
       withCar: false,
-      options: [
-        {name: "Lot d'outils", price: 49.99, checked: false},
-        {name: "Terreaux 10kg", price: 12.99, checked: false}
-      ],
     }
   },
   computed: {
@@ -94,9 +89,9 @@ export default {
         })
         this.store.totalPlants = totalPlants
       }
-      this.options.forEach(option => {
-        if (option.checked) {
-          totalPrice += option.price
+      Object.values(this.store.othersData).forEach((value) => {
+        if(value.checked) {
+          totalPrice += parseFloat(value.price)
         }
       })
       totalPrice += this.withCar ? this.carPrice : 0
