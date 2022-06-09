@@ -108,7 +108,7 @@ export class AppWebGL {
 
   //Left click to add a plant
   onPointerClickLeft(event) {
-    console.log('onPointerClickLeft canvas')
+    //console.log('onPointerClickLeft canvas')
     if (this.store.activeStepIndex >= 0 && this.store.activeStepIndex <= 3) {
       let slotName = ""
       let slotNameTemp = ""
@@ -282,7 +282,7 @@ export class AppWebGL {
       let box3 = new Box3().setFromObject(this.car.model);
       let size = new Vector3();
       box3.getSize(size);
-      console.log('size', size)
+      //console.log('size', size)
     }
 
     const vertexShader = p_vertex
@@ -386,7 +386,7 @@ export class AppWebGL {
           this.scene.add(this.car.model)
           this.smog()
           this.updateSteps(0)            //to animate camera on start
-          console.log(ModelsSingelton.getInstance().getModelManager().models)
+          //console.log(ModelsSingelton.getInstance().getModelManager().models)
         }
 
         if ((ModelsSingelton.getInstance().getModelsPathType().length == ModelsSingelton.getInstance().getModelManager().models.length)

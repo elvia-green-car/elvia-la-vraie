@@ -96,7 +96,6 @@ export default {
     })
 
     this.store.thumbs.on('activeIndexChange', (e) => {
-      console.log('activeIndexChange')
       this.store.sliderActiveIndex = e.activeIndex
     })
 
@@ -111,7 +110,7 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('mouseup', this.onMouseUp)
-    window.removeEventListener('mousemove', this.onMouseMove)
+    window.removeEventListener('mousemove', ($event) => this.onMouseMove($event))
     this.store.thumbs.destroy()
   },
   computed: {
