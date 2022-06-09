@@ -517,10 +517,10 @@ export default {
       this.timeline.add(stl)
     })
 
-    window.addEventListener('load', this.step)
+    window.addEventListener('load', () => this.step())
   },
   beforeUnmount() {
-    window.removeEventListener('load', this.step)
+    window.removeEventListener('load', () => this.step())
     this.timeline.getChildren().forEach(c => c.kill)
     this.timeline.kill()
   },
@@ -550,13 +550,15 @@ export default {
       if (this.timeFromLastUpdate > this.animationDuration / this.totalFrames) {
         this.timeWhenLastUpdate = startTime;
 
-        this.toAnimate.forEach(name => {
-          if (this.$refs[name] && this.$refs[name][0]) {
-            this.$refs[name][0].setAttribute('class', name + '00' + frame)
-          } else if (this.$refs[name]) {
-            this.$refs[name].setAttribute('class', name + '00' + frame)
-          }
-        })
+        if(this.$router.currentRoute.value.name === 'Home') {
+          this.toAnimate.forEach(name => {
+            if (this.$refs[name] && this.$refs[name][0]) {
+              this.$refs[name][0].setAttribute('class', name + '00' + frame)
+            } else if (this.$refs[name]) {
+              this.$refs[name].setAttribute('class', name + '00' + frame)
+            }
+          })
+        }
 
         if (this.frame <= 0) {
           this.frame = this.totalFrames;

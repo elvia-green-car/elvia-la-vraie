@@ -11,7 +11,11 @@
           <div v-for="(plant, index) in plants" :key="index"
                class="swiper-slide relative flex flex-col xl:flex-row gap-10 xl:gap-0 justify-center items-center">
             <div class="flex w-1/2 flex-col items-center ">
-              <img class="xl:w-full" :src="`/images/png/${plant.file}`"/>
+              <!--img class="xl:w-full" :src="`/images/png/${plant.file}`"/-->
+              <div class="w-full">
+                <div :ref="plant.name"
+                     :class="plantClass(plant.name)" class="w-full h-full object-cover"/>
+              </div>
               <div v-if="plant.colors" class="flex">
                 <div v-for="color in plant.colors" :key="color"
                      class="flex items-center justify-center w-8 h-8 btn-border">
@@ -61,6 +65,11 @@ export default {
       maxRate: 4,
       plantSelected: null,
       plantSelectedIndex: null,
+      frame: 0,
+      totalFrames: 60,
+      timeWhenLastUpdate: null,
+      timeFromLastUpdate: null,
+      animationDuration: 4000,
     }
   },
   setup() {
@@ -97,9 +106,11 @@ export default {
         this.store.parent.slideTo(state.sliderActiveIndex, 300, true)
       }
     })
+    window.addEventListener('load', () => this.step())
   },
   beforeUnmount() {
     this.store.parent.destroy()
+    window.removeEventListener('load', () => this.step())
   },
   methods: {
     selectedPlant() {
@@ -117,6 +128,39 @@ export default {
         {name: 'Besoin en eau', rate: plant.arrosage * 100 / this.maxRate},
         {name: 'Pollinisation', rate: plant.pollinisation * 100 / this.maxRate}
       ]
+    },
+    plantClass(name) {
+      return name + '0000'
+    },
+    addLeadingZeros(num, totalLength) {
+      return String(num).padStart(totalLength, '0');
+    },
+    step(startTime) {
+      if (!this.timeWhenLastUpdate) this.timeWhenLastUpdate = startTime;
+
+      this.timeFromLastUpdate = startTime - this.timeWhenLastUpdate;
+      let frame = this.addLeadingZeros(this.frame, 2)
+
+      if (this.timeFromLastUpdate > this.animationDuration / this.totalFrames) {
+        this.timeWhenLastUpdate = startTime;
+
+        if (this.$router.currentRoute.value.name === 'Configurator') {
+          this.plants.forEach(plant => {
+            if (this.$refs[plant.name] && this.$refs[plant.name][0]) {
+              this.$refs[plant.name][0].setAttribute('class', plant.name + '00' + frame)
+            } else if (this.$refs[name]) {
+              this.$refs[plant.name].setAttribute('class', plant.name + '00' + frame)
+            }
+          })
+        }
+
+        if (this.frame <= 0) {
+          this.frame = this.totalFrames;
+        } else {
+          this.frame--
+        }
+      }
+      requestAnimationFrame(this.step)
     },
   }
 }

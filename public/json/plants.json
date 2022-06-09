@@ -147,7 +147,7 @@
   },
   {
     "index": 9,
-    "name": "sansevieria trifasciata",
+    "name": "sansevieria",
     "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Sansevieria_V02.gltf"
