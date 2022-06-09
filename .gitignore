@@ -14,6 +14,7 @@ dist-ssr
 
 public/models
 public/textures
+public/sounds
 public/assets/models
 public/assets/textures
 src/assets/models
