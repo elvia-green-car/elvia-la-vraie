@@ -1,5 +1,5 @@
 import {ModelsManager, MODEL_TYPE} from "./Managers/ModelsManager";
-import {FileLoader} from "three";
+import {FileLoader, AudioLoader, AudioListener, Audio} from "three";
 
 export const MODELS = {
   Car: 0,
@@ -20,16 +20,30 @@ export const HDRI = {
   Studio: 0
 }
 
+export const SOUNDS = {
+  LoopCity: 0,
+  LoopNature: 1,
+  PopUp: 2,
+  PopDown: 3
+}
+
 export const MODELS_OFFSET_PLANT = 1;         //offset of index plant
 
 export var ModelsSingelton = (function () {
   var modelManager = null;
   var modelsPathType = null;
   var hdriPath = null;
+  var audios = null;
+  var audioLoader = null;
+  var listener = null;
 
   var constructeur = function () {
     modelsPathType = new Array()
     hdriPath = new Array()
+    audios = new Array()
+    audioLoader = new AudioLoader();
+    listener = new AudioListener();
+
     var json
 
     modelManager = new ModelsManager()
@@ -66,6 +80,38 @@ export var ModelsSingelton = (function () {
     this.getModelsPathType = function () {
       return modelsPathType
     }
+    this.getListener = function () {
+      return listener
+    }
+    this.getAudios = function () {
+      return audios
+    }
+
+    audioLoader.load( 'sounds/loop_city.mp3', function( buffer ) {
+      audios[SOUNDS.LoopCity] = new Audio( listener );
+      audios[SOUNDS.LoopCity].setBuffer( buffer );
+      audios[SOUNDS.LoopCity].setLoop( true );
+    });
+
+    audioLoader.load( 'sounds/loop_nature.mp3', function( buffer ) {
+      audios[SOUNDS.LoopNature] = new Audio( listener );
+      audios[SOUNDS.LoopNature].setBuffer( buffer );
+      audios[SOUNDS.LoopNature].setLoop( true );
+    });
+
+    audioLoader.load( 'sounds/pop_up.mp3', function( buffer ) {
+      audios[SOUNDS.PopUp] = new Audio( listener );
+      audios[SOUNDS.PopUp].setBuffer( buffer );
+      audios[SOUNDS.PopUp].setLoop( false );
+      audios[SOUNDS.PopUp].setVolume( 1 );
+    });
+
+    audioLoader.load( 'sounds/pop_down.mp3', function( buffer ) {
+      audios[SOUNDS.PopDown] = new Audio( listener );
+      audios[SOUNDS.PopDown].setBuffer( buffer );
+      audios[SOUNDS.PopDown].setLoop( false );
+      audios[SOUNDS.PopDown].setVolume( 1 );
+    });
 
   }
   var instance = null;

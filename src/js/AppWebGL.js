@@ -14,7 +14,7 @@ import {
   DoubleSide,
   SphereGeometry, ShaderMaterial, InstancedMesh, Matrix4, Vector3, Object3D, Box3
 } from "three";
-import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT} from "./ModelsSingelton";
+import {ModelsSingelton, MODELS, HDRI, MODELS_OFFSET_PLANT, SOUNDS} from "./ModelsSingelton";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
 import {Car} from "./Car";
@@ -44,6 +44,9 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null              //Last intersect object
     this.intersectClone = null
+
+    this.audioCity = null
+    this.audioNature = null
 
     this.clouds = null
     this.cloudsCount = 20
@@ -101,9 +104,10 @@ export class AppWebGL {
     this.camera.position.set(-470, 190, 502)
     this.camera.rotation.set(0, 0.03, 0.06)
     this.camera.lookAt(0, 0, 0)
+    this.camera.add( ModelsSingelton.getInstance().getListener() );
 
     this.raycaster = new Raycaster()
-    this.pointer = new Vector2()
+    this.pointer = new Vector2()    
   }
 
   //Left click to add a plant
@@ -149,6 +153,10 @@ export class AppWebGL {
               this.intersects[i].object.attach(this.car.plants[slotName].model)
               this.car.plants[slotName].model.position.set(0, 0, 0)
               this.plantAnimationIn(this.car.plants[slotName].model, this.car.plants[slotName].model.scale)
+              const audio = ModelsSingelton.getInstance().getAudios()[SOUNDS.PopUp];
+              if(audio) {
+                audio.play()
+              }
               //this.car.plants[slotName].model.scale.set(0,0,0)
               if (this.store.activeStepIndex == 2) {
                 this.car.plants[slotName].model.rotation.x = (2 * Math.PI) / 3
@@ -195,6 +203,10 @@ export class AppWebGL {
         ) {
           if (this.car.plants[slotName] != null || this.car.plants[slotName].model != null) {
             this.plantAnimationOut(this.car.plants[slotName].model, this.intersects[i], this.car.plants[slotName], this.car.plants[slotName].model.scale)
+            const audio = ModelsSingelton.getInstance().getAudios()[SOUNDS.PopDown];
+            if(audio) {
+              audio.play()
+            }
             //this.intersects[i].object.remove(this.car.plants[slotName].model)
             //this.car.removePlant(slotName)
             if (this.store.activeStepIndex == 2) {
@@ -351,6 +363,7 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    this.updateSounds()
     TWEEN.update()
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -453,6 +466,19 @@ export class AppWebGL {
         this.updateModelsLoad()
       }.bind(this), 10);
     }
+    else {
+      this.audioCity = ModelsSingelton.getInstance().getAudios()[SOUNDS.LoopCity];
+      if(this.audioCity) {
+        this.audioCity.setVolume(1)
+        console.log(this.audioCity.getVolume ())
+        this.audioCity.play()
+      }
+      this.audioNature = ModelsSingelton.getInstance().getAudios()[SOUNDS.LoopNature];
+      if(this.audioNature) {
+        this.audioNature.setVolume(0)
+        this.audioNature.play()
+      }
+    }
   }
 
   updateSteps(index) {
@@ -502,6 +528,17 @@ export class AppWebGL {
     this.plantSelected = plant
   }
 
+  updateSounds(){
+    if(this.store.rates.co2) {
+      if(this.audioCity) {
+        this.audioCity.setVolume((100 - this.store.rates.co2) / 100)
+      }
+      if(this.audioNature) {
+        this.audioNature.setVolume(this.store.rates.co2 / 100)
+      }
+    }
+  }
+
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
@@ -542,6 +579,8 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null
     this.intersectClone = null
+    this.audioCity = null
+    this.audioNature = null
     this.hdri.dispose()
     this.hdri = null
   }
