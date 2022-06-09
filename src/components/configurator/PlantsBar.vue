@@ -41,7 +41,7 @@
 <script>
 import {useStore} from '../../js/stores/global'
 
-import Swiper, {Navigation, Controller} from 'swiper';
+import Swiper, {Navigation} from 'swiper';
 import 'swiper/css';
 
 import Arrow from "/public/svg/slider-arrow.svg?component";
@@ -96,11 +96,12 @@ export default {
     })
 
     this.store.thumbs.on('activeIndexChange', (e) => {
+      console.log('activeIndexChange')
       this.store.sliderActiveIndex = e.activeIndex
     })
 
     this.store.$subscribe((mutation, state) => {
-      if (mutation.events.key === "sliderActiveIndex") {
+      if (state.sliderActiveIndex !== this.store.thumbs.activeIndex) {
         this.store.thumbs.slideTo(state.sliderActiveIndex, 300, true)
       }
     })

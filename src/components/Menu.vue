@@ -26,9 +26,7 @@ export default {
     const store = useStore()
 
     store.$subscribe((mutation, state) => {
-      if (mutation.events.key === "isMenuOpen") {
-        document.body.style.overflow = mutation.events.newValue ? 'hidden' : 'auto';
-      }
+      document.body.style.overflow = state.isMenuOpen ? 'hidden' : 'auto';
     })
 
     return {

@@ -93,8 +93,8 @@ export default {
     })
 
     this.store.$subscribe((mutation, state) => {
-      if(mutation.events.key === "sliderActiveIndex") {
-        this.store.parent.slideTo(state.sliderActiveIndex, 300, true)
+      if (state.sliderActiveIndex !== this.store.parent.activeIndex) {
+        this.store.thumbs.slideTo(state.sliderActiveIndex, 300, true)
       }
     })
   },
