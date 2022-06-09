@@ -79,7 +79,7 @@ export default {
   },
   mounted() {
     this.store.thumbs = new Swiper(this.$refs.slider, {
-      slidesPerView: this.isPopinOpen ? 1 : 5,
+      slidesPerView: 'auto',
       spaceBetween: 45,
       threshold: 5,
       centeredSlides: true,

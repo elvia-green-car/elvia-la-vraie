@@ -19,7 +19,7 @@
     <div ref="fakePopin" class="pointer-events-none transition-transform ease-in-out z-10"/>
     <div class="flex flex-col flex-1 pointer-events-none">
       <aside ref="sidebar"
-             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:p-12 pb-0 xl:pb-0 z-10">
+             class="flex flex-col h-full self-end justify-between items-end text-right p-10 xl:px-12 pb-0 xl:pb-0 z-10">
         <router-link to="/" class="pointer-events-auto">
           <Button text="Quitter"/>
         </router-link>
@@ -35,11 +35,11 @@
                 :class="store.activeStep === 'Estimate' ? 'opacity-0 pointer-events-none':''"/>
       </aside>
       <section v-show="store.activeStep !== 'Global' && store.activeStep !== 'Estimate'"
-               class="flex flex-col gap-5 pointer-events-auto mt-auto p-10 xl:p-12 pt-0 xl:pt-0 z-10">
+               class="flex flex-col gap-5 pointer-events-auto mt-auto p-10 xl:px-12 pt-0 xl:pt-0 z-10">
         <!-- isPopinOpen ? 1 : 5.5 -->
-        <p class="text-14 xl:text-16 ml-28">Placer les plantes de votre choix sur les emplacements prévus à cet
+        <p v-show="!isPopinOpen" class="text-14 xl:text-16 ml-28">Placer les plantes de votre choix sur les emplacements prévus à cet
           effet</p>
-        <div class="flex gap-6 justify-between items-center">
+        <div class="flex gap-4 justify-between items-center">
           <PlantsBar :isPopinOpen="isPopinOpen" :active-step="store.activeStep" @plant-selected="onPlant"
                      @open-plant-popin="onOpen"
                      :width="plantsBarWidth" :plants="plantsToShow"/>
@@ -50,7 +50,7 @@
         </div>
       </section>
       <section v-if="store.activeStep === 'Global'"
-               class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:p-12 z-10">
+               class="flex pointer-events-auto mt-auto justify-between items-center gap-10 p-10 xl:px-12 z-10">
         <Scroll/>
         <Button icon="arrow" text="Configurateur" :rotate="true"
                 @click.native="updateSteps(store.activeStepIndex - 1)"/>
@@ -61,7 +61,7 @@
         <Socials/>
       </section>
       <section v-if="store.activeStep === 'Estimate'"
-               class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:p-12 z-10">
+               class="flex pointer-events-auto mt-auto justify-end items-center gap-10 p-10 xl:px-12 z-10">
         <Button icon="download" round/>
         <Button text="Prendre rendez-vous"/>
         <Button text="Ajouter au panier"/>
@@ -167,9 +167,9 @@ export default {
       this.popinWidth = window.innerWidth * 55 / 100
 
       if (this.isPopinOpen) {
-        return window.innerWidth - this.popinWidth - 194
+        return window.innerWidth - this.popinWidth - 200
       } else {
-        return window.innerWidth - 194
+        return window.innerWidth * 3 / 4
       }
     },
     rates() {

@@ -1,6 +1,6 @@
 <template>
-  <section :class="isOpen ? 'p-10 xl:p-12 border-r': '-translate-x-full'"
-           class="w-[50%] absolute top-0 left-0 flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-transform ease-in-out bg-layered bg-opacity-30 backdrop-blur-sm">
+  <section :class="isOpen ? 'p-10 xl:px-12 border-r': '-translate-x-full'"
+           class="w-[53%] absolute top-0 left-0 flex flex-col justify-center h-full shrink-0 z-10 overflow-hidden border-white transition-transform ease-in-out bg-layered bg-opacity-30 backdrop-blur-md">
     <Button class="ml-auto" icon="close" :background="false" round @click.native="$emit('closePopin')"/>
     <div class="flex justify-center items-center my-auto">
       <!-- Swiper -->
@@ -20,8 +20,8 @@
                 </div>
               </div>
             </div>
-            <div class="flex xl:w-1/2 flex-col items-start gap-6 xl:gap-12">
-              <h2 class="font-title font-bold text-30 xl:text-40 capitalize">{{ plant.name }}</h2>
+            <div class="flex xl:w-1/2 flex-col items-start gap-6 xl:gap-8">
+              <h2 class="font-title font-bold text-30 capitalize w-full">{{ plant.name }}</h2>
               <p class="text-14 xl:text-16">{{ plant.description }}</p>
               <Rates reverse :data="rates(plant)"/>
               <Button text="Placer" @click.native="plantClicked($event, plant, index)"/>
