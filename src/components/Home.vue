@@ -340,6 +340,7 @@ export default {
     }
   },
   mounted() {
+    document.body.classList.remove('cursor-none')
     this.store.isLoading = false
     this.store.activeStep = this.store.landingSteps[0]
     this.app = new Landing(this.$refs.canvas) //document.getElementById('app-canvas')

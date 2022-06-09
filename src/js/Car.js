@@ -34,10 +34,6 @@ export class Car {
     } else {
       this.store.carPlants[model.data.name] = 1
     }
-
-    //let plants = Object.entries(this.store.carPlants)
-
-
   }
 
   removePlant(slotName) {
