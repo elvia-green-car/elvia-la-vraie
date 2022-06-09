@@ -39,6 +39,10 @@ export default {
   },
   computed: {
     reward() {
+      if (this.store.rewardType === Rewards.FULLFILL) {
+        let text = rewardsData.find(r => r.type === this.store.rewardType).text
+        return text.replace('XX', Math.round(this.store.rates.co2))
+      }
       return this.store.rewardType ? rewardsData.find(r => r.type === this.store.rewardType).text : ''
     }
   },
@@ -57,7 +61,7 @@ export default {
         this.store.rewardType = Rewards.GREEN_HAND
         this.store.rewardGiven.push(Rewards.GREEN_HAND)
       }
-      if (carPlants.length === this.store.slotsCount && this.store.rewardGiven.find(r => r === Rewards.FULLFILL) === undefined) {
+      if (this.store.totalPlants === this.store.slotsCount && this.store.rewardGiven.find(r => r === Rewards.FULLFILL) === undefined) {
         this.store.isRewardPopinOpen = true
         this.store.rewardType = Rewards.FULLFILL
         this.store.rewardGiven.push(Rewards.FULLFILL)

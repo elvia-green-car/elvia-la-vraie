@@ -83,13 +83,16 @@ export default {
   computed: {
     totalPrice() {
       let totalPrice = 0
+      let totalPlants = 0
       if (this.store.carPlants) {
         Object.entries(this.store.carPlants).forEach(([key, value]) => {
           const found = this.store.plantsData.find(el => {
             return el.name === key
           })
           totalPrice += found.price * value
+          totalPlants += value
         })
+        this.store.totalPlants = totalPlants
       }
       this.options.forEach(option => {
         if (option.checked) {

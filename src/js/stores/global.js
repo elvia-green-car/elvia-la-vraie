@@ -28,6 +28,7 @@ export const useStore = defineStore('main', {
 
       // Total slots count car
       slotsCount: null,
+      totalPlants: 0,
 
       // Rates
       rates: {
