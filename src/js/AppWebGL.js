@@ -45,6 +45,9 @@ export class AppWebGL {
     this.intersect_Z1 = null              //Last intersect object
     this.intersectClone = null
 
+    this.audioCity = null
+    this.audioNature = null
+
     this.clouds = null
     this.cloudsCount = 20
 
@@ -104,15 +107,7 @@ export class AppWebGL {
     this.camera.add( ModelsSingelton.getInstance().getListener() );
 
     this.raycaster = new Raycaster()
-    this.pointer = new Vector2()
-
-    this.audioCity = ModelsSingelton.getInstance().getAudios()[SOUNDS.LoopCity];
-    if(this.audioCity) {
-      this.audioCity
-      this.audioCity.setVolume(1)
-      this.audioCity.play()
-    }
-    
+    this.pointer = new Vector2()    
   }
 
   //Left click to add a plant
@@ -368,6 +363,7 @@ export class AppWebGL {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this))
+    this.updateSounds()
     TWEEN.update()
     // Update ...
     if (this.resizeRendererToDisplaySize()) {
@@ -470,6 +466,19 @@ export class AppWebGL {
         this.updateModelsLoad()
       }.bind(this), 10);
     }
+    else {
+      this.audioCity = ModelsSingelton.getInstance().getAudios()[SOUNDS.LoopCity];
+      if(this.audioCity) {
+        this.audioCity.setVolume(1)
+        console.log(this.audioCity.getVolume ())
+        this.audioCity.play()
+      }
+      this.audioNature = ModelsSingelton.getInstance().getAudios()[SOUNDS.LoopNature];
+      if(this.audioNature) {
+        this.audioNature.setVolume(0)
+        this.audioNature.play()
+      }
+    }
   }
 
   updateSteps(index) {
@@ -519,6 +528,17 @@ export class AppWebGL {
     this.plantSelected = plant
   }
 
+  updateSounds(){
+    if(this.store.rates.co2) {
+      if(this.audioCity) {
+        this.audioCity.setVolume((100 - this.store.rates.co2) / 100)
+      }
+      if(this.audioNature) {
+        this.audioNature.setVolume(this.store.rates.co2 / 100)
+      }
+    }
+  }
+
   // Run app, load things, add listeners, ...
   run() {
     console.log("App run")
@@ -559,6 +579,8 @@ export class AppWebGL {
     this.intersects = null
     this.intersect_Z1 = null
     this.intersectClone = null
+    this.audioCity = null
+    this.audioNature = null
     this.hdri.dispose()
     this.hdri = null
   }
