@@ -1,37 +1,43 @@
 [
   {
     "name": "Arrosoir",
+    "file": "arrosoir.png",
     "price": "20.90",
     "type": "accessory",
     "checked": false
   },
   {
-    "name": "Rateau",
+    "name": "Rateau à main",
+    "file": "rateau.png",
     "price": "8.90",
     "type": "accessory",
     "checked": false
   },
   {
-    "name": "Sécateur",
-    "price": "17.90",
-    "type": "accessory",
-    "checked": false
-  },
-  {
     "name": "Transplantoir",
+    "file": "pelle.png",
     "price": "9.70",
     "type": "accessory",
     "checked": false
   },
   {
     "name": "Terreau 70L",
+    "file": "",
     "price": "16.90",
     "type": "accessory",
     "checked": false
   },
   {
     "name": "Pelle à terreau",
+    "file": "",
     "price": "10.50",
+    "type": "accessory",
+    "checked": false
+  },
+  {
+    "name": "Sécateur",
+    "file": "secateur.png",
+    "price": "17.90",
     "type": "accessory",
     "checked": false
   }

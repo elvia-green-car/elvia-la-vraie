@@ -55,8 +55,8 @@ export default {
   },
   props: {
     plants: Array,
-    slidesPerView: Number,
     width: Number,
+    isPopinOpen: Boolean
   },
   data() {
     return {
@@ -64,7 +64,8 @@ export default {
       plantSelected: null,
       plantSelectedIndex: null,
       plantOpenDetail: null,
-      plantOpenDetailIndex: null
+      plantOpenDetailIndex: null,
+      slidesPerView: 'auto',
     }
   },
   setup() {
@@ -76,7 +77,7 @@ export default {
   },
   mounted() {
     this.store.thumbs = new Swiper(this.$refs.slider, {
-      slidesPerView: 'auto',
+      slidesPerView: this.isPopinOpen ? 1 : 'auto',
       spaceBetween: 45,
       threshold: 5,
       centeredSlides: true,
@@ -107,6 +108,10 @@ export default {
 
     window.addEventListener('mouseup', this.onMouseUp)
     window.addEventListener('mousemove', ($event) => this.onMouseMove($event))
+
+    this.store.$subscribe((mutation, state) => {
+      this.slidesPerView = state.isPlantPopinOpen ? 1 : 'auto'
+    })
   },
   beforeUnmount() {
     window.removeEventListener('mouseup', this.onMouseUp)

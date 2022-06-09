@@ -40,7 +40,7 @@
         <p class="text-14 xl:text-16 ml-28">Placer les plantes de votre choix sur les emplacements prévus à cet
           effet</p>
         <div class="flex gap-6 justify-between items-center">
-          <PlantsBar :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
+          <PlantsBar :isPopinOpen="isPopinOpen" :active-step="store.activeStep" @plant-selected="onPlant" @open-plant-popin="onOpen"
                      :width="plantsBarWidth" :plants="plantsToShow"/>
           <div ref="nextStep" class="flex gap-6">
             <StepsIndicator :steps="store.configSteps"/>

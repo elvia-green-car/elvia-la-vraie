@@ -1,9 +1,11 @@
 <template>
   <!-- TODO : -->
   <section :class="isOpen ? 'w-[45%]': 'w-0'"
-           class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out btn-bg border-r border-white pt-24 xl:pt-[140px]">
+           class="flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-all ease-in-out btn-bg border-r border-white">
     <div class="flex flex-col px-12 xl:px-16 overflow-y-auto">
-      <h2 class="font-title font-bold text-22 xl:text-30 mb-8">Votre configuration</h2>
+      <div class="pt-24 xl:pt-[140px]">
+        <h2 class="font-title font-bold text-22 xl:text-30 mb-8">Votre configuration</h2>
+      </div>
       <div class="overflow-y-auto">
         <p>Votre Grenault Evia est prête à arpenter toutes les routes et chemins. Vous pouvez encore affiner votre
           sélection de plantes et choisir les options qui vous conviennent avant de valider votre configuration. Il est

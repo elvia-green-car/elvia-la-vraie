@@ -1,7 +1,7 @@
 <template>
-  <div ref="home" class="relative w-full">
-    <div class="fixed top-0 left-0 w-full h-screen  bg-gradient-yellow"/>
-    <canvas ref="canvas" id="app-canvas" class="fixed top-0 left-0 w-full h-screen "/>
+  <div ref="home" class="relative w-full select-none">
+    <div class="fixed top-0 left-0 w-full h-screen bg-gradient-yellow"/>
+    <canvas ref="canvas" id="app-canvas" class="fixed top-0 left-0 w-full h-screen"/>
     <Menu/>
     <header class="fixed flex gap-8 top-0 right-0 p-10 xl:p-12 z-30">
       <Button type="round" :pin="store.cart.length > 0">
@@ -15,7 +15,7 @@
         <Close class="w-6 h-6" v-if="store.isMenuOpen"/>
       </Button>
     </header>
-    <Breadcrumb class="fixed z-20 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12 "
+    <Breadcrumb class="fixed z-20 top-1/2 -translate-y-1/2 right-0 p-10 xl:p-12 pl-0"
                 :steps="store.landingSteps" @step-selected="scrollTo"/>
     <StepsIndicator class="fixed z-10 bottom-0 right-0 p-10 xl:p-12" :steps="store.landingSteps"/>
     <Scroll ref="scroll" class="fixed animate-spin-slow z-10 bottom-0 left-0 w-36 h-36 m-10 xl:m-12"/>
@@ -129,9 +129,9 @@
         <div class="section__content"> <!-- flex flex-col justify-center items-center -->
           <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Plantes</h3>
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div :ref="store.plantsData[4].name"
-                 :class="plantClass(store.plantsData[4].name)"/>
+          <div class="png absolute w-1/3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div :ref="store.plantsData[0].name"
+                 :class="plantClass(store.plantsData[0].name)"/>
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
             <div class="text mt-[20vh]">
@@ -140,15 +140,14 @@
                 compost naturel et sans pesticides.
               </Text>
             </div>
-            <router-link to="/plants" class="button mt-auto mx-auto mb-20 "
-                         @click="(e)=>e.preventDefault">
+            <router-link to="/plants" v-slot="{ href, route, navigate}" class="button mt-auto mx-auto mb-20">
               <Button>Voir toutes les plantes</Button>
             </router-link>
             <ul class="flex flex-col gap-24 justify-center items-end">
               <!--  :class="n === 2 ? 'self-end': ''" -->
               <li v-for="n in 3" :class="n%2 === 1 ? 'mr-16': ''"
-                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden ">
-                <div :ref="store.plantsData[n].name" v-show="store.plantsData[n+1]"
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden hover:cursor-pointer">
+                <div :ref="store.plantsData[n].name" v-show="store.plantsData[n]"
                      :class="plantClass(store.plantsData[n].name)" class="w-full h-full object-cover"
                      @mouseover="onMouseOver(store.plantsData[n].name)"
                      @mouseleave="onMouseLeave(store.plantsData[n].name)"/>
@@ -162,19 +161,20 @@
         <div class="section__content"> <!-- flex flex-col justify-center items-center -->
           <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Outils</h3>
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <!-- main image -->
+          <div class="absolute w-1/3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <img :alt="store.othersData[0].name" v-show="store.othersData[0]"
+                 :src="'/images/png/'+store.othersData[0].file" class="png w-full h-full object-cover"/>
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
             <ul class="flex flex-col gap-24 justify-center">
               <!--  :class="n === 2 ? 'self-end': ''" -->
               <li v-for="n in 3" :class="n%2 === 1 ? 'ml-16': ''"
-                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden ">
-                <!-- tool's bubble -->
+                  class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden hover:cursor-pointer">
+                <img :alt="store.othersData[n].name" v-show="store.othersData[n]"
+                     :src="'/images/png/'+store.othersData[n].file" class="w-full h-full object-cover"/>
               </li>
             </ul>
-            <router-link to="/tools" class="button mt-auto mx-auto mb-20 "
-                         @click="(e)=>e.preventDefault">
+            <router-link to="/tools" v-slot="{href, route, navigate}" class="button mt-auto mx-auto mb-20">
               <Button>Voir tous les accessoires</Button>
             </router-link>
             <div class="text ml-auto mt-[20vh]">
@@ -191,7 +191,7 @@
         <div class="section__content"> <!-- flex flex-col justify-center items-center -->
           <h3 class="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title font-bold text-[180px] opacity-25">
             Packs</h3>
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div class="png absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <!-- main image -->
           </div>
           <div class="grid grid-cols-3 h-full max-w-4xl mx-auto">
@@ -201,8 +201,7 @@
                 selon le thème qui vous plaira le plus.
               </Text>
             </div>
-            <router-link to="/packs" class="button mt-auto mx-auto mb-20 "
-                         @click="(e)=>e.preventDefault">
+            <router-link to="/packs" v-slot="{href, route, navigate}" class="button mt-auto mx-auto mb-20">
               <Button>Voir tous les packs</Button>
             </router-link>
             <ul class="flex flex-col gap-24 justify-center items-end">
@@ -232,8 +231,7 @@
               </li>
             </ul>
             <div class="button w-1/2 mb-8">
-              <router-link to="/services" class=""
-                           @click="(e)=>e.preventDefault">
+              <router-link to="/services" v-slot="{href, route, navigate}">
                 <Button>Découvrir tous nos services</Button>
               </router-link>
             </div>
@@ -461,6 +459,12 @@ export default {
           }, {
             opacity: 0.25,
             scale: 1
+          }).fromTo(s.querySelector('.png'), {
+            opacity: 0,
+            scale: 0.9
+          }, {
+            opacity: 1,
+            scale: 1.2
           }).fromTo(s.querySelector('.text'), {
             y: 100,
             opacity: 0,

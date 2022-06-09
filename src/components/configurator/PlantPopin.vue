@@ -1,6 +1,6 @@
 <template>
   <section :class="isOpen ? 'p-10 xl:p-12 border-r': '-translate-x-full'"
-           class="w-[55%] absolute top-0 left-0 flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-transform ease-in-out bg-layered bg-opacity-30 backdrop-blur-sm">
+           class="w-[50%] absolute top-0 left-0 flex flex-col h-full shrink-0 z-10 overflow-hidden border-white transition-transform ease-in-out bg-layered bg-opacity-30 backdrop-blur-sm">
     <Button class="ml-auto" icon="close" :background="false" round @click.native="$emit('closePopin')"/>
     <div class="flex justify-center items-center my-auto">
       <!-- Swiper -->
