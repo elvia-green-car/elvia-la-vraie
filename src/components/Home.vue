@@ -299,9 +299,11 @@ export default {
   },
   setup() {
     const store = useStore()
+    let isAlreadyLoadedOnce = false
 
-    store.$subscribe((mutation) => {
-      if (mutation.events.key === "isLoading" && mutation.events.newValue === false) {
+    store.$subscribe((mutation, state) => {
+      if (state.isLoading === false && isAlreadyLoadedOnce === false) {
+        isAlreadyLoadedOnce = true
         let tl = new gsap.timeline()
         let s = document.querySelector('.section')
         tl.set(s, {opacity: 1})
