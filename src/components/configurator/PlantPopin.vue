@@ -85,7 +85,6 @@ export default {
     }
   },
   mounted() {
-
     this.store.parent = new Swiper(this.$refs.slider, {
       slidesPerView: 1,
       threshold: 5,
@@ -106,11 +105,10 @@ export default {
         this.store.parent.slideTo(state.sliderActiveIndex, 300, true)
       }
     })
-    window.addEventListener('load', () => this.step())
+    this.step()
   },
   beforeUnmount() {
     this.store.parent.destroy()
-    window.removeEventListener('load', () => this.step())
   },
   methods: {
     selectedPlant() {

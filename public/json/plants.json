@@ -40,7 +40,7 @@
     "type": "gltf",
     "models": [
       "models/Plants/gltf/Configurator_Chlorophytum_V04.gltf",
-      "models/Plants/gltf/Configurator_Chlorophytum02_V02.gltf"
+      "models/Plants/gltf/Configurator_Chlorophytum02_V04.gltf"
     ],
     "file": "chlorophytum.png",
     "description": "Le chlorophytum, en plus de ses propriétés dépolluantes avérées, égayera la voiture grâce à ses longues feuilles nervurées blanches et vertes. Sa floraison au printemps offrira de jolies fleurs blanches qui attireront abeilles et bourdons pour une pollinisation naturelle.",

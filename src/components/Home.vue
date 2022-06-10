@@ -149,7 +149,7 @@
                   class="btn-border btn-shape btn-round w-24 h-24 z-20 overflow-hidden hover:cursor-pointer">
                 <div :ref="store.plantsData[n].name" v-show="store.plantsData[n]"
                      :class="plantClass(store.plantsData[n].name)" class="w-full h-full object-cover"
-                     @mouseover="onMouseOver(store.plantsData[n].name)"
+                     @mouseenter="onMouseEnter(store.plantsData[n].name)"
                      @mouseleave="onMouseLeave(store.plantsData[n].name)"/>
               </li>
             </ul>
@@ -516,11 +516,9 @@ export default {
       })
       this.timeline.add(stl)
     })
-
-    window.addEventListener('load', () => this.step())
+    this.step()
   },
   beforeUnmount() {
-    window.removeEventListener('load', () => this.step())
     this.timeline.getChildren().forEach(c => c.kill)
     this.timeline.kill()
   },
@@ -550,7 +548,7 @@ export default {
       if (this.timeFromLastUpdate > this.animationDuration / this.totalFrames) {
         this.timeWhenLastUpdate = startTime;
 
-        if(this.$router.currentRoute.value.name === 'Home') {
+        if (this.$router.currentRoute.value.name === 'Home') {
           this.toAnimate.forEach(name => {
             if (this.$refs[name] && this.$refs[name][0]) {
               this.$refs[name][0].setAttribute('class', name + '00' + frame)
@@ -568,11 +566,11 @@ export default {
       }
       requestAnimationFrame(this.step)
     },
-    onMouseOver(name) {
-      this.toAnimate.push(name)
+    onMouseEnter(name) {
+      this.toAnimate = this.toAnimate.filter(n => n !== name)
     },
     onMouseLeave(name) {
-      this.toAnimate = this.toAnimate.filter(n => n !== name)
+      this.toAnimate.push(name)
     },
     onEnterTL(s, index, content) {
       this.updateSteps(parseInt(s.dataset.step))

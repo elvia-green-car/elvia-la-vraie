@@ -21,10 +21,11 @@
           <!-- Swiper-wrapper -->
           <div class="swiper-wrapper">
             <!-- Swiper-slide -->
-            <div class="swiper-slide p-4 !w-32" v-for="(plant, index) in plantsToShow" :key="index"
-                 @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)"
-                 @click="onClick($event, plant, index)">
-              <div class="Plant flex justify-center items-center pointer-events-none select-none">
+            <div class="swiper-slide p-2 !w-32"
+                 v-for="(plant, index) in plantsToShow" :key="index" @click="onClick($event, plant, index)"
+                 @mouseover="onMouseOver($event, plant, index)" @mousedown="onMouseDown($event, plant, index)">
+              <div class="Plant flex justify-center items-center pointer-events-none select-none p-2 rounded-full"
+                   :class="plant === plantSelected ? 'bg-selected bg-opacity-20':''">
                 <img class="block w-full h-full object-cover" :src="'/images/png/'+plant.file"/>
               </div>
             </div>
@@ -70,7 +71,7 @@ export default {
   },
   setup() {
     const store = useStore()
-    const { plantsToShow } = storeToRefs(store)
+    const {plantsToShow} = storeToRefs(store)
 
     return {
       store,
