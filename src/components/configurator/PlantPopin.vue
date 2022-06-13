@@ -44,7 +44,7 @@
 <script>
 import {useStore} from "../../js/stores/global";
 
-import Swiper, {Navigation, Controller} from 'swiper';
+import Swiper, {Navigation} from 'swiper';
 import 'swiper/css';
 
 import Button from "../ButtonT.vue";
@@ -160,7 +160,7 @@ export default {
       }
       requestAnimationFrame(this.step)
     },
-  }
+  },
 }
 </script>
 
